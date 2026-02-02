@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 3.6.0
+
+- Code refactoring & optimization
+
 ## Version 3.5.0
 
 - UI Changes, Performance improvements
