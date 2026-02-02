@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common"
-import { Space } from "./schemas/space.schema"
+import { Asset } from "./schemas/asset.schema"
 import { AppsDbConnectionMap } from "@/shared/entity/entity-db-connection.map"
 import {
   EntityModel,
@@ -8,11 +8,11 @@ import {
 } from "@/shared/entity/entity.repository"
 
 @Injectable()
-export class SpaceRepository extends EntityRepository<Space> {
+export class AssetRepository extends EntityRepository<Asset> {
   constructor(
-    @InjectEntityModel(Space.name, AppsDbConnectionMap.WealthAnalyzer)
-    private spaceModel: EntityModel<Space>
+    @InjectEntityModel(Asset.name, AppsDbConnectionMap.AssetManager)
+    private assetModel: EntityModel<Asset>
   ) {
-    super(spaceModel)
+    super(assetModel)
   }
 }

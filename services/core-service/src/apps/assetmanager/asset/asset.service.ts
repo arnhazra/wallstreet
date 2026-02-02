@@ -211,8 +211,8 @@ export class AssetService {
     }
   }
 
-  @OnEvent(AppEventMap.GetTotalWealth)
-  async calculateTotalWealth(reqUserId: string) {
+  @OnEvent(AppEventMap.GetTotalAsset)
+  async calculateTotalAssetValuation(reqUserId: string) {
     try {
       const assets = await this.queryBus.execute<
         FindAssetsByUserQuery,

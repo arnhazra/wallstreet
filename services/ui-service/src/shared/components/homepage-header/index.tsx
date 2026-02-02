@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Wallet, PanelLeft } from "lucide-react"
+import { TrendingUp, PanelLeft } from "lucide-react"
 import { Button, buttonVariants } from "@/shared/components/ui/button"
 import {
   Sheet,
@@ -21,7 +21,7 @@ export default function HomePageHeader() {
           className="flex items-center gap-2 text-xl font-semibold me-8"
         >
           <IconContainer>
-            <Wallet className="h-4 w-4" />
+            <TrendingUp className="h-4 w-4" />
           </IconContainer>
           {platformName}
         </Link>
@@ -75,7 +75,7 @@ export default function HomePageHeader() {
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <IconContainer>
-                    <Wallet className="h-4 w-4" />
+                    <TrendingUp className="h-4 w-4" />
                   </IconContainer>
                 </Link>
 

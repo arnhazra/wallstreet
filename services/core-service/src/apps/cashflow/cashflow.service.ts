@@ -8,7 +8,7 @@ import { FindCashflowsQuery } from "./queries/impl/find-cashflows.query"
 import { CreateCashFlowRequestDto } from "./dto/request/create-cashflow.request.dto"
 import { EventEmitter2, OnEvent } from "@nestjs/event-emitter"
 import { AppEventMap } from "@/shared/constants/app-events.map"
-import { Asset } from "../wealthanalyzer/asset/schemas/asset.schema"
+import { Asset } from "../assetmanager/asset/schemas/asset.schema"
 import { FindCashflowsByUserQuery } from "./queries/impl/find-cashflows-by-user.query"
 import { computeNextDate } from "./helpers/compute-next-date"
 

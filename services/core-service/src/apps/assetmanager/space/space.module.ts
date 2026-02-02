@@ -19,7 +19,7 @@ import { AssetModule } from "../asset/asset.module"
     AssetModule,
     EntityModule.forFeature(
       [{ name: Space.name, schema: SpaceSchema }],
-      AppsDbConnectionMap.WealthAnalyzer
+      AppsDbConnectionMap.AssetManager
     ),
   ],
   controllers: [SpaceController],

@@ -106,7 +106,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!!asset.error || (!asset.isLoading && !asset.data)) {
-      router.push("/apps/wealthanalyzer/asset/create")
+      router.push("/apps/assetmanager/asset/create")
     }
 
     if (asset.data) {

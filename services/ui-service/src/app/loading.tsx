@@ -2,13 +2,13 @@
 import IconContainer from "@/shared/components/icon-container"
 import { Progress } from "@/shared/components/ui/progress"
 import { platformName } from "@/shared/constants/global-constants"
-import { Wallet } from "lucide-react"
+import { TrendingUp } from "lucide-react"
 
 export default function Loading() {
   return (
     <div className="fixed inset-0 flex flex-col justify-center items-center z-50 bg-main space-y-4">
       <IconContainer>
-        <Wallet className="h-4 w-4" />
+        <TrendingUp className="h-4 w-4" />
       </IconContainer>
       <p className="text-white">Loading {platformName}</p>
       <Progress

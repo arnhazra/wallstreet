@@ -63,7 +63,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     if (confirmed) {
       try {
         await api.delete(`${endPoints.space}/${spaceId}`)
-        router.push("/apps/wealthanalyzer")
+        router.push("/apps/assetmanager")
       } catch (error) {
         notify(uiConstants.spaceDeleteFailed, "error")
       }
@@ -82,7 +82,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           title={space.data?.spaceName || ""}
           content="SPACE"
           actionComponents={[
-            <Link href={`/apps/wealthanalyzer/createoreditspace?id=${spaceId}`}>
+            <Link href={`/apps/assetmanager/createoreditspace?id=${spaceId}`}>
               <Button
                 variant="default"
                 size="icon"

@@ -55,7 +55,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!!goal.error || (!goal.isLoading && !goal.data)) {
-      router.push("/apps/wealthgoal/createoreditgoal")
+      router.push("/apps/goal/createoreditgoal")
     }
 
     if (goal.data) {

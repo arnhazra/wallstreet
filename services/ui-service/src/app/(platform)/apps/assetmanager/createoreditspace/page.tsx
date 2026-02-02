@@ -59,7 +59,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!!space.error || (!space.isLoading && !space.data)) {
-      router.push("/apps/wealthanalyzer/createoreditspace")
+      router.push("/apps/assetmanager/createoreditspace")
     }
 
     if (space.data) {

@@ -11,7 +11,7 @@ import { createOrConvertObjectId } from "@/shared/entity/entity.schema"
 @Injectable()
 export class GoalRepository extends EntityRepository<Goal> {
   constructor(
-    @InjectEntityModel(Goal.name, AppsDbConnectionMap.WealthGoal)
+    @InjectEntityModel(Goal.name, AppsDbConnectionMap.Goal)
     private goalModel: EntityModel<Goal>
   ) {
     super(goalModel)

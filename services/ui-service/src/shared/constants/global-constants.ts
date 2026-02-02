@@ -4,7 +4,7 @@ export const uiConstants = {
   homeHeader: "Invest for future",
   homeIntro:
     "Intelligently manage your wealth — track assets, monitor net worth, liabilities, goals & expenses to unlock real-time insights.",
-  openSourceIntro: `${platformName} is open source, enjoy all features for free.`,
+  openSourceIntro: `${platformName} is an open source wealth management platform.`,
   connectionErrorMessage: "Unable to connect. Please check your internet.",
   authVerificationMessage: "Checking your credentials",
   errorMessage: "Page not found",

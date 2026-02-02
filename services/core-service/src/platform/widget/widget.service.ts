@@ -11,8 +11,8 @@ export class WidgetService {
 
   async getWidgets(userId: string) {
     try {
-      const wealthData = (
-        await this.eventEmitter.emitAsync(AppEventMap.GetTotalWealth, userId)
+      const assetData = (
+        await this.eventEmitter.emitAsync(AppEventMap.GetTotalAsset, userId)
       ).shift()
       const debtData = (
         await this.eventEmitter.emitAsync(AppEventMap.GetTotalDebt, userId)
@@ -29,12 +29,12 @@ export class WidgetService {
       ).shift()
 
       const goalPercentage =
-        ((wealthData ?? 0) * 100) / (goalData?.goalAmount ?? 0) || 0
+        ((assetData ?? 0) * 100) / (goalData?.goalAmount ?? 0) || 0
       const widgets = [
         {
           icon: "Banknote",
           title: "Total Assets",
-          value: formatCurrency(Number(wealthData), user.baseCurrency),
+          value: formatCurrency(Number(assetData), user.baseCurrency),
           additionalInfo: "Sum of all assets",
         },
         {

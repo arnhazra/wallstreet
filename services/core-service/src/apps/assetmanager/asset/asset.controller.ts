@@ -16,7 +16,7 @@ import { statusMessages } from "@/shared/constants/status-messages"
 import { AuthGuard, ModRequest } from "@/auth/auth.guard"
 import { CreateAssetRequestDto } from "./dto/request/create-asset.request.dto"
 
-@Controller("apps/wealthanalyzer/asset")
+@Controller("apps/assetmanager/asset")
 export class AssetController {
   constructor(private readonly service: AssetService) {}
 

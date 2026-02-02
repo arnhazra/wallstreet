@@ -288,7 +288,7 @@ export function EntityCard<T extends keyof EntityMap>({
       <Card
         onClick={(): void =>
           entityType === EntityType.SPACE
-            ? router.push(`/apps/wealthanalyzer/space/${(entity as Space)._id}`)
+            ? router.push(`/apps/assetmanager/space/${(entity as Space)._id}`)
             : undefined
         }
         className="bg-background/2 border h-[15rem] backdrop-blur-sm border-border p-2 rounded-3xl hover:shadow-lg hover:shadow-primary/20 cursor-pointer"

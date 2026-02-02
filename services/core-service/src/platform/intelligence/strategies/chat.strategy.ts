@@ -61,7 +61,7 @@ export class ChatStrategy {
         this.spaceAgent.getSpaceValuationTool,
         this.spaceAgent.getSpaceListTool,
         this.assetAgent.getAssetTypesTool,
-        this.assetAgent.getTotalWealthTool,
+        this.assetAgent.getTotalAssetTool,
         this.assetAgent.getAssetListTool,
         this.goalAgent.createGoalTool,
         this.goalAgent.getGoalListTool,

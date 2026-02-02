@@ -14,10 +14,10 @@ export const endPoints = {
   intelligence: `${apiHost}/platform/intelligence`,
   widgets: `${apiHost}/platform/widgets`,
   // Apps Service
-  space: `${apiHost}/apps/wealthanalyzer/space`,
-  asset: `${apiHost}/apps/wealthanalyzer/asset`,
+  space: `${apiHost}/apps/assetmanager/space`,
+  asset: `${apiHost}/apps/assetmanager/asset`,
   debt: `${apiHost}/apps/debttrack/debt`,
-  goal: `${apiHost}/apps/wealthgoal/goal`,
+  goal: `${apiHost}/apps/goal`,
   news: `${apiHost}/apps/discover/news`,
   expense: `${apiHost}/apps/expensetrack/expense`,
   taxAdvisor: `${apiHost}/apps/taxadvisor`,

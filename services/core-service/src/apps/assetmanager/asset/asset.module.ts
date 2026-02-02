@@ -19,7 +19,7 @@ import { FindAssetsByTypesQueryHandler } from "./queries/handler/find-assets-by-
     CqrsModule,
     EntityModule.forFeature(
       [{ name: Asset.name, schema: AssetSchema }],
-      AppsDbConnectionMap.WealthAnalyzer
+      AppsDbConnectionMap.AssetManager
     ),
   ],
   controllers: [AssetController],

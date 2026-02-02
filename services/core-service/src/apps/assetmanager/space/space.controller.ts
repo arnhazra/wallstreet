@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  BadRequestException,
   Get,
   Delete,
   UseGuards,
@@ -8,25 +9,25 @@ import {
   Param,
   Body,
   Put,
-  BadRequestException,
+  Query,
 } from "@nestjs/common"
-import { GoalService } from "./goal.service"
+import { SpaceService } from "./space.service"
 import { statusMessages } from "@/shared/constants/status-messages"
 import { AuthGuard, ModRequest } from "@/auth/auth.guard"
-import { CreateGoalRequestDto } from "./dto/request/create-goal.request.dto"
+import { CreateSpaceRequestDto } from "./dto/request/create-space.request.dto"
 
-@Controller("apps/wealthgoal/goal")
-export class GoalController {
-  constructor(private readonly service: GoalService) {}
+@Controller("apps/assetmanager/space")
+export class SpaceController {
+  constructor(private readonly service: SpaceService) {}
 
   @UseGuards(AuthGuard)
   @Post()
-  async createGoal(
-    @Body() requestBody: CreateGoalRequestDto,
+  async createSpace(
+    @Body() requestBody: CreateSpaceRequestDto,
     @Request() request: ModRequest
   ) {
     try {
-      return await this.service.createGoal(request.user.userId, requestBody)
+      return await this.service.createSpace(request.user.userId, requestBody)
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError
@@ -36,24 +37,12 @@ export class GoalController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async findMyGoals(@Request() request: ModRequest) {
-    try {
-      return await this.service.findMyGoals(request.user.userId)
-    } catch (error) {
-      throw new BadRequestException(
-        error.message || statusMessages.connectionError
-      )
-    }
-  }
-
-  @UseGuards(AuthGuard)
-  @Get("/:goalId")
-  async findGoalById(
+  async findMySpaces(
     @Request() request: ModRequest,
-    @Param("goalId") goalId: string
+    @Query("searchKeyword") searchKeyword?: string
   ) {
     try {
-      return await this.service.findGoalById(request.user.userId, goalId)
+      return await this.service.findMySpaces(request.user.userId, searchKeyword)
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError
@@ -62,16 +51,36 @@ export class GoalController {
   }
 
   @UseGuards(AuthGuard)
-  @Put(":goalId")
-  async updateGoalById(
-    @Body() requestBody: CreateGoalRequestDto,
-    @Param("goalId") goalId: string,
+  @Get("/:spaceId")
+  async findSpaceById(
+    @Request() request: ModRequest,
+    @Param("spaceId") spaceId: string
+  ) {
+    try {
+      const space = await this.service.findSpaceById(
+        request.user.userId,
+        spaceId
+      )
+      if (!space) throw new Error()
+      return space
+    } catch (error) {
+      throw new BadRequestException(
+        error.message || statusMessages.connectionError
+      )
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Put(":spaceId")
+  async updateSpaceById(
+    @Body() requestBody: CreateSpaceRequestDto,
+    @Param("spaceId") spaceId: string,
     @Request() request: ModRequest
   ) {
     try {
-      return await this.service.updateGoalById(
+      return await this.service.updateSpaceById(
         request.user.userId,
-        goalId,
+        spaceId,
         requestBody
       )
     } catch (error) {
@@ -82,13 +91,13 @@ export class GoalController {
   }
 
   @UseGuards(AuthGuard)
-  @Delete("/:goalId")
-  async deleteGoal(
+  @Delete("/:spaceId")
+  async deleteSpace(
     @Request() request: ModRequest,
-    @Param("goalId") goalId: string
+    @Param("spaceId") spaceId: string
   ) {
     try {
-      return await this.service.deleteGoal(request.user.userId, goalId)
+      return await this.service.deleteSpace(request.user.userId, spaceId)
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError
