@@ -1,8 +1,8 @@
 import { RecurringFrequency } from "@/shared/constants/types"
 
 interface FnArgs {
-  startDate: Date
-  maturityDate: Date
+  startDate: string
+  maturityDate: string
   contributionAmount: number
   contributionFrequency: RecurringFrequency
   expectedReturnRate: number
@@ -18,8 +18,9 @@ export default function calculateRecurringValuation(args: FnArgs): number {
   } = args
 
   const today = new Date()
-  const effectiveDate = today > maturityDate ? maturityDate : today
-  const diffInMs = effectiveDate.getTime() - startDate.getTime()
+  const effectiveDate =
+    today > new Date(maturityDate) ? new Date(maturityDate) : today
+  const diffInMs = effectiveDate.getTime() - new Date(startDate).getTime()
   if (diffInMs < 0) return 0
   const days = diffInMs / (1000 * 60 * 60 * 24)
   const years = days / 365

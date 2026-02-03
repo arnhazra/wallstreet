@@ -1,8 +1,8 @@
-import { IsDateString, IsNotEmpty } from "class-validator"
+import { IsNotEmpty, Matches } from "class-validator"
 
 export class CreateEventRequestDto {
-  @IsDateString()
-  eventDate: Date
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  eventDate: string
 
   @IsNotEmpty()
   eventName: string

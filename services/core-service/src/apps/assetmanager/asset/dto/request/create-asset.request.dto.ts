@@ -4,7 +4,7 @@ import {
   IsNumber,
   IsString,
   ValidateIf,
-  IsDateString,
+  Matches,
 } from "class-validator"
 import { AssetType, RecurringFrequency } from "@/shared/constants/types"
 
@@ -31,8 +31,8 @@ export class CreateAssetRequestDto {
       AssetType.BOND,
     ].includes(o.assetType)
   )
-  @IsDateString()
-  startDate?: Date
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  startDate?: string
 
   @ValidateIf((o) =>
     [
@@ -41,8 +41,8 @@ export class CreateAssetRequestDto {
       AssetType.BOND,
     ].includes(o.assetType)
   )
-  @IsDateString()
-  maturityDate?: Date
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  maturityDate?: string
 
   @ValidateIf((o) =>
     [AssetType.LUMPSUM_DEPOSIT, AssetType.BOND].includes(o.assetType)

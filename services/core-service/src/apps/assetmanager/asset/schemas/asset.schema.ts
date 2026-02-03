@@ -32,10 +32,10 @@ export class Asset extends IdentifiableEntitySchmea {
   identifier: string // COMMON
 
   @EntityProp()
-  startDate?: Date // LUMPSUM_DEPOSIT, RECURRING_DEPOSIT, BOND
+  startDate?: string // LUMPSUM_DEPOSIT, RECURRING_DEPOSIT, BOND
 
   @EntityProp()
-  maturityDate?: Date // LUMPSUM_DEPOSIT, RECURRING_DEPOSIT, BOND
+  maturityDate?: string // LUMPSUM_DEPOSIT, RECURRING_DEPOSIT, BOND
 
   @EntityProp()
   amountInvested?: number // LUMPSUM_DEPOSIT, BOND

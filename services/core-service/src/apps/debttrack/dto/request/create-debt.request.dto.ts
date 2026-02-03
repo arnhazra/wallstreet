@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, IsDateString } from "class-validator"
+import { IsNotEmpty, IsNumber, IsString, Matches } from "class-validator"
 
 export class CreateDebtRequestDto {
   @IsNotEmpty()
@@ -9,11 +9,11 @@ export class CreateDebtRequestDto {
   @IsString()
   identifier: string
 
-  @IsDateString()
-  startDate: Date
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  startDate: string
 
-  @IsDateString()
-  endDate: Date
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  endDate: string
 
   @IsNumber()
   principalAmount: number

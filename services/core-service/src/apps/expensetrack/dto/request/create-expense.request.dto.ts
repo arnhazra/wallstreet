@@ -1,5 +1,5 @@
 import { ExpenseCategory } from "@/shared/constants/types"
-import { IsNumber, IsDateString, IsEnum, IsNotEmpty } from "class-validator"
+import { IsNumber, IsEnum, IsNotEmpty, Matches } from "class-validator"
 
 export class CreateExpenseRequestDto {
   title?: string
@@ -11,6 +11,6 @@ export class CreateExpenseRequestDto {
   @IsEnum(ExpenseCategory)
   expenseCategory: ExpenseCategory
 
-  @IsDateString()
-  expenseDate: Date
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  expenseDate: string
 }

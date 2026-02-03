@@ -24,7 +24,7 @@ export class Expense extends IdentifiableEntitySchmea {
   expenseCategory: ExpenseCategory
 
   @EntityProp({ required: true })
-  expenseDate: Date
+  expenseDate: string
 }
 
 export const ExpenseSchema = createSchemaFromClass(Expense)

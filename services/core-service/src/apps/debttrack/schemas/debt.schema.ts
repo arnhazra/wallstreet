@@ -20,10 +20,10 @@ export class Debt extends IdentifiableEntitySchmea {
   identifier: string
 
   @EntityProp()
-  startDate: Date
+  startDate: string
 
   @EntityProp()
-  endDate: Date
+  endDate: string
 
   @EntityProp()
   principalAmount: number

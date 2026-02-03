@@ -14,7 +14,7 @@ export class Goal extends IdentifiableEntitySchmea {
   userId: ObjectId
 
   @EntityProp({ required: true })
-  goalDate: Date
+  goalDate: string
 
   @EntityProp({ required: true })
   goalAmount: number

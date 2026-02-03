@@ -17,7 +17,7 @@ export class Event extends IdentifiableEntitySchmea {
   eventName: string
 
   @EntityProp({ required: true })
-  eventDate: Date
+  eventDate: string
 }
 
 export const EventSchema = createSchemaFromClass(Event)

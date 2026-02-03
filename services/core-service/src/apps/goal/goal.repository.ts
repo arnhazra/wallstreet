@@ -23,7 +23,7 @@ export class GoalRepository extends EntityRepository<Goal> {
     return await this.goalModel
       .findOne({
         userId: createOrConvertObjectId(userId),
-        goalDate: { $gte: today },
+        goalDate: today, // change
       })
       .sort({ goalDate: 1 })
       .exec()

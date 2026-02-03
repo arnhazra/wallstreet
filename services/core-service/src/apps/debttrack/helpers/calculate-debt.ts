@@ -12,11 +12,10 @@ export function calculateDebtDetails(debt: Debt) {
     interestRate,
   } = debt
 
-  if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
-    throw new Error("Invalid dates on debt")
-  }
+  const startDateDF = new Date(startDate)
+  const endDateDF = new Date(endDate)
 
-  if (endDate < startDate) {
+  if (endDateDF < startDateDF) {
     throw new Error("End date must be after start date")
   }
 
@@ -37,8 +36,8 @@ export function calculateDebtDetails(debt: Debt) {
     return new Date(Date.UTC(ty, tm, Math.min(day, lastDay)))
   }
 
-  const s = asUTC(startDate)
-  const e = asUTC(endDate)
+  const s = asUTC(startDateDF)
+  const e = asUTC(endDateDF)
   const today = asUTC(new Date())
   const dueDay = s.getUTCDate()
 

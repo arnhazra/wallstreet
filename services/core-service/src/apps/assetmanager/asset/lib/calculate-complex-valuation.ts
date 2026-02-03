@@ -1,15 +1,16 @@
 interface FnArgs {
   amountInvested: number
-  startDate: Date
-  maturityDate: Date
+  startDate: string
+  maturityDate: string
   expectedReturnRate: number
 }
 
 export default function calculateComplexValuation(args: FnArgs): number {
   const { amountInvested, startDate, maturityDate, expectedReturnRate } = args
   const today = new Date()
-  const effectiveDate = today > maturityDate ? maturityDate : today
-  const diffInMs = effectiveDate.getTime() - startDate.getTime()
+  const effectiveDate =
+    today > new Date(maturityDate) ? new Date(maturityDate) : today
+  const diffInMs = effectiveDate.getTime() - new Date(startDate).getTime()
   if (diffInMs <= 0) return amountInvested
   const diffInDays = diffInMs / (1000 * 60 * 60 * 24)
   const quarters = diffInDays / (365.25 / 4)
