@@ -33,19 +33,19 @@ export class WidgetService {
 
       const widgets = [
         {
-          icon: "Banknote",
+          icon: "Wallet",
           title: "Total Assets",
           value: formatCurrency(Number(assetData), user.baseCurrency),
           additionalInfo: "Sum of all assets",
         },
         {
-          icon: "HandCoins",
+          icon: "BarChart3",
           title: "Current Month Expense",
           value: formatCurrency(Number(expenseData.total), user.baseCurrency),
           additionalInfo: `Expense for ${format(new Date(), "MMM, yyyy")}`,
         },
         {
-          icon: "GoalIcon",
+          icon: "Flag",
           title: "Goal Progress",
           value: formatCurrency(
             Number(goalData ? goalData?.goalAmount : 0),
