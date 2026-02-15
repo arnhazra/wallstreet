@@ -74,8 +74,8 @@ export interface Asset {
   createdAt: Date // COMMON
   isMaturityApproaching: boolean // COMMON
   isMatured: boolean // COMMON
-  startDate?: Date // LUMPSUM_DEPOSIT, RECURRING_DEPOSIT, BOND
-  maturityDate?: Date // LUMPSUM_DEPOSIT, RECURRING_DEPOSIT, BOND
+  startDate?: string // LUMPSUM_DEPOSIT, RECURRING_DEPOSIT, BOND
+  maturityDate?: string // LUMPSUM_DEPOSIT, RECURRING_DEPOSIT, BOND
   amountInvested?: number // LUMPSUM_DEPOSIT, BOND
   expectedReturnRate?: number // LUMPSUM_DEPOSIT, RECURRING_DEPOSIT, BOND
   contributionAmount?: number // RECURRING_DEPOSIT
@@ -91,8 +91,8 @@ export interface Debt {
   userId: string
   debtPurpose: string
   identifier: string
-  startDate: Date
-  endDate: Date
+  startDate: string
+  endDate: string
   principalAmount: number
   interestRate: number
   createdAt: string
@@ -112,7 +112,7 @@ export interface Debt {
 export interface Goal {
   _id: string
   userId: string
-  goalDate: Date
+  goalDate: string
   goalAmount: number
   createdAt: string
 }
@@ -195,7 +195,7 @@ export interface Expense {
   title?: string
   expenseAmount: number
   expenseCategory: string
-  expenseDate: Date
+  expenseDate: string
 }
 
 export interface ExpenseResponse {

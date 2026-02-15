@@ -3,7 +3,7 @@ import { tool } from "langchain"
 import { Injectable } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
 import { z } from "zod"
-import { Space } from "@/apps/wealthanalyzer/space/schemas/space.schema"
+import { Space } from "@/apps/assetmanager/space/schemas/space.schema"
 
 @Injectable()
 export class SpaceAgent {

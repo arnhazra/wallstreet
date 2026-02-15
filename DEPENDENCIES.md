@@ -10,7 +10,6 @@
 - jsonwebtoken: Generates and validates JSON Web Tokens (JWTs) for user authentication and authorization in web applications.
 - langchain: A data framework for connecting AI models with structured and unstructured data sources.
 - mongoose: Elegant MongoDB object modeling for nodejs, facilitating interaction with MongoDB databases.
-- nodemailer: Sends email from nodejs, allowing applications to send transactional emails.
 - pathe: Utility for working with file paths in nodejs, providing a simple API for path manipulation.
 - reflect-metadata: Provides metadata reflection capabilities for JavaScript.
 - rxjs: Library for reactive programming, enabling asynchronous programming with observable sequences.

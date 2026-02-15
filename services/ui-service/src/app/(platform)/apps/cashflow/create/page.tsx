@@ -23,7 +23,7 @@ import {
 import { Calendar } from "@/shared/components/ui/calendar"
 import { cn } from "@/shared/lib/utils"
 import { endPoints } from "@/shared/constants/api-endpoints"
-import { formatDate } from "@/shared/lib/format-date"
+import { formatDate, formatDateString } from "@/shared/lib/date-formatter"
 import api from "@/shared/lib/ky-api"
 import {
   Select,
@@ -32,7 +32,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select"
-import { normalizeToUTCNoon } from "@/shared/lib/utc-normalize"
 import IconContainer from "@/shared/components/icon-container"
 
 interface CashflowFormData {
@@ -41,7 +40,7 @@ interface CashflowFormData {
   flowDirection?: FlowDirection
   amount?: number
   frequency?: FlowFrequency
-  nextExecutionAt?: Date
+  nextExecutionAt?: string
 }
 
 type MessageType = "success" | "error"
@@ -61,7 +60,10 @@ export default function Page() {
     suspense: false,
   })
 
-  const handleInputChange = (field: keyof CashflowFormData, value: any) => {
+  const handleInputChange = <K extends keyof CashflowFormData>(
+    field: K,
+    value: CashflowFormData[K]
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -236,12 +238,12 @@ export default function Page() {
                       captionLayout="dropdown"
                       startMonth={new Date()}
                       endMonth={new Date(2100, 0)}
-                      selected={formData.nextExecutionAt}
+                      selected={new Date(formData.nextExecutionAt ?? "")}
                       disabled={(date) => date < new Date()}
                       onSelect={(date) =>
                         handleInputChange(
                           "nextExecutionAt",
-                          normalizeToUTCNoon(date)
+                          formatDateString(date)
                         )
                       }
                       showOutsideDays={false}

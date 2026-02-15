@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common"
-import { WealthAnalyzerModule } from "./wealthanalyzer/wealthanalyzer.module"
+import { AssetManagerModule } from "./assetmanager/assetmanager.module"
 import { DebtTrackModule } from "./debttrack/debttrack.module"
-import { WealthGoalModule } from "./wealthgoal/wealthgoal.module"
+import { GoalModule } from "./goal/goal.module"
 import { DiscoverModule } from "./discover/discover.module"
 import { ExpenseTrackModule } from "./expensetrack/expensetrack.module"
 import { TaxAdvisorModule } from "./taxadvisor/taxadvisor.module"
@@ -10,10 +10,10 @@ import { PlannerModule } from "./planner/planner.module"
 
 @Module({
   imports: [
-    WealthAnalyzerModule,
+    AssetManagerModule,
     DebtTrackModule,
     ExpenseTrackModule,
-    WealthGoalModule,
+    GoalModule,
     DiscoverModule,
     TaxAdvisorModule,
     CashFlowModule,

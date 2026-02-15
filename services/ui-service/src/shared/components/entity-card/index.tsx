@@ -35,7 +35,7 @@ import IconContainer from "../icon-container"
 import { formatDistanceToNow } from "date-fns"
 import { Button } from "@/shared/components/ui/button"
 import { useEffect, useState } from "react"
-import { formatDate } from "@/shared/lib/format-date"
+import { formatDate } from "@/shared/lib/date-formatter"
 import { EntityDetails } from "../entity-details"
 import { EntityTypeForDetailModal } from "../entity-details/data"
 import { createEntityUrlMap, EntityMap, EntityType } from "./data"
@@ -288,7 +288,7 @@ export function EntityCard<T extends keyof EntityMap>({
       <Card
         onClick={(): void =>
           entityType === EntityType.SPACE
-            ? router.push(`/apps/wealthanalyzer/space/${(entity as Space)._id}`)
+            ? router.push(`/apps/assetmanager/space/${(entity as Space)._id}`)
             : undefined
         }
         className="bg-background/2 border h-[15rem] backdrop-blur-sm border-border p-2 rounded-3xl hover:shadow-lg hover:shadow-primary/20 cursor-pointer"

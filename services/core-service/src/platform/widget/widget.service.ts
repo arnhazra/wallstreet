@@ -2,8 +2,8 @@ import { User } from "@/auth/schemas/user.schema"
 import { AppEventMap } from "@/shared/constants/app-events.map"
 import { Injectable } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
-import { format } from "date-fns"
 import { formatCurrency } from "./lib/format-currency"
+import { format } from "date-fns"
 
 @Injectable()
 export class WidgetService {
@@ -11,8 +11,8 @@ export class WidgetService {
 
   async getWidgets(userId: string) {
     try {
-      const wealthData = (
-        await this.eventEmitter.emitAsync(AppEventMap.GetTotalWealth, userId)
+      const assetData = (
+        await this.eventEmitter.emitAsync(AppEventMap.GetTotalAsset, userId)
       ).shift()
       const debtData = (
         await this.eventEmitter.emitAsync(AppEventMap.GetTotalDebt, userId)
@@ -29,24 +29,28 @@ export class WidgetService {
       ).shift()
 
       const goalPercentage =
-        ((wealthData ?? 0) * 100) / (goalData?.goalAmount ?? 0) || 0
+        ((assetData ?? 0) * 100) / (goalData ? goalData?.goalAmount : 0) || 0
+
       const widgets = [
         {
-          icon: "Banknote",
+          icon: "Wallet",
           title: "Total Assets",
-          value: formatCurrency(Number(wealthData), user.baseCurrency),
+          value: formatCurrency(Number(assetData), user.baseCurrency),
           additionalInfo: "Sum of all assets",
         },
         {
-          icon: "HandCoins",
+          icon: "BarChart3",
           title: "Current Month Expense",
           value: formatCurrency(Number(expenseData.total), user.baseCurrency),
           additionalInfo: `Expense for ${format(new Date(), "MMM, yyyy")}`,
         },
         {
-          icon: "GoalIcon",
+          icon: "Flag",
           title: "Goal Progress",
-          value: formatCurrency(Number(goalData.goalAmount), user.baseCurrency),
+          value: formatCurrency(
+            Number(goalData ? goalData?.goalAmount : 0),
+            user.baseCurrency
+          ),
           additionalInfo: `${goalPercentage >= 100 ? 100 : goalPercentage.toFixed(0)}% Complete`,
         },
         {

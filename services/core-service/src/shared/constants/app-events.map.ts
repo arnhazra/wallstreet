@@ -1,12 +1,11 @@
 export enum AppEventMap {
   // General Events
-  SendEmail = "sendEmail",
   CreateAnalytics = "createAnalytics",
   GetUserDetails = "getUserDetails",
-  // WealthAnalyzer Events
+  // AssetManager Events
   CreateSpace = "createSpace",
   GetSpaceList = "getSpaceList",
-  GetTotalWealth = "getTotalWealth",
+  GetTotalAsset = "getTotalAsset",
   FindAssetById = "findAssetbyId",
   UpdateAssetById = "updateAssetById",
   GetAssetList = "getAssetList",
@@ -14,7 +13,7 @@ export enum AppEventMap {
   CreateDebt = "createDebt",
   GetTotalDebt = "getTotalDebt",
   GetDebtList = "getDebtList",
-  // WealthGoal Events
+  // Goal Events
   CreateGoal = "createGoal",
   GetGoalList = "getGoalList",
   GetNearestGoal = "getNearestGoal",

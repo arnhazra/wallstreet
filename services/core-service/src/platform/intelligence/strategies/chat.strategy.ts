@@ -10,7 +10,6 @@ import { SpaceAgent } from "../agents/space.agent"
 import { AssetAgent } from "../agents/asset.agent"
 import { DebtAgent } from "../agents/debt.agent"
 import { ExpenseAgent } from "../agents/expense.agent"
-import { EmailAgent } from "../agents/email.agent"
 import { LLMService } from "@/shared/llm/llm.service"
 import { CashflowAgent } from "../agents/cashflow.agent"
 
@@ -28,7 +27,6 @@ export class ChatStrategy {
     private readonly goalAgent: GoalAgent,
     private readonly debtAgent: DebtAgent,
     private readonly expenseAgent: ExpenseAgent,
-    private readonly emailAgent: EmailAgent,
     private readonly cashflowAgent: CashflowAgent,
     private readonly redisService: RedisService,
     private readonly llmService: LLMService
@@ -61,7 +59,7 @@ export class ChatStrategy {
         this.spaceAgent.getSpaceValuationTool,
         this.spaceAgent.getSpaceListTool,
         this.assetAgent.getAssetTypesTool,
-        this.assetAgent.getTotalWealthTool,
+        this.assetAgent.getTotalAssetTool,
         this.assetAgent.getAssetListTool,
         this.goalAgent.createGoalTool,
         this.goalAgent.getGoalListTool,
@@ -72,7 +70,6 @@ export class ChatStrategy {
         this.expenseAgent.getExpenseByMonthTool,
         this.expenseAgent.createExpenseTool,
         this.cashflowAgent.getCashflowsByUserIdTool,
-        this.emailAgent.sendEmailTool,
       ],
       stateSchema: undefined,
     })

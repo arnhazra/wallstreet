@@ -23,7 +23,7 @@ import { endPoints } from "@/shared/constants/api-endpoints"
 import useQuery from "@/shared/hooks/use-query"
 import { Debt } from "@/shared/constants/types"
 import HTTPMethods from "@/shared/constants/http-methods"
-import { formatDate } from "@/shared/lib/format-date"
+import { formatDate, formatDateString } from "@/shared/lib/date-formatter"
 import api from "@/shared/lib/ky-api"
 import { useSearchParams } from "next/navigation"
 import { useRouter } from "nextjs-toploader/app"
@@ -33,8 +33,8 @@ import Show from "@/shared/components/show"
 interface DebtFormData {
   debtPurpose: string
   identifier: string
-  startDate?: Date
-  endDate?: Date
+  startDate?: string
+  endDate?: string
   principalAmount?: number
   interestRate?: number
 }
@@ -89,7 +89,10 @@ export default function Page() {
     type: "success",
   })
 
-  const handleInputChange = (field: keyof DebtFormData, value: any) => {
+  const handleInputChange = <K extends keyof DebtFormData>(
+    field: K,
+    value: DebtFormData[K]
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -209,10 +212,10 @@ export default function Page() {
                         captionLayout="dropdown"
                         startMonth={new Date(2000, 0)}
                         endMonth={new Date()}
-                        selected={formData.startDate}
+                        selected={new Date(formData.startDate ?? "")}
                         disabled={(date) => date > new Date()}
                         onSelect={(date) =>
-                          handleInputChange("startDate", date)
+                          handleInputChange("startDate", formatDateString(date))
                         }
                         showOutsideDays={false}
                         className="bg-background text-neutral-100"
@@ -240,14 +243,18 @@ export default function Page() {
                     <PopoverContent className="w-auto p-0 bg-background border-border">
                       <Calendar
                         mode="single"
-                        selected={formData.endDate}
+                        selected={new Date(formData.endDate ?? "")}
                         captionLayout="dropdown"
                         startMonth={new Date(formData.startDate ?? 2000)}
                         endMonth={new Date(2100, 0)}
                         disabled={(date) =>
-                          formData.startDate ? date < formData.startDate : false
+                          formData.startDate
+                            ? date < new Date(formData.startDate)
+                            : false
                         }
-                        onSelect={(date) => handleInputChange("endDate", date)}
+                        onSelect={(date) =>
+                          handleInputChange("endDate", formatDateString(date))
+                        }
                         showOutsideDays={false}
                         className="bg-background text-neutral-100"
                       />

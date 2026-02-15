@@ -1,4 +1,4 @@
-import { Asset } from "@/apps/wealthanalyzer/asset/schemas/asset.schema"
+import { Asset } from "@/apps/assetmanager/asset/schemas/asset.schema"
 import { User } from "@/auth/schemas/user.schema"
 import {
   createSchemaFromClass,

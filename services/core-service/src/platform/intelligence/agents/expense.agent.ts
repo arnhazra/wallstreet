@@ -4,7 +4,7 @@ import { tool } from "langchain"
 import { Injectable } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
 import { z } from "zod"
-import { Expense } from "@/apps/expensetrack/expense/schemas/expense.schema"
+import { Expense } from "@/apps/expensetrack/schemas/expense.schema"
 
 @Injectable()
 export class ExpenseAgent {
@@ -56,7 +56,7 @@ export class ExpenseAgent {
       title: string
       expenseAmount: number
       expenseCategory: ExpenseCategory
-      expenseDate: Date
+      expenseDate: string
     }) => {
       try {
         await this.eventEmitter.emitAsync(AppEventMap.CreateExpense, userId, {
@@ -90,7 +90,7 @@ export class ExpenseAgent {
         expenseDate: z
           .string()
           .describe(
-            `expense date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to date object`
+            `expense date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to YYYY-MM-DD format string`
           ),
       }),
     }

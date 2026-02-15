@@ -4,7 +4,6 @@ import { config } from "@/config"
 import { AIMessage, createAgent, HumanMessage, SystemMessage } from "langchain"
 import { User } from "@/auth/schemas/user.schema"
 import { RedisService } from "@/shared/redis/redis.service"
-import { TaxAdvisorAgent } from "./agents/taxadvisor.agent"
 import { LLMService } from "@/shared/llm/llm.service"
 import { ChatOpenAI, ChatOpenAICallOptions } from "@langchain/openai"
 
@@ -21,7 +20,6 @@ export interface TaxAdvisorStrategyType {
 export class TaxAdvisorStrategy {
   constructor(
     private readonly redisService: RedisService,
-    private readonly taxAdvisorAgent: TaxAdvisorAgent,
     private readonly llmService: LLMService
   ) {}
 
@@ -43,7 +41,6 @@ export class TaxAdvisorStrategy {
 
     const agent = createAgent({
       model: llm,
-      tools: [this.taxAdvisorAgent.sendEmailTool],
       stateSchema: undefined,
     })
 

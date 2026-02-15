@@ -20,7 +20,7 @@ import {
 import { Calendar } from "@/shared/components/ui/calendar"
 import { cn } from "@/shared/lib/utils"
 import { endPoints } from "@/shared/constants/api-endpoints"
-import { formatDate } from "@/shared/lib/format-date"
+import { formatDate, formatDateString } from "@/shared/lib/date-formatter"
 import {
   Select,
   SelectContent,
@@ -36,13 +36,12 @@ import { useRouter } from "nextjs-toploader/app"
 import Show from "@/shared/components/show"
 import IconContainer from "@/shared/components/icon-container"
 import api from "@/shared/lib/ky-api"
-import { normalizeToUTCNoon } from "@/shared/lib/utc-normalize"
 
 interface ExpenseFormData {
   title?: string
   expenseAmount?: number
   expenseCategory?: string
-  expenseDate?: Date
+  expenseDate?: string
 }
 
 type MessageType = "success" | "error"
@@ -89,7 +88,10 @@ export default function Page() {
     type: "success",
   })
 
-  const handleInputChange = (field: keyof ExpenseFormData, value: any) => {
+  const handleInputChange = <K extends keyof ExpenseFormData>(
+    field: K,
+    value: ExpenseFormData[K]
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -221,13 +223,10 @@ export default function Page() {
                       captionLayout="dropdown"
                       startMonth={new Date(2000, 0)}
                       endMonth={new Date(2100, 0)}
-                      selected={formData.expenseDate}
+                      selected={new Date(formData.expenseDate ?? "")}
                       disabled={(date) => date > new Date()}
                       onSelect={(date) =>
-                        handleInputChange(
-                          "expenseDate",
-                          normalizeToUTCNoon(date)
-                        )
+                        handleInputChange("expenseDate", formatDateString(date))
                       }
                       showOutsideDays={false}
                       className="bg-background text-neutral-100"

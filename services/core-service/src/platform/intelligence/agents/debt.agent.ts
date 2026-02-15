@@ -3,7 +3,7 @@ import { tool } from "langchain"
 import { Injectable } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
 import { z } from "zod"
-import { Debt } from "@/apps/debttrack/debt/schemas/debt.schema"
+import { Debt } from "@/apps/debttrack/schemas/debt.schema"
 
 @Injectable()
 export class DebtAgent {
@@ -22,8 +22,8 @@ export class DebtAgent {
       userId: string
       debtPurpose: string
       identifier: string
-      startDate: Date
-      endDate: Date
+      startDate: string
+      endDate: string
       principalAmount: number
       interestRate: number
     }) => {
@@ -51,12 +51,12 @@ export class DebtAgent {
         startDate: z
           .string()
           .describe(
-            `start date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to date object`
+            `start date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to YYYY-MM-DD format string`
           ),
         endDate: z
           .string()
           .describe(
-            `end date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to date object`
+            `end date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to YYYY-MM-DD format string`
           ),
         principalAmount: z.coerce
           .number()

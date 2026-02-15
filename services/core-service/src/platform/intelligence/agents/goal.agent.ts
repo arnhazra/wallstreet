@@ -3,7 +3,7 @@ import { tool } from "langchain"
 import { Injectable } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
 import { z } from "zod"
-import { Goal } from "@/apps/wealthgoal/goal/schemas/goal.schema"
+import { Goal } from "@/apps/goal/schemas/goal.schema"
 
 @Injectable()
 export class GoalAgent {
@@ -16,7 +16,7 @@ export class GoalAgent {
       goalAmount,
     }: {
       userId: string
-      goalDate: Date
+      goalDate: string
       goalAmount: number
     }) => {
       try {
@@ -37,7 +37,7 @@ export class GoalAgent {
         goalDate: z
           .string()
           .describe(
-            `goal date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to date object`
+            `goal date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to YYYY-MM-DD format string`
           ),
         goalAmount: z.coerce.number().describe("goal amount given by the user"),
       }),

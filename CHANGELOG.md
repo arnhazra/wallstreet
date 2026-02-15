@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 3.6.0
+
+- Code refactoring & optimization
+- Major changes in UI & core service
+
 ## Version 3.5.0
 
 - UI Changes, Performance improvements

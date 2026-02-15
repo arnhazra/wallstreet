@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common"
-import { NewsModule } from "./news/news.module"
+import { NewsModule } from "./news.module"
 
 @Module({
   imports: [NewsModule],

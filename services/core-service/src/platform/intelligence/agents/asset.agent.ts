@@ -4,7 +4,7 @@ import { tool } from "langchain"
 import { Injectable } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
 import { z } from "zod"
-import { Asset } from "@/apps/wealthanalyzer/asset/schemas/asset.schema"
+import { Asset } from "@/apps/assetmanager/asset/schemas/asset.schema"
 
 @Injectable()
 export class AssetAgent {
@@ -21,20 +21,20 @@ export class AssetAgent {
     }
   )
 
-  public getTotalWealthTool = tool(
+  public getTotalAssetTool = tool(
     async ({ userId }: { userId: string }) => {
       try {
         const valuation: number = (
-          await this.eventEmitter.emitAsync(AppEventMap.GetTotalWealth, userId)
+          await this.eventEmitter.emitAsync(AppEventMap.GetTotalAsset, userId)
         ).shift()
-        return `Total wealth is ${valuation}`
+        return `Total asset is ${valuation}`
       } catch (error) {
-        return "Unable to get total wealth"
+        return "Unable to get total assets"
       }
     },
     {
-      name: "get_total_wealth_by_userid",
-      description: "Get total wealth for a user",
+      name: "get_total_asset_by_userid",
+      description: "Get total asset for a user",
       schema: z.object({
         userId: z.string().describe("user id of the user"),
       }),

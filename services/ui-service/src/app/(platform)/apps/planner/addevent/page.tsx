@@ -20,15 +20,14 @@ import {
 import { Calendar } from "@/shared/components/ui/calendar"
 import { cn } from "@/shared/lib/utils"
 import { endPoints } from "@/shared/constants/api-endpoints"
-import { formatDate } from "@/shared/lib/format-date"
+import { formatDate, formatDateString } from "@/shared/lib/date-formatter"
 import api from "@/shared/lib/ky-api"
-import { normalizeToUTCNoon } from "@/shared/lib/utc-normalize"
 import IconContainer from "@/shared/components/icon-container"
 import { useRouter } from "nextjs-toploader/app"
 import { useSearchParams } from "next/navigation"
 
 interface EventFormData {
-  eventDate?: Date
+  eventDate?: string
   eventName?: string
 }
 
@@ -38,7 +37,9 @@ export default function Page() {
   const searchParams = useSearchParams()
   const selectedDateParam = searchParams.get("selectedDate")
   const [formData, setFormData] = useState<EventFormData>({
-    eventDate: selectedDateParam ? new Date(selectedDateParam) : undefined,
+    eventDate: selectedDateParam
+      ? formatDateString(selectedDateParam)
+      : undefined,
     eventName: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -49,7 +50,10 @@ export default function Page() {
     type: "success",
   })
 
-  const handleInputChange = (field: keyof EventFormData, value: any) => {
+  const handleInputChange = <K extends keyof EventFormData>(
+    field: K,
+    value: EventFormData[K]
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -117,10 +121,10 @@ export default function Page() {
                       captionLayout="dropdown"
                       startMonth={new Date()}
                       endMonth={new Date(2100, 0)}
-                      selected={formData.eventDate}
+                      selected={new Date(formData.eventDate ?? "")}
                       disabled={(date) => date < new Date()}
                       onSelect={(date) =>
-                        handleInputChange("eventDate", normalizeToUTCNoon(date))
+                        handleInputChange("eventDate", formatDateString(date))
                       }
                       showOutsideDays={false}
                       className="bg-background text-neutral-100"
