@@ -6,6 +6,7 @@
 - Changes in date handling in schemas across services
 - UI change for Month navigation in Planner & ExpenseTrack
 - Rebranding of 2 applications
+- Removed legacy OTP based authentication
 
 ## Version 3.5.0
 
