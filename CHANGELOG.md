@@ -4,6 +4,7 @@
 
 - Implemented Google OAuth with PKCE flow and deprecated legacy flow
 - Migrated from GPT OSS to GPT 4o for better reasoning
+- Added intelligence layer to all new apps
 
 ## Version 3.6.0
 
