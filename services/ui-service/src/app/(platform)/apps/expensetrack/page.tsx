@@ -1,7 +1,7 @@
 "use client"
 import { useUserContext } from "@/context/user.provider"
 import { EntityType } from "@/shared/components/entity-card/data"
-import EntitySummarizer from "@/shared/components/intelligence/entity-summarizer"
+import IntelligenceSummarizer from "@/shared/components/intelligence/summarizer"
 import IconContainer from "@/shared/components/icon-container"
 import SectionPanel from "@/shared/components/section-panel"
 import Show from "@/shared/components/show"
@@ -230,7 +230,7 @@ export default function Page() {
               <Icons.Plus className="h-4 w-4 text-black" />
             </Button>
           </Link>,
-          <EntitySummarizer
+          <IntelligenceSummarizer
             entityType={EntityType.EXPENSE}
             entityDetails={`${format(currentDate, "MMM, yyyy")} - ${JSON.stringify(expenses.data)}`}
             entityName={`expenses for ${format(currentDate, "MMM, yyyy")}`}

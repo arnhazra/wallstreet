@@ -12,7 +12,7 @@ interface SummarizerProps {
   entityName: string
 }
 
-export default function EntitySummarizer({
+export default function IntelligenceSummarizer({
   entityType,
   entityDetails,
   entityName,
