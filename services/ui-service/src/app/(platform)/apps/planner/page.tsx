@@ -22,7 +22,7 @@ import HTTPMethods from "@/shared/constants/http-methods"
 import { EventModal } from "@/shared/components/event-modal"
 import Link from "next/link"
 import { buildQueryUrl } from "@/shared/lib/build-url"
-import EntitySummarizer from "@/shared/components/entity-summarizer"
+import EntitySummarizer from "@/shared/components/intelligence/entity-summarizer"
 import { EntityType } from "@/shared/components/entity-card/data"
 
 export default function CalendarPage() {
@@ -104,6 +104,7 @@ export default function CalendarPage() {
             <EntitySummarizer
               entityType={EntityType.PLANNER_EVENT}
               entityDetails={`Summarize only for month: ${selectedMonth} - ${JSON.stringify(events.data)}`}
+              entityName={`planner events for ${format(currentDate, "MMM, yyyy")}`}
             />
             <Link href="/apps/planner/addevent">
               <Button

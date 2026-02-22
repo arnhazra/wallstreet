@@ -39,7 +39,7 @@ import { formatDate } from "@/shared/lib/date-formatter"
 import { EntityDetails } from "../entity-details"
 import { EntityTypeForDetailModal } from "../entity-details/data"
 import { createEntityUrlMap, EntityMap, EntityType } from "./data"
-import EntitySummarizer from "../entity-summarizer"
+import EntitySummarizer from "../intelligence/entity-summarizer"
 import { uiConstants } from "@/shared/constants/global-constants"
 import { useRouter } from "nextjs-toploader/app"
 import MaskText from "../mask"
@@ -255,6 +255,7 @@ export function EntityCard<T extends keyof EntityMap>({
             <EntitySummarizer
               entityDetails={JSON.stringify(entity)}
               entityType={entityType}
+              entityName={enityTitle}
             />
           </div>
         </CardContent>
@@ -373,6 +374,7 @@ export function EntityCard<T extends keyof EntityMap>({
             <EntitySummarizer
               entityDetails={JSON.stringify(entity)}
               entityType={entityType}
+              entityName={enityTitle}
             />
           </div>
         </CardFooter>

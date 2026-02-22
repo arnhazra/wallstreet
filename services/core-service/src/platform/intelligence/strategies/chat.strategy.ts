@@ -12,10 +12,19 @@ import { DebtAgent } from "../agents/debt.agent"
 import { ExpenseAgent } from "../agents/expense.agent"
 import { LLMService } from "@/shared/llm/llm.service"
 import { CashflowAgent } from "../agents/cashflow.agent"
+import { EntityType } from "../dto/chat.dto"
 
 export interface ChatArgs {
   thread: Thread[]
   prompt: string
+  user: User
+  entityDetails?: string
+  entityType?: EntityType
+}
+
+export interface SummarizeArgs {
+  entityType: EntityType
+  entityDetails: string
   user: User
 }
 
@@ -31,6 +40,16 @@ export class ChatStrategy {
     private readonly redisService: RedisService,
     private readonly llmService: LLMService
   ) {}
+
+  private async getSummarizerSystemInstruction(args: SummarizeArgs) {
+    const data = await this.redisService.get("summarizer-system-instruction")
+    return data
+      .replaceAll("{platformName}", config.PLATFORM_NAME)
+      .replaceAll("{userId}", String(args.user._id))
+      .replaceAll("{baseCurrency}", args.user.baseCurrency)
+      .replaceAll("{entityType}", args.entityType)
+      .replaceAll("{entityDetails}", args.entityDetails)
+  }
 
   private async getChatSystemInstruction(user: User) {
     const data = await this.redisService.get("chat-system-instruction")
@@ -49,8 +68,18 @@ export class ChatStrategy {
     llm: ChatOpenAI<ChatOpenAICallOptions>,
     args: ChatArgs
   ) {
-    const { thread, prompt, user } = args
-    const systemInstruction = await this.getChatSystemInstruction(user)
+    const { thread, prompt, user, entityDetails, entityType } = args
+    let systemInstruction: string = ""
+
+    if (!entityDetails || !entityType) {
+      systemInstruction = await this.getChatSystemInstruction(user)
+    } else {
+      systemInstruction = await this.getSummarizerSystemInstruction({
+        user,
+        entityDetails,
+        entityType,
+      })
+    }
 
     const chatAgent = createAgent({
       model: llm,

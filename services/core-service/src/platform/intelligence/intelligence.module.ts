@@ -11,7 +11,6 @@ import { FetchThreadByIdQueryHandler } from "./queries/handler/fetch-thread-by-i
 import { HttpModule } from "@nestjs/axios"
 import { GoalAgent } from "./agents/goal.agent"
 import { config } from "@/config"
-import { SummarizerStrategy } from "./strategies/summarizer.strategy"
 import { ChatStrategy } from "./strategies/chat.strategy"
 import { SpaceAgent } from "./agents/space.agent"
 import { AssetAgent } from "./agents/asset.agent"
@@ -36,7 +35,6 @@ import { CashflowAgent } from "./agents/cashflow.agent"
   providers: [
     IntelligenceService,
     IntelligenceRepository,
-    SummarizerStrategy,
     ChatStrategy,
     SpaceAgent,
     AssetAgent,

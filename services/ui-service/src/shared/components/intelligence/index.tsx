@@ -24,6 +24,9 @@ import { useRouter } from "nextjs-toploader/app"
 import { useUserContext } from "@/context/user.provider"
 import { usePathname } from "next/navigation"
 import api from "@/shared/lib/ky-api"
+import { eventEmitter } from "@/shared/event-emitter/event-emitter"
+import { EventMap } from "@/shared/event-emitter/events-map"
+import { EntityType } from "../entity-card/data"
 
 export default function Intelligence() {
   const [isOpen, setIsOpen] = useState(false)
@@ -36,6 +39,16 @@ export default function Intelligence() {
   const router = useRouter()
   const pathName = usePathname()
 
+  useEffect(() => {
+    eventEmitter.on(EventMap.Summarize, (data) => {
+      setIsOpen(true)
+      const { entityType, entityDetails, entityName } = data || {}
+      const summarizePrompt = `Summarize the ${entityName} ${entityType} and give me insights.`
+      setLoading(true)
+      hitAPIToSummarize(entityType, entityDetails, summarizePrompt)
+    })
+  }, [])
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
@@ -46,6 +59,47 @@ export default function Intelligence() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPrompt(e.target.value)
+  }
+
+  const hitAPIToSummarize = async (
+    entityType?: EntityType,
+    entityDetails?: string,
+    summarizePrompt?: string
+  ) => {
+    setMessages((prev) => [...prev, summarizePrompt ?? ""])
+    setPrompt("")
+    setLoading(true)
+
+    try {
+      const res: Thread = await api
+        .post(`${endPoints.intelligence}/chat`, {
+          json: {
+            prompt: summarizePrompt,
+            threadId: threadId ?? undefined,
+            entityType,
+            entityDetails,
+          },
+        })
+        .json()
+
+      if (!threadId) {
+        setThreadId(res.threadId)
+      }
+
+      setMessages((prevMessages) => [...prevMessages, ""])
+
+      streamResponseText(res?.response ?? "", (chunk) => {
+        setMessages((prevMessages) => {
+          const newMessages = [...prevMessages]
+          newMessages[newMessages.length - 1] = chunk
+          return newMessages
+        })
+      })
+    } catch (error: any) {
+      setMessages((prevMessages) => [...prevMessages, "Request timed out"])
+    } finally {
+      setLoading(false)
+    }
   }
 
   const hitAPI = async (e: any) => {
