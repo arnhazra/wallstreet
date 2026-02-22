@@ -115,7 +115,7 @@ export default function Intelligence() {
           json: {
             prompt,
             threadId: threadId ?? undefined,
-            summarizeReust: false,
+            summarizeRequest: false,
           },
         })
         .json()
@@ -196,6 +196,7 @@ export default function Intelligence() {
                     className="text-neutral-300 bg-neutral-800 hover:bg-neutral-700 p-1 ps-4 pe-4 ms-2 mb-2 cursor-pointer"
                     onClick={(e): void => {
                       setPrompt(item)
+                      hitAPI(e)
                     }}
                   >
                     {item}
