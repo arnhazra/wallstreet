@@ -8,9 +8,9 @@ import {
   Check,
   Coins,
   Lightbulb,
-  CircleArrowRight,
   BookOpenIcon,
   Github,
+  Play,
 } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/shared/lib/utils"
@@ -74,7 +74,7 @@ export default function Page() {
           )}
         >
           {uiConstants.getStartedButton}
-          <CircleArrowRight className="ms-2 h-4 w-4" />
+          <Play className="ms-2 h-4 w-4" />
         </Link>
       </div>
     </section>
@@ -163,11 +163,7 @@ export default function Page() {
             })}
           </p>
           <div className="mt-8 flex justify-end">
-            <Button
-              variant="default"
-              className="rounded-full bg-primary/10 hover:bg-primary/20 border-primary text-primary"
-              asChild
-            >
+            <Button variant="default" className="text-black" asChild>
               <a
                 href={`https://github.com/arnhazra/${platformName.toLowerCase()}`}
                 target="_blank"
