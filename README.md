@@ -15,7 +15,7 @@
 
 ## Architecture & Workflows
 
-![HLD](architecture.drawio)
+![HLD](architecture.svg)
 
 WealthFabric follows a modular, service-oriented design:
 
