@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 3.8.0
+
+- Enhanced structure by rebranding Spaces to AssetGroups
+- Added Configurations in repository
+
 ## Version 3.7.1
 
 - Updated cashflow app to have update & delete cashflow functionality

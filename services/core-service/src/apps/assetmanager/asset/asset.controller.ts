@@ -36,16 +36,16 @@ export class AssetController {
   }
 
   @UseGuards(AuthGuard)
-  @Get("space/:spaceId")
-  async findMyAssetsBySpaceId(
+  @Get("assetgroup/:assetgroupId")
+  async findMyAssetsByAssetGroupId(
     @Request() request: ModRequest,
-    @Param("spaceId") spaceId: string,
+    @Param("assetgroupId") assetgroupId: string,
     @Query("searchKeyword") searchKeyword?: string
   ) {
     try {
-      return await this.service.findMyAssetsBySpaceId(
+      return await this.service.findMyAssetsByAssetGroupId(
         request.user.userId,
-        spaceId,
+        assetgroupId,
         searchKeyword
       )
     } catch (error) {

@@ -12,7 +12,7 @@ export const endPoints = {
   intelligence: `${apiHost}/platform/intelligence`,
   widgets: `${apiHost}/platform/widgets`,
   // Apps Service
-  space: `${apiHost}/apps/assetmanager/space`,
+  assetgroup: `${apiHost}/apps/assetmanager/assetgroup`,
   asset: `${apiHost}/apps/assetmanager/asset`,
   debt: `${apiHost}/apps/debttrack/debt`,
   goal: `${apiHost}/apps/goal`,

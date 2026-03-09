@@ -3,7 +3,7 @@ import { endPoints } from "@/shared/constants/api-endpoints"
 export const excludedKeys = [
   "_id",
   "userId",
-  "spaceId",
+  "assetgroupId",
   "assetType",
   "assetName",
   "createdAt",

@@ -13,7 +13,7 @@ import {
   Pen,
   Leaf,
   PieChart,
-  Sparkles,
+  Sparkle,
 } from "lucide-react"
 import EditCurrency from "@/shared/components/edit-currency"
 import { usePromptContext } from "@/shared/providers/prompt.provider"
@@ -150,7 +150,7 @@ export default function Page() {
         <SectionPanel
           icon={
             <IconContainer ai>
-              <Sparkles className="h-4 w-4" />
+              <Sparkle className="h-4 w-4" />
             </IconContainer>
           }
           title={`${platformName} Intelligence`}

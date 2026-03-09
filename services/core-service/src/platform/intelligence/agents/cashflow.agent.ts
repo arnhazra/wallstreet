@@ -12,12 +12,12 @@ export class CashflowAgent {
   public getCashflowsByUserIdTool = tool(
     async ({ userId }: { userId: string }) => {
       try {
-        const spaces: Cashflow[] = await this.eventEmitter.emitAsync(
+        const cashflows: Cashflow[] = await this.eventEmitter.emitAsync(
           AppEventMap.FindCashFlowsByUserId,
           userId
         )
 
-        return JSON.stringify(spaces)
+        return JSON.stringify(cashflows)
       } catch (error) {
         return "Unable to get the cashflow list"
       }

@@ -28,7 +28,7 @@ import { Calendar } from "@/shared/components/ui/calendar"
 import {
   Asset,
   AssetType,
-  Space,
+  AssetGroup,
   RecurringFrequency,
 } from "@/shared/constants/types"
 import useQuery from "@/shared/hooks/use-query"
@@ -42,7 +42,7 @@ import { useSearchParams } from "next/navigation"
 import IconContainer from "@/shared/components/icon-container"
 
 interface AssetFormData {
-  spaceId: string
+  assetgroupId: string
   assetType: AssetType | ""
   assetName: string
   identifier: string
@@ -94,7 +94,7 @@ export default function Page() {
   })
 
   const [formData, setFormData] = useState<AssetFormData | null>({
-    spaceId: "",
+    assetgroupId: "",
     assetType: "",
     assetName: "",
     identifier: "",
@@ -115,9 +115,9 @@ export default function Page() {
     }
   }, [asset.data, asset.error, asset.isLoading])
 
-  const spaces = useQuery<Space[]>({
-    queryKey: ["get-spaces"],
-    queryUrl: endPoints.space,
+  const assetgroups = useQuery<AssetGroup[]>({
+    queryKey: ["get-assetgroups"],
+    queryUrl: endPoints.assetgroup,
     method: HTTPMethods.GET,
   })
 
@@ -220,21 +220,21 @@ export default function Page() {
           <CardContent className="p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="spaceId" className="text-neutral-200">
-                  Select Space
+                <Label htmlFor="assetgroupId" className="text-neutral-200">
+                  Select Asset Group
                 </Label>
-                <Select value={formData?.spaceId} disabled required>
+                <Select value={formData?.assetgroupId} disabled required>
                   <SelectTrigger className="w-full bg-background text-white border-border">
-                    <SelectValue placeholder="Select  Space" />
+                    <SelectValue placeholder="Select  AssetGroup" />
                   </SelectTrigger>
                   <SelectContent className="w-full bg-background text-white border-border">
-                    {spaces.data?.map((space) => (
+                    {assetgroups.data?.map((assetgroup) => (
                       <SelectItem
-                        key={space._id}
-                        value={space._id}
+                        key={assetgroup._id}
+                        value={assetgroup._id}
                         className="text-neutral-100 focus:bg-neutral-700"
                       >
-                        {space.spaceName}
+                        {assetgroup.assetgroupName}
                       </SelectItem>
                     ))}
                   </SelectContent>

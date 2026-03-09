@@ -54,10 +54,10 @@ export interface Thread {
   createdAt: string
 }
 
-export interface Space {
+export interface AssetGroup {
   _id: string
   userId: string
-  spaceName: string
+  assetgroupName: string
   presentValuation?: number | null
   assetCount?: number | null
   createdAt: string
@@ -66,7 +66,7 @@ export interface Space {
 export interface Asset {
   _id: string // COMMON
   userId: string // COMMON
-  spaceId: string // COMMON
+  assetgroupId: string // COMMON
   assetType: AssetType // COMMON
   assetName: string // COMMON
   identifier: string // COMMON

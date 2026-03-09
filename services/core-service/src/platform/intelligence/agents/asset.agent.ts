@@ -51,7 +51,7 @@ export class AssetAgent {
 
         return JSON.stringify(assets)
       } catch (error) {
-        return "Unable to get the space list"
+        return "Unable to get the asset list"
       }
     },
     {

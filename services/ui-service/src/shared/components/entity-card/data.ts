@@ -4,12 +4,12 @@ import {
   Cashflow,
   Debt,
   Goal,
-  Space,
+  AssetGroup,
 } from "@/shared/constants/types"
 
 export enum EntityType {
   ASSET = "asset",
-  SPACE = "space",
+  ASSETGROUP = "Asset Group",
   DEBT = "debt",
   GOAL = "goal",
   NEWS = "news",
@@ -20,7 +20,7 @@ export enum EntityType {
 
 export type EntityMap = {
   [EntityType.ASSET]: Asset
-  [EntityType.SPACE]: Space
+  [EntityType.ASSETGROUP]: AssetGroup
   [EntityType.DEBT]: Debt
   [EntityType.GOAL]: Goal
   [EntityType.NEWS]: Article
@@ -30,7 +30,7 @@ export type EntityMap = {
 export const createEntityUrlMap: Partial<Record<EntityType, string>> = {
   [EntityType.ASSET]: "/apps/assetmanager/asset/create",
   [EntityType.DEBT]: "/apps/debttrack/createoreditdebt",
-  [EntityType.SPACE]: "/apps/assetmanager/createoreditspace",
+  [EntityType.ASSETGROUP]: "/apps/assetmanager/createoreditassetgroup",
   [EntityType.GOAL]: "/apps/goalmanager/createoreditgoal",
   [EntityType.NEWS]: "/apps/discover",
   [EntityType.EXPENSE]: "/apps/expensetrack/createoreditexpense",

@@ -9,9 +9,9 @@ export const uiConstants = {
   authVerificationMessage: "Checking your credentials",
   errorMessage: "Page not found",
   genericError: "Oops! Something went wrong.",
-  spaceDeleteWarning:
-    "Please delete all assets within the space before removing it.",
-  spaceDeleteFailed: "Unable to delete the space.",
+  assetgroupDeleteWarning:
+    "Please delete all assets within the asset group before removing it.",
+  assetgroupDeleteFailed: "Unable to delete the asset group.",
   notification: "Notification",
   copiedToClipBoard: "Copied to clipboard!",
   getStartedButton: "Get Started",

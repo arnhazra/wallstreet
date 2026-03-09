@@ -11,7 +11,7 @@ import { FindAssetByIdQueryHandler } from "./queries/handler/find-asset-by-id.ha
 import { EntityModule } from "@/shared/entity/entity.module"
 import { UpdateAssetCommandHandler } from "./commands/handler/update-asset.handler"
 import { FindAssetsByUserQueryHandler } from "./queries/handler/find-assets-by-user.handler"
-import { FindAssetsBySpaceQueryHandler } from "./queries/handler/find-assets-by-space.handler"
+import { FindAssetsByAssetGroupQueryHandler } from "./queries/handler/find-assets-by-assetgroup.handler"
 import { FindAssetsByTypesQueryHandler } from "./queries/handler/find-assets-by-types.handler"
 
 @Module({
@@ -29,7 +29,7 @@ import { FindAssetsByTypesQueryHandler } from "./queries/handler/find-assets-by-
     CreateAssetCommandHandler,
     UpdateAssetCommandHandler,
     DeleteAssetCommandHandler,
-    FindAssetsBySpaceQueryHandler,
+    FindAssetsByAssetGroupQueryHandler,
     FindAssetsByUserQueryHandler,
     FindAssetByIdQueryHandler,
     FindAssetsByTypesQueryHandler,

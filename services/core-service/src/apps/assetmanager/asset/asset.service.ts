@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common"
 import { statusMessages } from "@/shared/constants/status-messages"
 import { CommandBus, QueryBus } from "@nestjs/cqrs"
-import { FindAssetsBySpaceQuery } from "./queries/impl/find-assets-by-space.query"
+import { FindAssetsByAssetGroupQuery } from "./queries/impl/find-assets-by-assetgroup.query"
 import { FindAssetByIdQuery } from "./queries/impl/find-asset-by-id.query"
 import { Asset } from "./schemas/asset.schema"
 import { DeleteAssetCommand } from "./commands/impl/delete-asset.command"
@@ -34,16 +34,16 @@ export class AssetService {
     }
   }
 
-  async findMyAssetsBySpaceId(
+  async findMyAssetsByAssetGroupId(
     userId: string,
-    spaceId: string,
+    assetgroupId: string,
     searchKeyword?: string
   ) {
     try {
       const assets = await this.queryBus.execute<
-        FindAssetsBySpaceQuery,
+        FindAssetsByAssetGroupQuery,
         Asset[]
-      >(new FindAssetsBySpaceQuery(userId, spaceId, searchKeyword))
+      >(new FindAssetsByAssetGroupQuery(userId, assetgroupId, searchKeyword))
 
       return await Promise.all(
         assets.map(async (asset) => {
@@ -194,12 +194,12 @@ export class AssetService {
     }
   }
 
-  async calculateSpaceValuation(userId: string, spaceId: string) {
+  async calculateAssetGroupValuation(userId: string, assetgroupId: string) {
     try {
       const assets = await this.queryBus.execute<
-        FindAssetsBySpaceQuery,
+        FindAssetsByAssetGroupQuery,
         Asset[]
-      >(new FindAssetsBySpaceQuery(userId, spaceId))
+      >(new FindAssetsByAssetGroupQuery(userId, assetgroupId))
 
       const valuations = await Promise.all(
         assets.map((asset) => this.calculateAssetValuation(asset))

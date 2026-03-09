@@ -1,5 +1,5 @@
 import { Button } from "../../ui/button"
-import { Sparkles } from "lucide-react"
+import { Sparkle } from "lucide-react"
 import Show from "../../show"
 import { EntityType } from "../../entity-card/data"
 import { useUserContext } from "@/context/user.provider"
@@ -36,7 +36,7 @@ export default function IntelligenceSummarizer({
         title="Summarize"
         onClick={summarize}
       >
-        <Sparkles className="h-4 w-4" />
+        <Sparkle className="h-4 w-4" />
       </Button>
     </Show>
   )

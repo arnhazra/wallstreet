@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common"
 import { AssetModule } from "./asset/asset.module"
-import { SpaceModule } from "./space/space.module"
+import { AssetGroupModule } from "./assetgroup/assetgroup.module"
 import { EntityModule } from "@/shared/entity/entity.module"
 import { config } from "@/config"
 import { AppsDbConnectionMap } from "@/shared/entity/entity-db-connection.map"
@@ -11,7 +11,7 @@ import { AppsDbConnectionMap } from "@/shared/entity/entity-db-connection.map"
       config.APPS_DATABASE_URI,
       AppsDbConnectionMap.AssetManager
     ),
-    SpaceModule,
+    AssetGroupModule,
     AssetModule,
   ],
 })

@@ -6,7 +6,7 @@ import { createAgent, SystemMessage, HumanMessage, AIMessage } from "langchain"
 import { User } from "@/auth/schemas/user.schema"
 import { GoalAgent } from "../agents/goal.agent"
 import { RedisService } from "@/shared/redis/redis.service"
-import { SpaceAgent } from "../agents/space.agent"
+import { AssetGroupAgent } from "../agents/assetgroup.agent"
 import { AssetAgent } from "../agents/asset.agent"
 import { DebtAgent } from "../agents/debt.agent"
 import { ExpenseAgent } from "../agents/expense.agent"
@@ -32,7 +32,7 @@ export interface SummarizeArgs {
 @Injectable()
 export class ChatStrategy {
   constructor(
-    private readonly spaceAgent: SpaceAgent,
+    private readonly assetgroupAgent: AssetGroupAgent,
     private readonly assetAgent: AssetAgent,
     private readonly goalAgent: GoalAgent,
     private readonly debtAgent: DebtAgent,
@@ -92,9 +92,9 @@ export class ChatStrategy {
     const chatAgent = createAgent({
       model: llm,
       tools: [
-        this.spaceAgent.createSpaceTool,
-        this.spaceAgent.getSpaceValuationTool,
-        this.spaceAgent.getSpaceListTool,
+        this.assetgroupAgent.createAssetGroupTool,
+        this.assetgroupAgent.getAssetGroupValuationTool,
+        this.assetgroupAgent.getAssetGroupListTool,
         this.assetAgent.getAssetTypesTool,
         this.assetAgent.getTotalAssetTool,
         this.assetAgent.getAssetListTool,

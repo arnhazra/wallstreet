@@ -1,4 +1,4 @@
-import { Space } from "../../space/schemas/space.schema"
+import { AssetGroup } from "../../assetgroup/schemas/assetgroup.schema"
 import { User } from "@/auth/schemas/user.schema"
 import { AssetType, RecurringFrequency } from "@/shared/constants/types"
 import {
@@ -17,10 +17,10 @@ export class Asset extends IdentifiableEntitySchmea {
 
   @EntityProp({
     type: ObjectIdType,
-    ref: Space.name,
+    ref: AssetGroup.name,
     required: true,
   })
-  spaceId: ObjectId // COMMON
+  assetgroupId: ObjectId // COMMON
 
   @EntityProp({ required: true })
   assetType: AssetType // COMMON

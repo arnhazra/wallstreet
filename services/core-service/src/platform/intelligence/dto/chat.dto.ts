@@ -2,7 +2,7 @@ import { IsNotEmpty } from "class-validator"
 
 export enum EntityType {
   ASSET = "asset",
-  SPACE = "space",
+  ASSETGROUP = "assetgroup",
   DEBT = "debt",
   GOAL = "goal",
   NEWS = "news",

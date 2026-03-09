@@ -3,8 +3,8 @@ export enum AppEventMap {
   CreateAnalytics = "createAnalytics",
   GetUserDetails = "getUserDetails",
   // AssetManager Events
-  CreateSpace = "createSpace",
-  GetSpaceList = "getSpaceList",
+  CreateAssetGroup = "createAssetGroup",
+  GetAssetGroupList = "getAssetGroupList",
   GetTotalAsset = "getTotalAsset",
   FindAssetById = "findAssetbyId",
   UpdateAssetById = "updateAssetById",

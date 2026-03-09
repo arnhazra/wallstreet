@@ -10,7 +10,7 @@ import { AssetType, RecurringFrequency } from "@/shared/constants/types"
 
 export class CreateAssetRequestDto {
   @IsNotEmpty()
-  spaceId: string
+  assetgroupId: string
 
   @IsNotEmpty()
   @IsEnum(AssetType)

@@ -136,37 +136,6 @@ WealthFabric can be deployed on the cloud. A typical setup is:
 
 - **Cron Jobs:** Use Vercel’s built-in scheduling. In your project (UI or a separate Cron project), include a `vercel.json` similar to above (see **Cron Service** example) to define the schedules. Vercel will then handle triggering those endpoints. Make sure the cron endpoints call into the backend as needed.
 
-Example Vercel Cron entry in `vercel.json`:
-
-```json
-{
-  "cron": [
-    { "path": "/api/cron/daily-summary", "schedule": "0 0 * * *" },
-    { "path": "/api/cron/refresh-data", "schedule": "0 * * * *" }
-  ]
-}
-```
-
-This runs `daily-summary` every midnight UTC and `refresh-data` every hour.
-
-## Contributing
-
-WealthFabric is licensed under **AGPL-3.0**, and we welcome community contributions:
-
-- **Report Issues:** If you find a bug or want a new feature, create an [Issue](https://github.com/arnhazra/wealthfabric/issues) with details.
-- **Fork & Branch:** Fork the repository and create a feature branch (e.g., `feature/expense-analytics`).
-- **Code Style:** The project uses TypeScript. Follow existing conventions (use `async/await`, interfaces, etc.). Run linting and tests before submitting.
-- **Pull Requests:** Submit a PR referencing any related issues. Use descriptive commit messages (e.g. `feat: add mutual funds asset type` or `fix: resolve division by zero in ROI calculation`). Ensure PRs pass CI checks if set up.
-
-For example, to add a new feature for tracking cryptocurrency staking rewards, one might:
-
-1. Fork the repo and create branch `feat/crypto-staking`.
-2. Add a new `StakingModule` in the NestJS core, with corresponding MongoDB schema.
-3. Expose an endpoint `/api/staking` and UI page `/staking`.
-4. Commit and push, then open a PR to merge into `main`.
-
-We follow a standard [Contributor Covenant](https://www.contributor-covenant.org/) code of conduct. By contributing, you agree to uphold it.
-
 ## Security
 
 Security is a priority. Recommendations and best practices:

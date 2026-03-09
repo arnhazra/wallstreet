@@ -12,7 +12,7 @@ import {
   Cashflow,
   Debt,
   Goal,
-  Space,
+  AssetGroup,
 } from "@/shared/constants/types"
 import {
   Banknote,
@@ -46,7 +46,7 @@ import MaskText from "../mask"
 
 const entityIconMap = {
   [EntityType.ASSET]: <Banknote className="h-5 w-5" />,
-  [EntityType.SPACE]: <Layers2 className="h-5 w-5" />,
+  [EntityType.ASSETGROUP]: <Layers2 className="h-5 w-5" />,
   [EntityType.DEBT]: <CreditCard className="h-5 w-5" />,
   [EntityType.GOAL]: <GoalIcon className="h-5 w-5" />,
   [EntityType.NEWS]: <Newspaper className="h-5 w-5" />,
@@ -90,22 +90,25 @@ export function EntityCard<T extends keyof EntityMap>({
 
   useEffect(() => {
     switch (entityType) {
-      case EntityType.SPACE:
-        setEntityTitle((entity as Space).spaceName)
+      case EntityType.ASSETGROUP:
+        setEntityTitle((entity as AssetGroup).assetgroupName)
         setInfo({
           infoHeader: "Assets",
-          infoValue: (entity as Space).assetCount?.toString() || "0",
+          infoValue: (entity as AssetGroup).assetCount?.toString() || "0",
         })
         setValuation({
           valuationHeader: "Net Valuation",
-          valuationAmount: (entity as Space).presentValuation,
+          valuationAmount: (entity as AssetGroup).presentValuation,
         })
-        const spaceCreatedAt = (entity as Space).createdAt
-          ? formatDistanceToNow(new Date((entity as Space).createdAt ?? ""), {
-              addSuffix: true,
-            })
+        const assetgroupCreatedAt = (entity as AssetGroup).createdAt
+          ? formatDistanceToNow(
+              new Date((entity as AssetGroup).createdAt ?? ""),
+              {
+                addSuffix: true,
+              }
+            )
           : null
-        setDisplayDate(spaceCreatedAt ?? "")
+        setDisplayDate(assetgroupCreatedAt ?? "")
         break
       case EntityType.ASSET:
         setEntityTitle((entity as Asset).assetName)
@@ -288,8 +291,10 @@ export function EntityCard<T extends keyof EntityMap>({
     >
       <Card
         onClick={(): void =>
-          entityType === EntityType.SPACE
-            ? router.push(`/apps/assetmanager/space/${(entity as Space)._id}`)
+          entityType === EntityType.ASSETGROUP
+            ? router.push(
+                `/apps/assetmanager/assetgroup/${(entity as AssetGroup)._id}`
+              )
             : undefined
         }
         className="bg-background/2 border h-[15rem] backdrop-blur-sm border-border p-2 rounded-3xl hover:shadow-lg hover:shadow-primary/20 cursor-pointer"

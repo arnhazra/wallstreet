@@ -1,0 +1,70 @@
+{
+  "title": "Explore Apps",
+  "description": "Bring all your finances together in one platform. Add assets, track net worth, and unlock actionable insights. Plan, grow, and preserve wealth with clarity through a unified, intuitive experience.",
+  "apps": [
+    {
+      "appName": "assetmanager",
+      "displayName": "AssetManager",
+      "description": "Organize and manage your financial assets with real-time clarity",
+      "icon": "Wallet",
+      "url": "/apps/assetmanager",
+      "enabled": true
+    },
+    {
+      "appName": "expensetrack",
+      "displayName": "ExpenseTrack",
+      "description": "Monitor your spending patterns with smart insights and dashboards",
+      "icon": "BarChart3",
+      "url": "/apps/expensetrack",
+      "enabled": true
+    },
+    {
+      "appName": "goalmanager",
+      "displayName": "GoalManager",
+      "description": "Set, track, and achieve your financial goals with focused progress",
+      "icon": "Flag",
+      "url": "/apps/goalmanager",
+      "enabled": true
+    },
+    {
+      "appName": "debttrack",
+      "displayName": "DebtTrack",
+      "description": "Track liabilities and repayments to stay on top of your debt journey",
+      "icon": "CreditCard",
+      "url": "/apps/debttrack",
+      "enabled": true
+    },
+    {
+      "appName": "cashflow",
+      "displayName": "CashFlow",
+      "description": "Automate cash flow across your assets for seamless money management",
+      "icon": "Workflow",
+      "url": "/apps/cashflow",
+      "enabled": true
+    },
+    {
+      "appName": "planner",
+      "displayName": "Planner",
+      "description": "A financial planning tool to help you map out your financial future",
+      "icon": "Calendar",
+      "url": "/apps/planner",
+      "enabled": true
+    },
+    {
+      "appName": "taxadvisor",
+      "displayName": "TaxAdvisor",
+      "description": "Get smart guidance to plan and manage your taxes effortlessly",
+      "icon": "Calculator",
+      "url": "/apps/taxadvisor",
+      "enabled": true
+    },
+    {
+      "appName": "discover",
+      "displayName": "Discover",
+      "description": "Get real-time financial news, market updates, and personalized insights",
+      "icon": "Compass",
+      "url": "/apps/discover",
+      "enabled": true
+    }
+  ]
+}

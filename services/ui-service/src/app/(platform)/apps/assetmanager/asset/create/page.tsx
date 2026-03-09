@@ -25,7 +25,11 @@ import {
   PopoverTrigger,
 } from "@/shared/components/ui/popover"
 import { Calendar } from "@/shared/components/ui/calendar"
-import { AssetType, Space, RecurringFrequency } from "@/shared/constants/types"
+import {
+  AssetType,
+  AssetGroup,
+  RecurringFrequency,
+} from "@/shared/constants/types"
 import useQuery from "@/shared/hooks/use-query"
 import { endPoints } from "@/shared/constants/api-endpoints"
 import HTTPMethods from "@/shared/constants/http-methods"
@@ -34,7 +38,7 @@ import api from "@/shared/lib/ky-api"
 import IconContainer from "@/shared/components/icon-container"
 
 interface AssetFormData {
-  spaceId: string
+  assetgroupId: string
   assetType: AssetType | ""
   assetName: string
   identifier: string
@@ -74,7 +78,7 @@ type MessageType = "success" | "error"
 
 export default function Page() {
   const [formData, setFormData] = useState<AssetFormData>({
-    spaceId: "",
+    assetgroupId: "",
     assetType: "",
     assetName: "",
     identifier: "",
@@ -85,9 +89,9 @@ export default function Page() {
     type: "success",
   })
 
-  const spaces = useQuery<Space[]>({
-    queryKey: ["get-spaces"],
-    queryUrl: endPoints.space,
+  const assetgroups = useQuery<AssetGroup[]>({
+    queryKey: ["get-assetgroups"],
+    queryUrl: endPoints.assetgroup,
     method: HTTPMethods.GET,
   })
 
@@ -184,20 +188,22 @@ export default function Page() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="assetType" className="text-neutral-200">
-                  Select Space
+                  Select AssetGroup
                 </Label>
                 <Select
-                  value={formData.spaceId}
-                  onValueChange={(value) => handleInputChange("spaceId", value)}
+                  value={formData.assetgroupId}
+                  onValueChange={(value) =>
+                    handleInputChange("assetgroupId", value)
+                  }
                   required
                 >
                   <SelectTrigger className="w-full bg-background text-white border-border">
-                    <SelectValue placeholder="Select Space" />
+                    <SelectValue placeholder="Select AssetGroup" />
                   </SelectTrigger>
                   <SelectContent className="w-full bg-background text-white border-border">
-                    {spaces.data?.map((space) => (
-                      <SelectItem key={space._id} value={space._id}>
-                        {space.spaceName}
+                    {assetgroups.data?.map((assetgroup) => (
+                      <SelectItem key={assetgroup._id} value={assetgroup._id}>
+                        {assetgroup.assetgroupName}
                       </SelectItem>
                     ))}
                   </SelectContent>

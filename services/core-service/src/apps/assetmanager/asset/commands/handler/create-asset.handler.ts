@@ -9,10 +9,10 @@ export class CreateAssetCommandHandler implements ICommandHandler<CreateAssetCom
 
   async execute(command: CreateAssetCommand) {
     const { userId, dto } = command
-    const { spaceId, ...otherFields } = dto
+    const { assetgroupId, ...otherFields } = dto
     return await this.repository.create({
       userId: createOrConvertObjectId(userId),
-      spaceId: createOrConvertObjectId(spaceId),
+      assetgroupId: createOrConvertObjectId(assetgroupId),
       ...otherFields,
     })
   }

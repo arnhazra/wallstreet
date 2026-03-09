@@ -1,7 +1,7 @@
 export const searchMapByUrl = {
   "/dashboard": "app",
-  "/apps/assetmanager/space": "asset",
-  "/apps/assetmanager": "space",
+  "/apps/assetmanager/assetgroup": "asset",
+  "/apps/assetmanager": "asset group",
   "/apps/debttrack": "debt",
   "/apps/discover": "news",
   "/apps/expensetrack": "expense",
