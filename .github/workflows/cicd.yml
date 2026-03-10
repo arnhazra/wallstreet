@@ -57,15 +57,12 @@ jobs:
         working-directory: services/ui-service
         run: npm run build
 
-      - name: Prepare deployment package
-        run: |
-          cp -r services/ui-service/* .
-
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: wallstreet
           publish-profile: ${{ secrets.AZURE_UI_APP_PUBLISH_PROFILE }}
+          package: services/ui-service
 
   CRON-SERVICE-DEPLOYMENT:
     runs-on: ubuntu-latest
