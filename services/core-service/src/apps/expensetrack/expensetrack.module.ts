@@ -17,7 +17,7 @@ import { FindExpensesByUserQueryHandler } from "./queries/handler/find-expense-b
   imports: [
     CqrsModule,
     EntityModule.forRoot(
-      config.APPS_DATABASE_URI,
+      config.COSMOS_DB_URI,
       AppsDbConnectionMap.ExpenseTrack
     ),
     EntityModule.forFeature(

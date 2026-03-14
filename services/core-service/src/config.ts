@@ -4,9 +4,7 @@ envConfig({ path: "./.env.development" })
 export const config = {
   NODE_ENV: process.env.NODE_ENV,
   PLATFORM_NAME: process.env.PLATFORM_NAME,
-  AUTH_DATABASE_URI: process.env.AUTH_DATABASE_URI,
-  PLATFORM_DATABASE_URI: process.env.PLATFORM_DATABASE_URI,
-  APPS_DATABASE_URI: process.env.APPS_DATABASE_URI,
+  COSMOS_DB_URI: process.env.COSMOS_DB_URI,
   REDIS_URI: process.env.REDIS_URI,
   AI_MODEL_API_KEY: process.env.AI_MODEL_API_KEY,
   AI_MODEL_DEPLOYMENT_URI: process.env.AI_MODEL_DEPLOYMENT_URI,

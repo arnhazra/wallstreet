@@ -8,7 +8,7 @@ import { AppsDbConnectionMap } from "@/shared/entity/entity-db-connection.map"
 @Module({
   imports: [
     EntityModule.forRoot(
-      config.APPS_DATABASE_URI,
+      config.COSMOS_DB_URI,
       AppsDbConnectionMap.AssetManager
     ),
     AssetGroupModule,

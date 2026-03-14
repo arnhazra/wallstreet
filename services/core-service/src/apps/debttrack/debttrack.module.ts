@@ -16,10 +16,7 @@ import { FindDebtsByUserQueryHandler } from "./queries/handler/find-debt-by-user
 @Module({
   imports: [
     CqrsModule,
-    EntityModule.forRoot(
-      config.APPS_DATABASE_URI,
-      AppsDbConnectionMap.DebtTrack
-    ),
+    EntityModule.forRoot(config.COSMOS_DB_URI, AppsDbConnectionMap.DebtTrack),
     EntityModule.forFeature(
       [{ name: Debt.name, schema: DebtSchema }],
       AppsDbConnectionMap.DebtTrack

@@ -16,10 +16,7 @@ import { config } from "@/config"
   imports: [
     HttpModule,
     CqrsModule,
-    EntityModule.forRoot(
-      config.APPS_DATABASE_URI,
-      AppsDbConnectionMap.TaxAdvisor
-    ),
+    EntityModule.forRoot(config.COSMOS_DB_URI, AppsDbConnectionMap.TaxAdvisor),
     EntityModule.forFeature(
       [{ name: Thread.name, schema: ThreadSchema }],
       AppsDbConnectionMap.TaxAdvisor

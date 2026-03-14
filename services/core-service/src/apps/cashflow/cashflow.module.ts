@@ -18,10 +18,7 @@ import { UpdateCashflowHandler } from "./commands/handler/update-cashflow.handle
 @Module({
   imports: [
     CqrsModule,
-    EntityModule.forRoot(
-      config.APPS_DATABASE_URI,
-      AppsDbConnectionMap.CashFlow
-    ),
+    EntityModule.forRoot(config.COSMOS_DB_URI, AppsDbConnectionMap.CashFlow),
     EntityModule.forFeature(
       [{ name: Cashflow.name, schema: CashflowSchema }],
       AppsDbConnectionMap.CashFlow
