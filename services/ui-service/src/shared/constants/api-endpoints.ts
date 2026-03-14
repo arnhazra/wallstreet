@@ -1,24 +1,24 @@
-const apiHost = process.env.NEXT_PUBLIC_CORE_SERVICE_URL!
+import { CORE_SERVICE_URL } from "./config"
 
 export const endPoints = {
   // Auth Service
-  googleOAuthLogin: `${apiHost}/auth/googleoauth`,
-  userDetails: `${apiHost}/auth/userdetails`,
-  refresh: `${apiHost}/auth/refresh`,
-  signOut: `${apiHost}/auth/signout`,
-  updateAttribute: `${apiHost}/auth/attribute`,
+  googleOAuthLogin: `${CORE_SERVICE_URL}/auth/googleoauth`,
+  userDetails: `${CORE_SERVICE_URL}/auth/userdetails`,
+  refresh: `${CORE_SERVICE_URL}/auth/refresh`,
+  signOut: `${CORE_SERVICE_URL}/auth/signout`,
+  updateAttribute: `${CORE_SERVICE_URL}/auth/attribute`,
   // Platform Service
-  getConfig: `${apiHost}/platform/config`,
-  intelligence: `${apiHost}/platform/intelligence`,
-  widgets: `${apiHost}/platform/widgets`,
+  getConfig: `${CORE_SERVICE_URL}/platform/config`,
+  intelligence: `${CORE_SERVICE_URL}/platform/intelligence`,
+  widgets: `${CORE_SERVICE_URL}/platform/widgets`,
   // Apps Service
-  assetgroup: `${apiHost}/apps/assetmanager/assetgroup`,
-  asset: `${apiHost}/apps/assetmanager/asset`,
-  debt: `${apiHost}/apps/debttrack/debt`,
-  goal: `${apiHost}/apps/goal`,
-  news: `${apiHost}/apps/discover/news`,
-  expense: `${apiHost}/apps/expensetrack/expense`,
-  taxAdvisor: `${apiHost}/apps/taxadvisor`,
-  cashflow: `${apiHost}/apps/cashflow`,
-  events: `${apiHost}/apps/planner/event`,
+  assetgroup: `${CORE_SERVICE_URL}/apps/assetmanager/assetgroup`,
+  asset: `${CORE_SERVICE_URL}/apps/assetmanager/asset`,
+  debt: `${CORE_SERVICE_URL}/apps/debttrack/debt`,
+  goal: `${CORE_SERVICE_URL}/apps/goal`,
+  news: `${CORE_SERVICE_URL}/apps/discover/news`,
+  expense: `${CORE_SERVICE_URL}/apps/expensetrack/expense`,
+  taxAdvisor: `${CORE_SERVICE_URL}/apps/taxadvisor`,
+  cashflow: `${CORE_SERVICE_URL}/apps/cashflow`,
+  events: `${CORE_SERVICE_URL}/apps/planner/event`,
 }

@@ -1,10 +1,10 @@
-export const platformName = process.env.NEXT_PUBLIC_PLATFORM_NAME ?? ""
+import { PLATFORM_NAME } from "./config"
 
 export const uiConstants = {
   homeHeader: "Invest for future",
   homeIntro:
     "Intelligently manage your wealth — track assets, monitor net worth, liabilities, goals & expenses to unlock real-time insights.",
-  openSourceIntro: `${platformName} is an open source wealth management platform.`,
+  openSourceIntro: `${PLATFORM_NAME} is an open source wealth management platform.`,
   connectionErrorMessage: "Unable to connect. Please check your internet.",
   authVerificationMessage: "Checking your credentials",
   errorMessage: "Page not found",
@@ -21,11 +21,11 @@ export const uiConstants = {
     "This action cannot be undone. Click continue to proceed, or cancel to go back.",
   copyrightText: ` Inc. All rights reserved.`,
   openSourceTitle: `Open Source`,
-  privacyPolicyStatement: `By using ${platformName}, you agree to our Privacy Policy.`,
+  privacyPolicyStatement: `By using ${PLATFORM_NAME}, you agree to our Privacy Policy.`,
   newsFallbackImageUrl:
     "https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=512",
-  aiSafetyStatement: `This is a Generative AI Agent integrated within ${platformName} and this may make mistakes. Please review results carefully.`,
-  useIntelligenceStatement: `By enabling ${platformName} Intelligence, you agree to allow ${platformName} the system to process certain data to provide AI-powered 
+  aiSafetyStatement: `This is a Generative AI Agent integrated within ${PLATFORM_NAME} and this may make mistakes. Please review results carefully.`,
+  useIntelligenceStatement: `By enabling ${PLATFORM_NAME} Intelligence, you agree to allow ${PLATFORM_NAME} the system to process certain data to provide AI-powered 
       enhancements. We want to be completely clear about what that means, what is and isn’t shared, and how your information is handled.
       When you use AI features, the app may send text or structured data to a language model so it can analyze, summarize, 
       or generate helpful responses. This processing happens securely and is designed to improve your experience for example, 

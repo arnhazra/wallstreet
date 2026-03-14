@@ -8,11 +8,11 @@ import { TooltipProvider } from "../components/ui/tooltip"
 import { Toaster } from "sonner"
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import { colorVars } from "../styles/color-vars"
+import { GOOGLE_OAUTH_CLIENT_ID } from "../constants/config"
 
 export default function Providers({ children }: { children: ReactNode }) {
-  const oAuthClientId = process.env.NEXT_PUBLIC_CLIENT_ID
   return (
-    <GoogleOAuthProvider clientId={oAuthClientId ?? ""}>
+    <GoogleOAuthProvider clientId={GOOGLE_OAUTH_CLIENT_ID}>
       <TooltipProvider>
         <FetchProvider>
           <UserStateProvider>
