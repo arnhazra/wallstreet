@@ -1,5 +1,7 @@
 import { PLATFORM_NAME } from "./config"
 
+export const platformName = PLATFORM_NAME
+
 export const uiConstants = {
   homeHeader: "Invest for future",
   homeIntro:
