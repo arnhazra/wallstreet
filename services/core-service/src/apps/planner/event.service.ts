@@ -185,7 +185,6 @@ export class EventService {
 
       return allEvents
     } catch (error) {
-      console.log(error)
       throw new Error(statusMessages.connectionError)
     }
   }
