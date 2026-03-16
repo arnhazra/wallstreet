@@ -9,6 +9,7 @@ import {
   Body,
   BadRequestException,
   Query,
+  Put,
 } from "@nestjs/common"
 import { CashFlowService } from "./cashflow.service"
 import { statusMessages } from "@/shared/constants/status-messages"
@@ -83,7 +84,7 @@ export class CashFlowController {
   }
 
   @UseGuards(AuthGuard)
-  @Post(":cashflowId")
+  @Put(":cashflowId")
   async updateById(
     @Request() request: ModRequest,
     @Param("cashflowId") cashflowId: string,

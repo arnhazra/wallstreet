@@ -99,7 +99,7 @@ export class CashFlowService {
       String(targetAsset.userId),
       String(targetAsset._id),
       {
-        assetGroupId: targetAsset.assetgroupId,
+        assetgroupId: targetAsset.assetgroupId,
         currentValuation: targetAsset.currentValuation + delta,
       }
     )
