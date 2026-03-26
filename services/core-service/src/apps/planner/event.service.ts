@@ -6,7 +6,7 @@ import { DeleteEventCommand } from "./commands/impl/delete-event.command"
 import { CreateEventCommand } from "./commands/impl/create-event.command"
 import { CreateEventRequestDto } from "./dto/request/create-event.request.dto"
 import { FindEventsByUserQuery } from "./queries/impl/find-event-by-user.query"
-import { EventEmitter2 } from "@nestjs/event-emitter"
+import { EventEmitter2, OnEvent } from "@nestjs/event-emitter"
 import { AppEventMap } from "@/shared/constants/app-events.map"
 import { Asset } from "@/apps/assetmanager/asset/schemas/asset.schema"
 import { Goal } from "@/apps/goalmanager/schemas/goal.schema"
@@ -27,6 +27,7 @@ export class EventService {
     private readonly configService: ConfigService
   ) {}
 
+  @OnEvent(AppEventMap.CreatePlannerEvent)
   async createEvent(userId: string, requestBody: CreateEventRequestDto) {
     try {
       return await this.commandBus.execute<CreateEventCommand, Event>(
@@ -37,6 +38,7 @@ export class EventService {
     }
   }
 
+  @OnEvent(AppEventMap.GetPlannerEvents)
   async findMyEventsByMonth(userId: string, selectedMonth: string) {
     try {
       const events = await this.queryBus.execute<

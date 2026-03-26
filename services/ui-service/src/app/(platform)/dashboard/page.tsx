@@ -9,7 +9,8 @@ import { Widget } from "@/shared/constants/types"
 import WidgetCard from "@/shared/components/widget-card"
 
 export default function Page() {
-  const [{ searchKeyword }] = useUserContext()
+  const [{ searchKeyword, user }] = useUserContext()
+  const userFirstName = user.name?.split(" ")[0]
 
   const { data } = useQuery<AppsConfig>({
     queryKey: ["app-config"],
@@ -43,6 +44,9 @@ export default function Page() {
 
   return (
     <div className="mx-auto grid w-full items-start gap-6">
+      <section>
+        <h1 className="text-2xl -mb-2 -mt-2 ms-1">Hey, {userFirstName}</h1>
+      </section>
       <section>
         <div className="space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
