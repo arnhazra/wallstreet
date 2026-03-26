@@ -66,10 +66,7 @@ export class EventAgent {
       description: "Create a new event for a user",
       schema: z.object({
         userId: z.string().describe("user id of the user"),
-        eventName: z
-          .string()
-          .optional()
-          .describe("event purpose given by the user"),
+        eventName: z.string().describe("event purpose given by the user"),
         eventDate: z
           .string()
           .describe(

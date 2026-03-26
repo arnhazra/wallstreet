@@ -39,7 +39,7 @@ export default function Page() {
   }
 
   const widgets = widgetData?.map((widget) => {
-    return <WidgetCard key={widget.icon} widget={widget} />
+    return <WidgetCard key={widget.title} widget={widget} />
   })
 
   return (
