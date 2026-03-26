@@ -31,12 +31,6 @@ import { PLATFORM_NAME } from "@/shared/constants/config"
 export default function Page() {
   const router = useRouter()
   const [checked, setChecked] = useState(false)
-  const openSourceConfig = useQuery<any>({
-    queryKey: ["open-source-config"],
-    queryUrl: `${endPoints.getConfig}/open-source-config`,
-    method: HTTPMethods.GET,
-    suspense: false,
-  })
 
   const apps = useQuery<AppsConfig>({
     queryKey: ["app-config"],
@@ -48,6 +42,13 @@ export default function Page() {
   const solutions = useQuery<SolutionConfig>({
     queryKey: ["solution-config"],
     queryUrl: `${endPoints.getConfig}/solution-config`,
+    method: HTTPMethods.GET,
+    suspense: false,
+  })
+
+  const openSourceConfig = useQuery<any>({
+    queryKey: ["open-source-config"],
+    queryUrl: `${endPoints.getConfig}/open-source-config`,
     method: HTTPMethods.GET,
     suspense: false,
   })

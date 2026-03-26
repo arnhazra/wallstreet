@@ -15,10 +15,10 @@ export const endPoints = {
   assetgroup: `${CORE_SERVICE_URL_BY_ENV}/apps/assetmanager/assetgroup`,
   asset: `${CORE_SERVICE_URL_BY_ENV}/apps/assetmanager/asset`,
   debt: `${CORE_SERVICE_URL_BY_ENV}/apps/debttrack/debt`,
-  goal: `${CORE_SERVICE_URL_BY_ENV}/apps/goal`,
+  goal: `${CORE_SERVICE_URL_BY_ENV}/apps/wealthplanner/goal`,
   news: `${CORE_SERVICE_URL_BY_ENV}/apps/discover/news`,
   expense: `${CORE_SERVICE_URL_BY_ENV}/apps/expensetrack/expense`,
   taxAdvisor: `${CORE_SERVICE_URL_BY_ENV}/apps/taxadvisor`,
   cashflow: `${CORE_SERVICE_URL_BY_ENV}/apps/cashflow`,
-  events: `${CORE_SERVICE_URL_BY_ENV}/apps/planner/event`,
+  events: `${CORE_SERVICE_URL_BY_ENV}/apps/calendar/event`,
 }

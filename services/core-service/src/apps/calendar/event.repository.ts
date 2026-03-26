@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common"
-import { Goal } from "./schemas/goal.schema"
+import { Event } from "./schemas/event.schema"
 import { AppsDbConnectionMap } from "@/shared/entity/entity-db-connection.map"
 import {
   EntityModel,
@@ -8,11 +8,11 @@ import {
 } from "@/shared/entity/entity.repository"
 
 @Injectable()
-export class GoalRepository extends EntityRepository<Goal> {
+export class EventRepository extends EntityRepository<Event> {
   constructor(
-    @InjectEntityModel(Goal.name, AppsDbConnectionMap.GoalManager)
-    private goalModel: EntityModel<Goal>
+    @InjectEntityModel(Event.name, AppsDbConnectionMap.Calendar)
+    private eventModel: EntityModel<Event>
   ) {
-    super(goalModel)
+    super(eventModel)
   }
 }

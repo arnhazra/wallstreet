@@ -7,26 +7,27 @@ import {
   Request,
   Param,
   Body,
-  Put,
   BadRequestException,
+  Query,
+  Put,
 } from "@nestjs/common"
-import { GoalService } from "./goal.service"
+import { EventService } from "./event.service"
 import { statusMessages } from "@/shared/constants/status-messages"
 import { AuthGuard, ModRequest } from "@/auth/auth.guard"
-import { CreateGoalRequestDto } from "./dto/request/create-goal.request.dto"
+import { CreateEventRequestDto } from "./dto/request/create-event.request.dto"
 
-@Controller("apps/goal")
-export class GoalController {
-  constructor(private readonly service: GoalService) {}
+@Controller("apps/calendar/event")
+export class EventController {
+  constructor(private readonly service: EventService) {}
 
   @UseGuards(AuthGuard)
   @Post()
-  async createGoal(
-    @Body() requestBody: CreateGoalRequestDto,
+  async createEvent(
+    @Body() requestBody: CreateEventRequestDto,
     @Request() request: ModRequest
   ) {
     try {
-      return await this.service.createGoal(request.user.userId, requestBody)
+      return await this.service.createEvent(request.user.userId, requestBody)
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError
@@ -36,43 +37,14 @@ export class GoalController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async findMyGoals(@Request() request: ModRequest) {
-    try {
-      return await this.service.findMyGoals(request.user.userId)
-    } catch (error) {
-      throw new BadRequestException(
-        error.message || statusMessages.connectionError
-      )
-    }
-  }
-
-  @UseGuards(AuthGuard)
-  @Get("/:goalId")
-  async findGoalById(
+  async findMyEventsByMonth(
     @Request() request: ModRequest,
-    @Param("goalId") goalId: string
+    @Query("month") selectedMonth: string
   ) {
     try {
-      return await this.service.findGoalById(request.user.userId, goalId)
-    } catch (error) {
-      throw new BadRequestException(
-        error.message || statusMessages.connectionError
-      )
-    }
-  }
-
-  @UseGuards(AuthGuard)
-  @Put(":goalId")
-  async updateGoalById(
-    @Body() requestBody: CreateGoalRequestDto,
-    @Param("goalId") goalId: string,
-    @Request() request: ModRequest
-  ) {
-    try {
-      return await this.service.updateGoalById(
+      return await this.service.findMyEventsByMonth(
         request.user.userId,
-        goalId,
-        requestBody
+        selectedMonth
       )
     } catch (error) {
       throw new BadRequestException(
@@ -82,13 +54,44 @@ export class GoalController {
   }
 
   @UseGuards(AuthGuard)
-  @Delete("/:goalId")
-  async deleteGoal(
+  @Get(":eventId")
+  async findById(
     @Request() request: ModRequest,
-    @Param("goalId") goalId: string
+    @Param("eventId") eventId: string
   ) {
     try {
-      return await this.service.deleteGoal(request.user.userId, goalId)
+      return await this.service.findById(request.user.userId, eventId)
+    } catch (error) {
+      throw new BadRequestException(
+        error.message || statusMessages.connectionError
+      )
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Put(":eventId")
+  async updateById(
+    @Request() request: ModRequest,
+    @Param("eventId") eventId: string,
+    @Body() dto: CreateEventRequestDto
+  ) {
+    try {
+      return await this.service.updateById(request.user.userId, eventId, dto)
+    } catch (error) {
+      throw new BadRequestException(
+        error.message || statusMessages.connectionError
+      )
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete("/:eventId")
+  async deleteEvent(
+    @Request() request: ModRequest,
+    @Param("eventId") eventId: string
+  ) {
+    try {
+      return await this.service.deleteEvent(request.user.userId, eventId)
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError

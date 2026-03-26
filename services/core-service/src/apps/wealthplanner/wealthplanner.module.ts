@@ -19,11 +19,11 @@ import { config } from "@/config"
     CqrsModule,
     EntityModule.forRoot(
       config.AZURE_COSMOS_DB_CONNECTION_STRING,
-      AppsDbConnectionMap.GoalManager
+      AppsDbConnectionMap.WealthPlanner
     ),
     EntityModule.forFeature(
       [{ name: Goal.name, schema: GoalSchema }],
-      AppsDbConnectionMap.GoalManager
+      AppsDbConnectionMap.WealthPlanner
     ),
   ],
   controllers: [GoalController],
@@ -38,4 +38,4 @@ import { config } from "@/config"
     FindNearestGoalQueryHandler,
   ],
 })
-export class GoalManagerModule {}
+export class WealthPlannerModule {}

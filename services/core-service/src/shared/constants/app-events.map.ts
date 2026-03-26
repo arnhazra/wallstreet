@@ -22,4 +22,7 @@ export enum AppEventMap {
   CreateExpense = "createExpense",
   //CashFlow Events
   FindCashFlowsByUserId = "findCashFlowsByUserId",
+  //Calendar Events
+  CreateCalendarEvent = "createCalendarEvent",
+  GetCalendarEvents = "getCalendarEvents",
 }

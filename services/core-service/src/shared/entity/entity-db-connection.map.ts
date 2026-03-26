@@ -6,9 +6,9 @@ export enum GeneralDbConnectionMap {
 export enum AppsDbConnectionMap {
   AssetManager = "assetmanager",
   DebtTrack = "debttrack",
-  GoalManager = "goalmanager",
+  WealthPlanner = "wealthplanner",
   ExpenseTrack = "expensetrack",
   TaxAdvisor = "taxadvisor",
   CashFlow = "cashflow",
-  Planner = "planner",
+  Calendar = "calendar",
 }

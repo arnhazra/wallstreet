@@ -53,7 +53,7 @@ export class Asset extends IdentifiableEntitySchmea {
   valuationOnPurchase?: number // REAL_ESTATE, METAL, OTHER
 
   @EntityProp()
-  currentValuation?: number // LIQUID, REAL_ESTATE, METAL, OTHER
+  currentValuation?: number // LIQUID, RETIREMENT, REAL_ESTATE, METAL, OTHER
 
   @EntityProp()
   units?: number // EQUITY, CRYPTO

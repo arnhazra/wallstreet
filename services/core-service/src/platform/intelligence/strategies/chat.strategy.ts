@@ -13,6 +13,7 @@ import { LLMService } from "@/shared/llm/llm.service"
 import { CashflowAgent } from "../agents/cashflow.agent"
 import { EntityType } from "../dto/chat.dto"
 import { ConfigService } from "@/platform/config/config.service"
+import { EventAgent } from "../agents/event.agent"
 
 export interface ChatArgs {
   thread: Thread[]
@@ -38,6 +39,7 @@ export class ChatStrategy {
     private readonly debtAgent: DebtAgent,
     private readonly expenseAgent: ExpenseAgent,
     private readonly cashflowAgent: CashflowAgent,
+    private readonly eventAgent: EventAgent,
     private readonly configService: ConfigService,
     private readonly llmService: LLMService
   ) {}
@@ -109,6 +111,8 @@ export class ChatStrategy {
         this.expenseAgent.getExpenseByMonthTool,
         this.expenseAgent.createExpenseTool,
         this.cashflowAgent.getCashflowsByUserIdTool,
+        this.eventAgent.createEventTool,
+        this.eventAgent.getEventByMonthTool,
       ],
       stateSchema: undefined,
     })
