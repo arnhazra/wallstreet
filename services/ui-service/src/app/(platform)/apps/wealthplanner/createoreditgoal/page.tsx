@@ -54,7 +54,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!!goal.error || (!goal.isLoading && !goal.data)) {
-      router.push("/apps/goalmanager/createoreditgoal")
+      router.push("/apps/wealthplanner/createoreditgoal")
     }
 
     if (goal.data) {
@@ -126,8 +126,8 @@ export default function Page() {
               <IconContainer>
                 <GoalIcon className="h-4 w-4" />
               </IconContainer>
-              <Show condition={!goalId} fallback="Edit Goal">
-                Add Goal
+              <Show condition={!goalId} fallback="Edit Wealth Goal">
+                Add Wealth Goal
               </Show>
             </CardTitle>
             <CardDescription className="text-primary">
