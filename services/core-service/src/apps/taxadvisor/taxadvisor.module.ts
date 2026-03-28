@@ -8,6 +8,7 @@ import { CreateThreadCommandHandler } from "./commands/handler/create-thread.han
 import { TaxAdvisorRepository } from "./taxadvisor.repository"
 import { EntityModule } from "@/shared/entity/entity.module"
 import { FetchThreadByIdQueryHandler } from "./queries/handler/fetch-thread-by-id.handler"
+import { FetchThreadsByUserIdQueryHandler } from "./queries/handler/fetch-threads-by-user-id.handler"
 import { HttpModule } from "@nestjs/axios"
 import { TaxAdvisorStrategy } from "./taxadvisor.strategy"
 import { config } from "@/config"
@@ -32,6 +33,7 @@ import { config } from "@/config"
     TaxAdvisorStrategy,
     CreateThreadCommandHandler,
     FetchThreadByIdQueryHandler,
+    FetchThreadsByUserIdQueryHandler,
   ],
 })
 export class TaxAdvisorModule {}

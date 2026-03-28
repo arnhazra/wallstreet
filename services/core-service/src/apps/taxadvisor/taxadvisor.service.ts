@@ -6,6 +6,7 @@ import { EventEmitter2 } from "@nestjs/event-emitter"
 import { AppEventMap } from "@/shared/constants/app-events.map"
 import { AIGenerationDto } from "./dto/ai-generate.dto"
 import { FetchThreadByIdQuery } from "./queries/impl/fetch-thread-by-id.query"
+import { FetchThreadsByUserIdQuery } from "./queries/impl/fetch-threads-by-user-id.query"
 import {
   TaxAdvisorStrategy,
   TaxAdvisorStrategyType,
@@ -21,6 +22,16 @@ export class TaxAdvisorService {
     private readonly strategy: TaxAdvisorStrategy,
     private readonly eventEmitter: EventEmitter2
   ) {}
+
+  async getThreadsByUserId(userId: string) {
+    try {
+      return await this.queryBus.execute<FetchThreadsByUserIdQuery, Thread[]>(
+        new FetchThreadsByUserIdQuery(userId)
+      )
+    } catch (error) {
+      throw error
+    }
+  }
 
   async getThreadById(threadId: string, isFirstMessage: boolean) {
     try {

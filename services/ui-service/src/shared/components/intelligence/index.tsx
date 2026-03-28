@@ -126,7 +126,7 @@ export default function Intelligence() {
         size="icon"
         className="h-11 w-11 fixed bottom-6 right-6 z-50 text-white ui-soft-gradient text-white rounded-full transition"
       >
-        <Sparkle className="h-5 w-5" />
+        <Sparkle className="h-4 w-4" />
       </Button>
 
       {isOpen && (
@@ -148,7 +148,7 @@ export default function Intelligence() {
             onClick={() => setIsOpen(false)}
             className="text-neutral-400 hover:text-white bg-none hover:bg-background"
           >
-            <PanelRightClose className="h-5 w-5" />
+            <PanelRightClose className="h-4 w-4" />
           </Button>
         </div>
 
@@ -158,7 +158,7 @@ export default function Intelligence() {
               <div className="text-center mt-8">
                 <div className="flex justify-center mb-4">
                   <IconContainer ai>
-                    <Sparkle className="h-5 w-5" />
+                    <Sparkle className="h-4 w-4" />
                   </IconContainer>
                 </div>
                 <p className="text-white">{PLATFORM_NAME} Intelligence</p>

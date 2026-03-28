@@ -36,6 +36,18 @@ export class TaxAdvisorController {
   }
 
   @UseGuards(AuthGuard)
+  @Get("getthreads")
+  async getThreadsByUserId(@Request() request: ModRequest) {
+    try {
+      return await this.service.getThreadsByUserId(request.user.userId)
+    } catch (error) {
+      throw new BadRequestException(
+        error.message || statusMessages.connectionError
+      )
+    }
+  }
+
+  @UseGuards(AuthGuard)
   @Get(":threadId")
   async getThreadById(
     @Request() request: ModRequest,

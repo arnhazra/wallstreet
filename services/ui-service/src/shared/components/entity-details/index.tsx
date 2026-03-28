@@ -106,7 +106,10 @@ export function EntityDetails({
 
   const isAmount = (key: keyof Asset): boolean => amountKeys.includes(key)
 
-  if ((entityType as unknown as EntityType) === EntityType.ASSETGROUP) {
+  if (
+    (entityType as unknown as EntityType) === EntityType.ASSETGROUP ||
+    (entityType as unknown as EntityType) === EntityType.THREAD
+  ) {
     return <>{children}</>
   }
 

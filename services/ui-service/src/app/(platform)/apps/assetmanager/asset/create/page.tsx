@@ -274,7 +274,7 @@ export default function Page() {
               {showDateFields && (
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold flex items-center gap-2 text-neutral-100">
-                    <CalendarIcon className="h-5 w-5 text-primary" />
+                    <CalendarIcon className="h-4 w-4 text-primary" />
                     Date Information
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -357,7 +357,7 @@ export default function Page() {
               {(showAmountInvested || showExpectedReturn) && (
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold flex items-center gap-2 text-neutral-100">
-                    <Banknote className="h-5 w-5 text-primary" />
+                    <Banknote className="h-4 w-4 text-primary" />
                     Investment Details
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
