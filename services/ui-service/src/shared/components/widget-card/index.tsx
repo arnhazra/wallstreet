@@ -16,7 +16,7 @@ export default function WidgetCard({ widget }: WidgetCardProps) {
         <div className="flex items-center justify-between">
           <span className="text-sm text-neutral-300">{widget.title}</span>
           <IconContainer>
-            <WidgetIcon className="h-5 w-5" />
+            <WidgetIcon className="h-4 w-4" />
           </IconContainer>
         </div>
         <div className="space-y-3">

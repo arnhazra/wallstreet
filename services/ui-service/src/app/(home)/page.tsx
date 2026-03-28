@@ -9,8 +9,8 @@ import {
   Coins,
   Lightbulb,
   BookOpenIcon,
-  Github,
-  Play,
+  Code2,
+  ArrowRight,
 } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/shared/lib/utils"
@@ -76,7 +76,7 @@ export default function Page() {
           )}
         >
           {uiConstants.getStartedButton}
-          <Play className="ms-2 h-4 w-4" />
+          <ArrowRight className="ms-2 h-4 w-4" />
         </Link>
       </div>
     </section>
@@ -85,7 +85,7 @@ export default function Page() {
   const renderAppsSection = (
     <section
       id="apps"
-      className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 space-y-6 py-8 md:py-12 lg:py-24 lg:rounded-3xl"
+      className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8 space-y-6 py-8 md:py-12 lg:py-24 lg:rounded-3xl"
     >
       <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
         <Badge className="p-2 ps-4 pe-4 text-md bg-background text-primary border border-border rounded-full shadow-md shadow-primary/20">
@@ -96,7 +96,7 @@ export default function Page() {
           {apps?.data?.description}
         </p>
       </div>
-      <div className="mx-auto grid justify-center gap-4 sm:grid-cols-1 md:max-w-[35rem] md:grid-cols-1 lg:max-w-[50rem] lg:grid-cols-2 xl:max-w-[68rem] xl:grid-cols-3">
+      <div className="mx-auto grid justify-center gap-4 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-4">
         {apps?.data?.apps?.map((app) => (
           <AppCard key={app.appName} app={app} />
         ))}
@@ -152,7 +152,7 @@ export default function Page() {
               <h2 className="text-2xl">{openSourceConfig.data?.title}</h2>
             </div>
             <IconContainer>
-              <BookOpenIcon className="h-5 w-5" />
+              <BookOpenIcon className="h-4 w-4" />
             </IconContainer>
           </div>
           <p className="text-sm leading-relaxed mt-auto">
@@ -172,7 +172,7 @@ export default function Page() {
                 rel="noopener noreferrer"
               >
                 View Source Code
-                <Github />
+                <Code2 />
               </a>
             </Button>
           </div>

@@ -16,7 +16,7 @@ export function SolutionCard({ solution, ai }: SolutionCardProps) {
       <CardHeader className="flex justify-between mt-6 items-center">
         <h2 className="text-2xl">{solution.displayName}</h2>
         <IconContainer ai={ai}>
-          <SolutionIcon className="h-5 w-5" />
+          <SolutionIcon className="h-4 w-4" />
         </IconContainer>
       </CardHeader>
       <CardContent className="mb-6 mt-auto">

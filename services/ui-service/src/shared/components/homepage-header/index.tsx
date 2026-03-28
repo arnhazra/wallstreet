@@ -60,7 +60,7 @@ export default function HomePageHeader() {
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon" className="shrink-0">
-                <PanelLeft className="h-5 w-5" />
+                <PanelLeft className="h-4 w-4" />
               </Button>
             </SheetTrigger>
 

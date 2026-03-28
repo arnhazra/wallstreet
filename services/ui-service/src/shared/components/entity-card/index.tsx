@@ -13,9 +13,11 @@ import {
   Debt,
   Goal,
   AssetGroup,
+  Thread,
 } from "@/shared/constants/types"
 import {
   Banknote,
+  BadgePercent,
   CreditCard,
   ExternalLink,
   GoalIcon,
@@ -45,12 +47,13 @@ import { useRouter } from "nextjs-toploader/app"
 import MaskText from "../mask"
 
 const entityIconMap = {
-  [EntityType.ASSET]: <Banknote className="h-5 w-5" />,
-  [EntityType.ASSETGROUP]: <Layers2 className="h-5 w-5" />,
-  [EntityType.DEBT]: <CreditCard className="h-5 w-5" />,
-  [EntityType.GOAL]: <GoalIcon className="h-5 w-5" />,
-  [EntityType.NEWS]: <Newspaper className="h-5 w-5" />,
-  [EntityType.CASHFLOW]: <Workflow className="h-5 w-5" />,
+  [EntityType.ASSET]: <Banknote className="h-4 w-4" />,
+  [EntityType.ASSETGROUP]: <Layers2 className="h-4 w-4" />,
+  [EntityType.DEBT]: <CreditCard className="h-4 w-4" />,
+  [EntityType.GOAL]: <GoalIcon className="h-4 w-4" />,
+  [EntityType.NEWS]: <Newspaper className="h-4 w-4" />,
+  [EntityType.CASHFLOW]: <Workflow className="h-4 w-4" />,
+  [EntityType.THREAD]: <BadgePercent className="h-4 w-4" />,
 }
 
 type EntityCardProps<T extends keyof EntityMap> = {
@@ -77,7 +80,7 @@ export function EntityCard<T extends keyof EntityMap>({
 
   const [valuation, setValuation] = useState<{
     valuationHeader: string
-    valuationAmount: number | null | undefined
+    valuationAmount: number | null | undefined | string
   }>({
     valuationHeader: "",
     valuationAmount: 0,
@@ -195,6 +198,23 @@ export function EntityCard<T extends keyof EntityMap>({
           : null
         setDisplayDate(newsPublishedAt ?? "")
         break
+      case EntityType.THREAD:
+        setEntityTitle("Tax Advise")
+        setInfo({
+          infoHeader: "Thread ID",
+          infoValue: (entity as Thread).threadId,
+        })
+        setValuation({
+          valuationHeader: "Advise Date",
+          valuationAmount: formatDate((entity as Thread).createdAt),
+        })
+        const threadCreatedAt = (entity as Thread).createdAt
+          ? formatDistanceToNow(new Date((entity as Thread).createdAt ?? ""), {
+              addSuffix: true,
+            })
+          : null
+        setDisplayDate(threadCreatedAt ?? "")
+        break
       default:
         break
     }
@@ -290,13 +310,17 @@ export function EntityCard<T extends keyof EntityMap>({
       entity={entity as unknown as Asset | Debt | Goal | Cashflow}
     >
       <Card
-        onClick={(): void =>
-          entityType === EntityType.ASSETGROUP
-            ? router.push(
-                `/apps/assetmanager/assetgroup/${(entity as AssetGroup)._id}`
-              )
-            : undefined
-        }
+        onClick={(): void => {
+          if (entityType === EntityType.ASSETGROUP) {
+            router.push(
+              `/apps/assetmanager/assetgroup/${(entity as AssetGroup)._id}`
+            )
+          } else if (entityType === EntityType.THREAD) {
+            router.push(
+              `/apps/taxadvisor/thread?threadId=${(entity as Thread).threadId}`
+            )
+          }
+        }}
         className="bg-background/2 border h-[15rem] backdrop-blur-sm border-border p-2 rounded-3xl hover:shadow-lg hover:shadow-primary/20 cursor-pointer"
       >
         <CardHeader className="flex mt-6 items-start gap-2">
@@ -350,24 +374,35 @@ export function EntityCard<T extends keyof EntityMap>({
               </span>
               <span className="text-sm font-medium">
                 <Show
-                  condition={entityType === EntityType.ASSET}
+                  condition={
+                    entityType === EntityType.ASSET ||
+                    entityType === EntityType.THREAD
+                  }
                   fallback={info.infoValue}
                 >
                   <MaskText value={info.infoValue} />
                 </Show>
               </span>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-neutral-300">
-                {valuation.valuationHeader}
-              </span>
-              <span className="text-lg font-bold text-white">
-                {formatCurrency(
-                  valuation.valuationAmount ?? 0,
-                  user.baseCurrency
+            <Show condition={!!valuation.valuationHeader}>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-neutral-300">
+                  {valuation.valuationHeader}
+                </span>
+                {typeof valuation.valuationAmount === "string" ? (
+                  <span className="text-lg font-bold text-white">
+                    {valuation.valuationAmount}
+                  </span>
+                ) : (
+                  <span className="text-lg font-bold text-white">
+                    {formatCurrency(
+                      Number(valuation.valuationAmount) ?? 0,
+                      user.baseCurrency
+                    )}
+                  </span>
                 )}
-              </span>
-            </div>
+              </div>
+            </Show>
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
