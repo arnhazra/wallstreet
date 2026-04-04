@@ -34,37 +34,45 @@ export class TaxAdvisorStrategy {
     return content
   }
 
-  private async runAdvisorAgent(
-    llm: ChatOpenAI<ChatOpenAICallOptions>,
-    args: TaxAdvisorStrategyType
-  ) {
-    const { thread, prompt, user } = args
-    const systemInstruction = await this.getSystemInstruction(user)
-
-    const agent = createAgent({
+  private createAdvisorAgent(llm: ChatOpenAI<ChatOpenAICallOptions>) {
+    return createAgent({
       model: llm,
       stateSchema: undefined,
     })
+  }
 
+  private buildMessages(
+    args: TaxAdvisorStrategyType,
+    systemInstruction: string
+  ) {
+    const { thread, prompt } = args
     const chatHistory = thread.flatMap((t) => [
       new HumanMessage(t.prompt),
       new AIMessage(t.response),
     ])
 
-    const { messages } = await agent.invoke({
-      messages: [
-        new SystemMessage(systemInstruction),
-        ...chatHistory,
-        new HumanMessage(prompt),
-      ],
-    })
-
-    return messages[messages.length - 1]?.content.toString()
+    return [
+      new SystemMessage(systemInstruction),
+      ...chatHistory,
+      new HumanMessage(prompt),
+    ]
   }
 
-  async advise(args: TaxAdvisorStrategyType) {
+  async *adviseStream(args: TaxAdvisorStrategyType): AsyncGenerator<string> {
     const llm = this.llmService.getLLM()
-    const response = await this.runAdvisorAgent(llm, args)
-    return { response }
+    const agent = this.createAdvisorAgent(llm)
+    const systemInstruction = await this.getSystemInstruction(args.user)
+    const messages = this.buildMessages(args, systemInstruction)
+
+    const eventStream = agent.streamEvents({ messages }, { version: "v2" })
+
+    for await (const event of eventStream) {
+      if (event.event === "on_chat_model_stream") {
+        const content = event.data?.chunk?.content
+        if (content && typeof content === "string") {
+          yield content
+        }
+      }
+    }
   }
 }

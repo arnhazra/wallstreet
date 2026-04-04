@@ -1,5 +1,6 @@
 import ky from "ky"
 const FETCH_TIMEOUT = 60_000
+const STREAM_TIMEOUT = 300000
 
 const api = ky.create({
   timeout: FETCH_TIMEOUT,
@@ -7,6 +8,18 @@ const api = ky.create({
     limit: 2,
     methods: ["get", "post", "put", "delete"],
     statusCodes: [408, 500, 502, 503, 504, 401, 403],
+    delay: (attemptCount) => {
+      return 1000 * attemptCount
+    },
+  },
+})
+
+export const streamApi = ky.create({
+  timeout: STREAM_TIMEOUT,
+  retry: {
+    limit: 2,
+    methods: ["get", "post", "put", "delete"],
+    statusCodes: [401],
     delay: (attemptCount) => {
       return 1000 * attemptCount
     },

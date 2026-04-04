@@ -69,31 +69,8 @@ export class ChatStrategy {
       .replaceAll("{solutionList}", solutionConfig)
   }
 
-  private async runChatAgent(
-    llm: ChatOpenAI<ChatOpenAICallOptions>,
-    args: ChatArgs
-  ) {
-    const {
-      thread,
-      prompt,
-      user,
-      entityDetails,
-      entityType,
-      summarizeRequest,
-    } = args
-    let systemInstruction: string = ""
-
-    if (!summarizeRequest) {
-      systemInstruction = await this.getChatSystemInstruction(user)
-    } else {
-      systemInstruction = await this.getSummarizerSystemInstruction({
-        user,
-        entityDetails,
-        entityType,
-      })
-    }
-
-    const chatAgent = createAgent({
+  private createChatAgent(llm: ChatOpenAI<ChatOpenAICallOptions>) {
+    return createAgent({
       model: llm,
       tools: [
         this.assetgroupAgent.createAssetGroupTool,
@@ -116,29 +93,51 @@ export class ChatStrategy {
       ],
       stateSchema: undefined,
     })
+  }
 
+  private async getSystemInstruction(args: ChatArgs) {
+    const { user, entityDetails, entityType, summarizeRequest } = args
+
+    if (!summarizeRequest) {
+      return this.getChatSystemInstruction(user)
+    }
+
+    return this.getSummarizerSystemInstruction({
+      user,
+      entityDetails,
+      entityType,
+    })
+  }
+
+  private buildMessages(args: ChatArgs, systemInstruction: string) {
+    const { thread, prompt } = args
     const chatHistory = thread.flatMap((t) => [
       new HumanMessage(t.prompt),
       new AIMessage(t.response),
     ])
 
-    const { messages } = await chatAgent.invoke({
-      messages: [
-        new SystemMessage(systemInstruction),
-        ...chatHistory,
-        new HumanMessage(prompt),
-      ],
-    })
-
-    return (
-      messages[messages.length - 1]?.content?.toString?.() ??
-      messages[messages.length - 1]?.content
-    )
+    return [
+      new SystemMessage(systemInstruction),
+      ...chatHistory,
+      new HumanMessage(prompt),
+    ]
   }
 
-  async chat(args: ChatArgs) {
+  async *chatStream(args: ChatArgs): AsyncGenerator<string> {
     const llm = this.llmService.getLLM()
-    const response = await this.runChatAgent(llm, args)
-    return { response }
+    const chatAgent = this.createChatAgent(llm)
+    const systemInstruction = await this.getSystemInstruction(args)
+    const messages = this.buildMessages(args, systemInstruction)
+
+    const eventStream = chatAgent.streamEvents({ messages }, { version: "v2" })
+
+    for await (const event of eventStream) {
+      if (event.event === "on_chat_model_stream") {
+        const content = event.data?.chunk?.content
+        if (content && typeof content === "string") {
+          yield content
+        }
+      }
+    }
   }
 }

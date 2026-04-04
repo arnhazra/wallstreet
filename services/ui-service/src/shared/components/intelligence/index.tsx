@@ -1,5 +1,6 @@
 "use client"
 import { useState, useRef, useEffect } from "react"
+import { flushSync } from "react-dom"
 import { Button } from "@/shared/components/ui/button"
 import { Input } from "@/shared/components/ui/input"
 import { ScrollArea } from "@/shared/components/ui/scroll-area"
@@ -19,9 +20,8 @@ import { suggestedPrompts } from "./data"
 import { Badge } from "../ui/badge"
 import { Thread } from "@/shared/constants/types"
 import IconContainer from "../icon-container"
-import { streamResponseText } from "@/shared/lib/stream-response"
+import { streamChatResponse } from "@/shared/lib/stream-response"
 import { useUserContext } from "@/context/user.provider"
-import api from "@/shared/lib/ky-api"
 import { eventEmitter } from "@/shared/event-emitter/event-emitter"
 import { EventMap } from "@/shared/event-emitter/events-map"
 import { EntityType } from "../entity-card/data"
@@ -80,34 +80,39 @@ export default function Intelligence() {
     setPrompt("")
     setLoading(true)
 
+    setMessages((prevMessages) => [...prevMessages, ""])
+
     try {
-      const res: Thread = await api
-        .post(`${endPoints.intelligence}/chat`, {
-          json: {
-            prompt: userPrompt,
-            threadId: latestThreadId ?? undefined,
-            summarizeRequest,
-            entityType,
-            entityDetails,
-          },
-        })
-        .json()
-
-      if (!latestThreadId) {
-        sessionStorage.setItem("thread_id", res.threadId)
-      }
-
-      setMessages((prevMessages) => [...prevMessages, ""])
-
-      streamResponseText(res?.response ?? "", (chunk) => {
-        setMessages((prevMessages) => {
-          const newMessages = [...prevMessages]
-          newMessages[newMessages.length - 1] = chunk
-          return newMessages
-        })
-      })
+      await streamChatResponse(
+        `${endPoints.intelligence}/chat`,
+        {
+          prompt: userPrompt,
+          threadId: latestThreadId ?? undefined,
+          summarizeRequest,
+          entityType,
+          entityDetails,
+        },
+        (token) => {
+          flushSync(() => {
+            setMessages((prevMessages) => {
+              const newMessages = [...prevMessages]
+              newMessages[newMessages.length - 1] += token
+              return newMessages
+            })
+          })
+        },
+        (threadId) => {
+          if (!latestThreadId) {
+            sessionStorage.setItem("thread_id", threadId)
+          }
+        }
+      )
     } catch (error: any) {
-      setMessages((prevMessages) => [...prevMessages, "Request timed out"])
+      setMessages((prevMessages) => {
+        const newMessages = [...prevMessages]
+        newMessages[newMessages.length - 1] = "Request timed out"
+        return newMessages
+      })
     } finally {
       setLoading(false)
     }
@@ -182,47 +187,49 @@ export default function Intelligence() {
                 ))}
               </div>
             </Show>
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex items-start space-x-2 ${
-                  index % 2 === 0 ? "justify-end" : "justify-start"
-                }`}
-              >
-                {index % 2 !== 0 && (
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-primary">
-                    <Bot className="h-4 w-4 text-white" />
-                  </div>
-                )}
-
+            {messages.map((message, index) =>
+              message === "" && index % 2 !== 0 ? null : (
                 <div
-                  className={`max-w-[80%] p-3 rounded-3xl ${
-                    index % 2 === 0 ? "text-white" : "text-neutral-100"
+                  key={index}
+                  className={`flex items-start space-x-2 ${
+                    index % 2 === 0 ? "justify-end" : "justify-start"
                   }`}
-                  style={{
-                    backgroundColor:
-                      index % 2 === 0 ? colorVars.primary : colorVars.main,
-                    border:
-                      index % 2 === 0
-                        ? "none"
-                        : `1px solid ${colorVars.border}`,
-                  }}
                 >
-                  <MarkdownRenderer key={index} markdown={message} />
-                </div>
+                  {index % 2 !== 0 && (
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-primary">
+                      <Bot className="h-4 w-4 text-white" />
+                    </div>
+                  )}
 
-                {index % 2 === 0 && (
                   <div
-                    className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: colorVars.border }}
+                    className={`max-w-[80%] p-3 rounded-3xl ${
+                      index % 2 === 0 ? "text-white" : "text-neutral-100"
+                    }`}
+                    style={{
+                      backgroundColor:
+                        index % 2 === 0 ? colorVars.primary : colorVars.main,
+                      border:
+                        index % 2 === 0
+                          ? "none"
+                          : `1px solid ${colorVars.border}`,
+                    }}
                   >
-                    <User className="h-4 w-4 text-white" />
+                    <MarkdownRenderer key={index} markdown={message} />
                   </div>
-                )}
-              </div>
-            ))}
 
-            {isLoading && (
+                  {index % 2 === 0 && (
+                    <div
+                      className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: colorVars.border }}
+                    >
+                      <User className="h-4 w-4 text-white" />
+                    </div>
+                  )}
+                </div>
+              )
+            )}
+
+            {isLoading && messages[messages.length - 1] === "" && (
               <div className="flex items-start space-x-2">
                 <div
                   className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"

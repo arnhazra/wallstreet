@@ -53,39 +53,39 @@ export class TaxAdvisorService {
     }
   }
 
-  async generateRecommendation(
+  async *generateRecommendationStream(
     aiGenerationDto: AIGenerationDto,
     userId: string
-  ) {
-    try {
-      const { prompt } = aiGenerationDto
-      const threadId =
-        aiGenerationDto.threadId ?? createOrConvertObjectId().toString()
-      const thread = await this.getThreadById(
-        threadId,
-        !aiGenerationDto.threadId
-      )
+  ): AsyncGenerator<{ type: string; data: string }> {
+    const { prompt } = aiGenerationDto
+    const threadId =
+      aiGenerationDto.threadId ?? createOrConvertObjectId().toString()
+    const thread = await this.getThreadById(threadId, !aiGenerationDto.threadId)
 
-      const user: User = (
-        await this.eventEmitter.emitAsync(AppEventMap.GetUserDetails, userId)
-      ).shift()
+    const user: User = (
+      await this.eventEmitter.emitAsync(AppEventMap.GetUserDetails, userId)
+    ).shift()
 
-      const args: TaxAdvisorStrategyType = {
-        temperature: 0.8,
-        topP: 0.8,
-        thread,
-        prompt,
-        threadId,
-        user,
-      }
-
-      const { response } = await this.strategy.advise(args)
-      await this.commandBus.execute<CreateThreadCommand, Thread>(
-        new CreateThreadCommand(String(user._id), threadId, prompt, response)
-      )
-      return { response, threadId }
-    } catch (error) {
-      throw error
+    const args: TaxAdvisorStrategyType = {
+      temperature: 0.8,
+      topP: 0.8,
+      thread,
+      prompt,
+      threadId,
+      user,
     }
+
+    yield { type: "threadId", data: threadId }
+
+    let fullResponse = ""
+
+    for await (const token of this.strategy.adviseStream(args)) {
+      fullResponse += token
+      yield { type: "token", data: token }
+    }
+
+    await this.commandBus.execute<CreateThreadCommand, Thread>(
+      new CreateThreadCommand(String(user._id), threadId, prompt, fullResponse)
+    )
   }
 }
