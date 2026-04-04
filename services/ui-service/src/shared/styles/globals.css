@@ -7,6 +7,16 @@
   --color-border: #27272a;
   --color-primary: #20d760;
   --color-secondary: #ff2056;
+  --color-neutral-950: #0a0a0a;
+  --color-neutral-900: #121212;
+  --color-neutral-800: #1e1e1e;
+  --color-neutral-700: #27272a;
+  --color-neutral-600: #3f3f46;
+  --color-neutral-500: #52525b;
+  --color-neutral-400: #71717a;
+  --color-neutral-300: #a1a1aa;
+  --color-neutral-200: #d4d4d8;
+  --color-neutral-100: #f4f4f5;
 }
 
 @layer base {
@@ -33,12 +43,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  background: #121212;
+  background: var(--color-main);
 }
 
 .auth-landing {
   background:
-    linear-gradient(to top, #121212 40%, #121212d2 100%),
+    linear-gradient(
+      to top,
+      var(--color-main) 40%,
+      color-mix(in srgb, var(--color-main) 82%, transparent) 100%
+    ),
     url("../assets/hero.jpg");
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -49,7 +63,11 @@ body {
 
 .hero-landing {
   background:
-    linear-gradient(to top, #121212 40%, #121212d2 100%),
+    linear-gradient(
+      to top,
+      var(--color-main) 40%,
+      color-mix(in srgb, var(--color-main) 82%, transparent) 100%
+    ),
     url("../assets/hero.jpg");
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -79,12 +97,6 @@ body {
   background-position:
     0 0,
     20px 20px;
-}
-
-.hexagon-shape {
-  clip-path: path(
-    "M 14.5 5.3 L 25.5 5.3 Q 28.5 5.3, 30 7.9 L 35.5 17.4 Q 37 20, 35.5 22.6 L 30 32.1 Q 28.5 34.7, 25.5 34.7 L 14.5 34.7 Q 11.5 34.7, 10 32.1 L 4.5 22.6 Q 3 20, 4.5 17.4 L 10 7.9 Q 11.5 5.3, 14.5 5.3 Z"
-  );
 }
 
 .ui-soft-gradient {

@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 4.0.1
+
+- Changed the intelligence & taxadvisor to actual stream response
+- Added CSS Variables for theme switching
+
 ## Version 4.0.0
 
 - Migrated all the services from Vercel to Azure

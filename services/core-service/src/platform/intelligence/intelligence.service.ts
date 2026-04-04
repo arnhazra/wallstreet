@@ -39,32 +39,38 @@ export class IntelligenceService {
     }
   }
 
-  async chat(chatDto: ChatDto, userId: string) {
-    try {
-      const { prompt, entityDetails, entityType, summarizeRequest } = chatDto
-      const threadId = chatDto.threadId ?? createOrConvertObjectId().toString()
-      const thread = await this.getThreadById(threadId, !chatDto.threadId)
+  async *chatStream(
+    chatDto: ChatDto,
+    userId: string
+  ): AsyncGenerator<{ type: string; data: string }> {
+    const { prompt, entityDetails, entityType, summarizeRequest } = chatDto
+    const threadId = chatDto.threadId ?? createOrConvertObjectId().toString()
+    const thread = await this.getThreadById(threadId, !chatDto.threadId)
 
-      const user: User = (
-        await this.eventEmitter.emitAsync(AppEventMap.GetUserDetails, userId)
-      ).shift()
+    const user: User = (
+      await this.eventEmitter.emitAsync(AppEventMap.GetUserDetails, userId)
+    ).shift()
 
-      const args: ChatArgs = {
-        thread,
-        prompt,
-        user,
-        entityDetails,
-        entityType,
-        summarizeRequest,
-      }
-
-      const { response } = await this.chatStrategy.chat(args)
-      await this.commandBus.execute<CreateThreadCommand, Thread>(
-        new CreateThreadCommand(String(user._id), threadId, prompt, response)
-      )
-      return { response, threadId }
-    } catch (error) {
-      throw error
+    const args: ChatArgs = {
+      thread,
+      prompt,
+      user,
+      entityDetails,
+      entityType,
+      summarizeRequest,
     }
+
+    yield { type: "threadId", data: threadId }
+
+    let fullResponse = ""
+
+    for await (const token of this.chatStrategy.chatStream(args)) {
+      fullResponse += token
+      yield { type: "token", data: token }
+    }
+
+    await this.commandBus.execute<CreateThreadCommand, Thread>(
+      new CreateThreadCommand(String(user._id), threadId, prompt, fullResponse)
+    )
   }
 }

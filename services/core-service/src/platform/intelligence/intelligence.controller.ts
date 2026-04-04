@@ -7,7 +7,9 @@ import {
   Get,
   Param,
   BadRequestException,
+  Res,
 } from "@nestjs/common"
+import { Response } from "express"
 import { IntelligenceService } from "./intelligence.service"
 import { ChatDto } from "./dto/chat.dto"
 import { AuthGuard, ModRequest } from "@/auth/auth.guard"
@@ -34,13 +36,31 @@ export class IntelligenceController {
 
   @UseGuards(AuthGuard)
   @Post("chat")
-  async chat(@Request() request: ModRequest, @Body() chatDto: ChatDto) {
+  async chat(
+    @Request() request: ModRequest,
+    @Body() chatDto: ChatDto,
+    @Res() res: Response
+  ) {
+    res.setHeader("Content-Type", "text/event-stream")
+    res.setHeader("Cache-Control", "no-cache")
+    res.setHeader("Connection", "keep-alive")
+    res.flushHeaders()
+
     try {
-      return await this.service.chat(chatDto, request.user.userId)
+      for await (const event of this.service.chatStream(
+        chatDto,
+        request.user.userId
+      )) {
+        res.write(`data: ${JSON.stringify(event)}\n\n`)
+      }
+
+      res.write("data: [DONE]\n\n")
+      res.end()
     } catch (error) {
-      throw new BadRequestException(
-        error.message || statusMessages.connectionError
+      res.write(
+        `data: ${JSON.stringify({ type: "error", data: error.message || statusMessages.connectionError })}\n\n`
       )
+      res.end()
     }
   }
 }

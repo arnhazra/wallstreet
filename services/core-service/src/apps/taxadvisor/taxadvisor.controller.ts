@@ -7,7 +7,9 @@ import {
   Get,
   Param,
   BadRequestException,
+  Res,
 } from "@nestjs/common"
+import { Response } from "express"
 import { TaxAdvisorService } from "./taxadvisor.service"
 import { AIGenerationDto } from "./dto/ai-generate.dto"
 import { AuthGuard, ModRequest } from "@/auth/auth.guard"
@@ -21,17 +23,29 @@ export class TaxAdvisorController {
   @Post()
   async generateRecommendation(
     @Request() request: ModRequest,
-    @Body() aiGenerationDto: AIGenerationDto
+    @Body() aiGenerationDto: AIGenerationDto,
+    @Res() res: Response
   ) {
+    res.setHeader("Content-Type", "text/event-stream")
+    res.setHeader("Cache-Control", "no-cache")
+    res.setHeader("Connection", "keep-alive")
+    res.flushHeaders()
+
     try {
-      return await this.service.generateRecommendation(
+      for await (const event of this.service.generateRecommendationStream(
         aiGenerationDto,
         request.user.userId
-      )
+      )) {
+        res.write(`data: ${JSON.stringify(event)}\n\n`)
+      }
+
+      res.write("data: [DONE]\n\n")
+      res.end()
     } catch (error) {
-      throw new BadRequestException(
-        error.message || statusMessages.connectionError
+      res.write(
+        `data: ${JSON.stringify({ type: "error", data: error.message || statusMessages.connectionError })}\n\n`
       )
+      res.end()
     }
   }
 
