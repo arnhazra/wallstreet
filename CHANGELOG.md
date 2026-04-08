@@ -3,6 +3,8 @@
 ## Version 4.1.0
 
 - Removed custom request analytics
+- Removed AI summarization assistant
+- Fixed text overflow issues
 
 ## Version 4.0.1
 

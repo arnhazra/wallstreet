@@ -26,10 +26,8 @@ import {
   excludedKeys,
 } from "./data"
 import api from "@/shared/lib/ky-api"
-import Show from "../show"
 import Link from "next/link"
 import { EntityType } from "../entity-card/data"
-import { useRouter } from "nextjs-toploader/app"
 
 type EntityDetailsProps = {
   entityType: EntityTypeForDetailModal
@@ -55,7 +53,6 @@ export function EntityDetails({
   const { confirm } = useConfirmContext()
   const [entityBadgeText, setEnytityBadgeText] = useState("")
   const [displayName, setDisplayName] = useState("")
-  const router = useRouter()
 
   useEffect(() => {
     switch (entityType) {
@@ -161,7 +158,8 @@ export function EntityDetails({
                     key.includes("Date") || key === "nextExecutionAt",
                     isAmount(key as keyof Asset),
                     user.baseCurrency,
-                    key.includes("Rate")
+                    key.includes("Rate"),
+                    key.includes("identifier") || key === "_id"
                   )}
                 </div>
               ))}

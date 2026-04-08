@@ -14,7 +14,8 @@ export function formatValue(
   isDate: boolean,
   isCurrency: boolean,
   baseCurrency: Currency,
-  isPercentage: boolean
+  isPercentage: boolean,
+  isIdentifier: boolean
 ) {
   if (typeof value === "boolean") {
     return value ? "Yes" : "No"
@@ -26,6 +27,13 @@ export function formatValue(
 
   if (isPercentage) {
     return `${Number(value).toFixed(2)} %`
+  }
+
+  if (isIdentifier) {
+    if (!value || value.length <= 8) {
+      return value
+    }
+    return `${value?.substring(0, 3)}...${value?.substring(value?.length - 3)}`
   }
 
   if (isDate && typeof value === "string") {
