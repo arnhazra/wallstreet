@@ -1,4 +1,4 @@
-const fallbackColor = "#20d760"
+const fallbackColor = "#00da4e"
 
 const cssVar = (variable: string): string => {
   if (typeof document !== "undefined") {
