@@ -9,7 +9,7 @@ export const endPoints = {
   updateAttribute: `${CORE_SERVICE_URL_BY_ENV}/auth/attribute`,
   // Platform Service
   getConfig: `${CORE_SERVICE_URL_BY_ENV}/platform/config`,
-  intelligence: `${CORE_SERVICE_URL_BY_ENV}/platform/intelligence`,
+  cowork: `${CORE_SERVICE_URL_BY_ENV}/platform/cowork`,
   widgets: `${CORE_SERVICE_URL_BY_ENV}/platform/widgets`,
   // Apps Service
   assetgroup: `${CORE_SERVICE_URL_BY_ENV}/apps/assetmanager/assetgroup`,

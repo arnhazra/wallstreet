@@ -28,7 +28,7 @@ import HTTPMethods from "@/shared/constants/http-methods"
 import { colorVars } from "@/shared/styles/color-vars"
 import { PLATFORM_NAME } from "@/shared/constants/config"
 
-export default function Intelligence() {
+export default function Cowork() {
   const [isOpen, setIsOpen] = useState(false)
   const [{ user }] = useUserContext()
   const [prompt, setPrompt] = useState("")
@@ -39,7 +39,7 @@ export default function Intelligence() {
 
   const thread = useQuery<Thread[]>({
     queryKey: ["get-thread", threadId ?? ""],
-    queryUrl: `${endPoints.intelligence}/thread/${threadId}`,
+    queryUrl: `${endPoints.cowork}/thread/${threadId}`,
     method: HTTPMethods.GET,
     suspense: false,
     enabled: threadId !== null,
@@ -68,7 +68,7 @@ export default function Intelligence() {
 
     try {
       await streamChatResponse(
-        `${endPoints.intelligence}/chat`,
+        `${endPoints.cowork}/chat`,
         {
           prompt: userPrompt,
           threadId: latestThreadId ?? undefined,
@@ -105,7 +105,7 @@ export default function Intelligence() {
   }
 
   return (
-    <Show condition={user.useIntelligence}>
+    <Show condition={user.useCowork}>
       <Button
         onClick={() => setIsOpen(true)}
         variant="default"
@@ -147,7 +147,7 @@ export default function Intelligence() {
                     <Sparkle className="h-4 w-4" />
                   </IconContainer>
                 </div>
-                <p className="text-white">{PLATFORM_NAME} Intelligence</p>
+                <p className="text-white">{PLATFORM_NAME} Cowork</p>
                 <p className="text-xs mt-2 text-theme-300 p-6">
                   {uiConstants.aiSafetyStatement}
                 </p>

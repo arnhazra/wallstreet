@@ -10,14 +10,14 @@ import {
   Res,
 } from "@nestjs/common"
 import { Response } from "express"
-import { IntelligenceService } from "./intelligence.service"
+import { CoworkService } from "./cowork.service"
 import { ChatDto } from "./dto/chat.dto"
 import { AuthGuard, ModRequest } from "@/auth/auth.guard"
 import { statusMessages } from "@/shared/constants/status-messages"
 
-@Controller("platform/intelligence")
-export class IntelligenceController {
-  constructor(private readonly service: IntelligenceService) {}
+@Controller("platform/cowork")
+export class CoworkController {
+  constructor(private readonly service: CoworkService) {}
 
   @UseGuards(AuthGuard)
   @Get("thread/:threadId")

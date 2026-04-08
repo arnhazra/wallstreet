@@ -89,14 +89,14 @@ export default function Page() {
 
   const viewAIDataAgreement = async (from: string) => {
     const consent = await confirm({
-      title: `${PLATFORM_NAME} Intelligence Data Agreement`,
-      desc: uiConstants.useIntelligenceStatement,
+      title: `${PLATFORM_NAME} Cowork Data Agreement`,
+      desc: uiConstants.useCoworkStatement,
     })
 
     if (from === "switch" && !consent) {
-      updateAttribute("useIntelligence", false)
+      updateAttribute("useCowork", false)
     } else {
-      updateAttribute("useIntelligence", true)
+      updateAttribute("useCowork", true)
     }
   }
 
@@ -154,7 +154,7 @@ export default function Page() {
               <Sparkle className="h-4 w-4" />
             </IconContainer>
           }
-          title={`${PLATFORM_NAME} Intelligence`}
+          title={`${PLATFORM_NAME} Cowork`}
           content={
             <>
               An Intelligent system integrated deeply within {PLATFORM_NAME}{" "}
@@ -163,10 +163,10 @@ export default function Page() {
           }
           actionComponents={[
             <Switch
-              checked={user.useIntelligence}
+              checked={user.useCowork}
               onCheckedChange={(value) => {
                 if (!value) {
-                  updateAttribute("useIntelligence", value)
+                  updateAttribute("useCowork", value)
                 } else {
                   viewAIDataAgreement("switch")
                 }
@@ -180,7 +180,7 @@ export default function Page() {
               <Leaf className="h-4 w-4" />
             </IconContainer>
           }
-          title="Optimize API Calls"
+          title="Reduce Carbon Footprint"
           content={`Turn this settings on to reduce carbon footprints inside ${PLATFORM_NAME} by optimizing API calls`}
           actionComponents={[
             <Switch

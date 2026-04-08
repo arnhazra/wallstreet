@@ -101,5 +101,3 @@ The platform is modular, with each app solving a specific financial problem:
 - Scalable and extensible system
 - Multi-asset and multi-currency support
 - Open-source and developer-friendly
-
----

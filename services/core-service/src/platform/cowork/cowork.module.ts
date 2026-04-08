@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common"
-import { IntelligenceService } from "./intelligence.service"
-import { IntelligenceController } from "./intelligence.controller"
+import { CoworkService } from "./cowork.service"
+import { CoworkController } from "./cowork.controller"
 import { CqrsModule } from "@nestjs/cqrs"
 import { GeneralDbConnectionMap } from "@/shared/entity/entity-db-connection.map"
 import { Thread, ThreadSchema } from "./schemas/thread.schema"
 import { CreateThreadCommandHandler } from "./commands/handler/create-thread.handler"
-import { IntelligenceRepository } from "./intelligence.repository"
+import { CoworkRepository } from "./cowork.repository"
 import { EntityModule } from "@/shared/entity/entity.module"
 import { FetchThreadByIdQueryHandler } from "./queries/handler/fetch-thread-by-id.handler"
 import { HttpModule } from "@nestjs/axios"
@@ -32,10 +32,10 @@ import { EventAgent } from "./agents/event.agent"
       GeneralDbConnectionMap.Platform
     ),
   ],
-  controllers: [IntelligenceController],
+  controllers: [CoworkController],
   providers: [
-    IntelligenceService,
-    IntelligenceRepository,
+    CoworkService,
+    CoworkRepository,
     ChatStrategy,
     AssetGroupAgent,
     AssetAgent,
@@ -48,4 +48,4 @@ import { EventAgent } from "./agents/event.agent"
     FetchThreadByIdQueryHandler,
   ],
 })
-export class IntelligenceModule {}
+export class CoworkModule {}

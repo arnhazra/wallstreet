@@ -3,7 +3,7 @@ import { config } from "@/config"
 import { GeneralDbConnectionMap } from "@/shared/entity/entity-db-connection.map"
 import { EntityModule } from "@/shared/entity/entity.module"
 import { ConfigModule } from "./config/config.module"
-import { IntelligenceModule } from "./intelligence/intelligence.module"
+import { CoworkModule } from "./cowork/cowork.module"
 import { WidgetModule } from "./widget/widget.module"
 
 @Module({
@@ -13,7 +13,7 @@ import { WidgetModule } from "./widget/widget.module"
       GeneralDbConnectionMap.Platform
     ),
     ConfigModule,
-    IntelligenceModule,
+    CoworkModule,
     WidgetModule,
   ],
 })

@@ -25,7 +25,7 @@ export const uiConstants = {
   newsFallbackImageUrl:
     "https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=512",
   aiSafetyStatement: `This is a Generative AI Agent integrated within ${PLATFORM_NAME} and this may make mistakes. Please review results carefully.`,
-  useIntelligenceStatement: `By enabling ${PLATFORM_NAME} Intelligence, you agree to allow ${PLATFORM_NAME} the system to process certain data to provide AI-powered 
+  useCoworkStatement: `By enabling ${PLATFORM_NAME} Cowork, you agree to allow ${PLATFORM_NAME} the system to process certain data to provide AI-powered 
       enhancements. We want to be completely clear about what that means, what is and isn't shared, and how your information is handled.
       When you use AI features, the app may send text or structured data to a language model so it can analyze, summarize, 
       or generate helpful responses. This processing happens securely and is designed to improve your experience for example, 

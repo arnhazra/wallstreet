@@ -20,7 +20,7 @@ const initialState: UserState = {
     reduceCarbonEmissions: true,
     role: "",
     avatar: null,
-    useIntelligence: false,
+    useCowork: false,
   },
   searchKeyword: "",
 }

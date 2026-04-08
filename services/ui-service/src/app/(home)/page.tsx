@@ -120,7 +120,7 @@ export default function Page() {
             <SolutionCard
               key={solution.displayName}
               solution={solution}
-              ai={solution.displayName.includes("Intelligence")}
+              ai={solution.displayName.includes("Cowork")}
             />
           ))}
         </div>
