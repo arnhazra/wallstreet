@@ -8,7 +8,7 @@ import {
 } from "@/shared/entity/entity.repository"
 
 @Injectable()
-export class TaxAdvisorRepository extends EntityRepository<Thread> {
+export class TaxRepository extends EntityRepository<Thread> {
   constructor(
     @InjectEntityModel(Thread.name, DbConnectionMap.Resource)
     private threadModel: EntityModel<Thread>

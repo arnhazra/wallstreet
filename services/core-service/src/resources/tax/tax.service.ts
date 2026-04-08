@@ -7,19 +7,16 @@ import { AppEventMap } from "@/shared/constants/app-events.map"
 import { AIGenerationDto } from "./dto/ai-generate.dto"
 import { FetchThreadByIdQuery } from "./queries/impl/fetch-thread-by-id.query"
 import { FetchThreadsByUserIdQuery } from "./queries/impl/fetch-threads-by-user-id.query"
-import {
-  TaxAdvisorStrategy,
-  TaxAdvisorStrategyType,
-} from "./taxadvisor.strategy"
+import { TaxStrategy, TaxStrategyType } from "./tax.strategy"
 import { User } from "@/auth/schemas/user.schema"
 import { createOrConvertObjectId } from "@/shared/entity/entity.schema"
 
 @Injectable()
-export class TaxAdvisorService {
+export class TaxService {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
-    private readonly strategy: TaxAdvisorStrategy,
+    private readonly strategy: TaxStrategy,
     private readonly eventEmitter: EventEmitter2
   ) {}
 
@@ -66,7 +63,7 @@ export class TaxAdvisorService {
       await this.eventEmitter.emitAsync(AppEventMap.GetUserDetails, userId)
     ).shift()
 
-    const args: TaxAdvisorStrategyType = {
+    const args: TaxStrategyType = {
       temperature: 0.8,
       topP: 0.8,
       thread,

@@ -7,7 +7,7 @@ import {
   ObjectIdType,
 } from "@/shared/entity/entity.schema"
 
-@Entity({ collection: "taxadvisor-threads" })
+@Entity({ collection: "taxthreads" })
 export class Thread extends IdentifiableEntitySchmea {
   @EntityProp({ type: ObjectIdType, required: true })
   readonly threadId: ObjectId

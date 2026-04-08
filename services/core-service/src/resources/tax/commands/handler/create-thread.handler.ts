@@ -1,11 +1,11 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs"
-import { TaxAdvisorRepository } from "../../taxadvisor.repository"
+import { TaxRepository } from "../../tax.repository"
 import { CreateThreadCommand } from "../impl/create-thread.command"
 import { createOrConvertObjectId } from "@/shared/entity/entity.schema"
 
 @CommandHandler(CreateThreadCommand)
 export class CreateThreadCommandHandler implements ICommandHandler<CreateThreadCommand> {
-  constructor(private readonly repository: TaxAdvisorRepository) {}
+  constructor(private readonly repository: TaxRepository) {}
 
   async execute(command: CreateThreadCommand) {
     const { userId, threadId, prompt, response } = command

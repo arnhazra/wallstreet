@@ -10,14 +10,14 @@ import {
   Res,
 } from "@nestjs/common"
 import { Response } from "express"
-import { TaxAdvisorService } from "./taxadvisor.service"
+import { TaxService } from "./tax.service"
 import { AIGenerationDto } from "./dto/ai-generate.dto"
 import { AuthGuard, ModRequest } from "@/auth/auth.guard"
 import { statusMessages } from "@/shared/constants/status-messages"
 
-@Controller("resource/taxadvisor")
-export class TaxAdvisorController {
-  constructor(private readonly service: TaxAdvisorService) {}
+@Controller("resource/tax")
+export class TaxController {
+  constructor(private readonly service: TaxService) {}
 
   @UseGuards(AuthGuard)
   @Post()

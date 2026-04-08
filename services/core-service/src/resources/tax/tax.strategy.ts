@@ -7,7 +7,7 @@ import { LLMService } from "@/shared/llm/llm.service"
 import { ChatOpenAI, ChatOpenAICallOptions } from "@langchain/openai"
 import { ConfigService } from "@/platform/config/config.service"
 
-export interface TaxAdvisorStrategyType {
+export interface TaxStrategyType {
   temperature: number
   topP: number
   thread: Thread[]
@@ -17,16 +17,14 @@ export interface TaxAdvisorStrategyType {
 }
 
 @Injectable()
-export class TaxAdvisorStrategy {
+export class TaxStrategy {
   constructor(
     private readonly configService: ConfigService,
     private readonly llmService: LLMService
   ) {}
 
   private async getSystemInstruction(user: User) {
-    const data = await this.configService.getConfig(
-      "taxadvisor-system-instruction"
-    )
+    const data = await this.configService.getConfig("tax-system-instruction")
     const content = data
       .replaceAll("{platformName}", config.PLATFORM_NAME)
       .replaceAll("{todaysDate}", new Date().toString())
@@ -41,10 +39,7 @@ export class TaxAdvisorStrategy {
     })
   }
 
-  private buildMessages(
-    args: TaxAdvisorStrategyType,
-    systemInstruction: string
-  ) {
+  private buildMessages(args: TaxStrategyType, systemInstruction: string) {
     const { thread, prompt } = args
     const chatHistory = thread.flatMap((t) => [
       new HumanMessage(t.prompt),
@@ -58,7 +53,7 @@ export class TaxAdvisorStrategy {
     ]
   }
 
-  async *adviseStream(args: TaxAdvisorStrategyType): AsyncGenerator<string> {
+  async *adviseStream(args: TaxStrategyType): AsyncGenerator<string> {
     const llm = this.llmService.getLLM()
     const agent = this.createAdvisorAgent(llm)
     const systemInstruction = await this.getSystemInstruction(args.user)

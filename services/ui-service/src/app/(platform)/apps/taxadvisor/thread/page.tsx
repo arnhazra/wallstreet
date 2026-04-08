@@ -31,7 +31,7 @@ export default function Page() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const thread = useQuery<Thread[]>({
     queryKey: ["get-thread", tId ?? ""],
-    queryUrl: `${endPoints.taxAdvisor}/${tId}`,
+    queryUrl: `${endPoints.tax}/${tId}`,
     method: HTTPMethods.GET,
     suspense: false,
     enabled: tId !== null,
@@ -68,7 +68,7 @@ export default function Page() {
 
     try {
       await streamChatResponse(
-        `${endPoints.taxAdvisor}`,
+        `${endPoints.tax}`,
         { prompt, threadId: threadId ?? undefined },
         (token) => {
           flushSync(() => {

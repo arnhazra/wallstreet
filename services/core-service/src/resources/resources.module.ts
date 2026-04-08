@@ -3,7 +3,7 @@ import { DebtModule } from "./debt/debt.module"
 import { GoalModule } from "./goal/goal.module"
 import { NewsModule } from "./news/news.module"
 import { ExpenseModule } from "./expense/expense.module"
-import { TaxAdvisorModule } from "./taxadvisor/taxadvisor.module"
+import { TaxModule } from "./tax/tax.module"
 import { CashFlowModule } from "./cashflow/cashflow.module"
 import { EventModule } from "./event/event.module"
 import { EntityModule } from "@/shared/entity/entity.module"
@@ -25,7 +25,7 @@ import { AssetModule } from "./asset/asset.module"
     DebtModule,
     CashFlowModule,
     EventModule,
-    TaxAdvisorModule,
+    TaxModule,
     NewsModule,
   ],
 })

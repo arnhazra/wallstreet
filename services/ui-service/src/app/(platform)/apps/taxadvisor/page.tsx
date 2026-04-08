@@ -9,7 +9,7 @@ import { EntityType } from "@/shared/components/entity-card/data"
 export default function Page() {
   const threads = useQuery<Thread[]>({
     queryKey: ["get-taxadvisor-threads"],
-    queryUrl: `${endPoints.taxAdvisor}/getthreads`,
+    queryUrl: `${endPoints.tax}/getthreads`,
     method: HTTPMethods.GET,
   })
 

@@ -1,12 +1,12 @@
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs"
-import { TaxAdvisorRepository } from "../../taxadvisor.repository"
+import { TaxRepository } from "../../tax.repository"
 import { FetchThreadsByUserIdQuery } from "../impl/fetch-threads-by-user-id.query"
 import { createOrConvertObjectId } from "@/shared/entity/entity.schema"
 import { Thread } from "../../schemas/thread.schema"
 
 @QueryHandler(FetchThreadsByUserIdQuery)
 export class FetchThreadsByUserIdQueryHandler implements IQueryHandler<FetchThreadsByUserIdQuery> {
-  constructor(private readonly repository: TaxAdvisorRepository) {}
+  constructor(private readonly repository: TaxRepository) {}
 
   async execute(query: FetchThreadsByUserIdQuery): Promise<Thread[]> {
     const { userId } = query

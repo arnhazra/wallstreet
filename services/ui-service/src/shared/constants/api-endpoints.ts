@@ -18,7 +18,7 @@ export const endPoints = {
   goal: `${CORE_SERVICE_URL_BY_ENV}/resource/goal`,
   news: `${CORE_SERVICE_URL_BY_ENV}/resource/news`,
   expense: `${CORE_SERVICE_URL_BY_ENV}/resource/expense`,
-  taxAdvisor: `${CORE_SERVICE_URL_BY_ENV}/resource/taxadvisor`,
+  tax: `${CORE_SERVICE_URL_BY_ENV}/resource/tax`,
   cashflow: `${CORE_SERVICE_URL_BY_ENV}/resource/cashflow`,
   events: `${CORE_SERVICE_URL_BY_ENV}/resource/event`,
 }
