@@ -43,14 +43,8 @@ export class AuthGuard implements CanActivate {
         throw new UnauthorizedException(statusMessages.invalidUser)
       }
 
-      const { analyticsData, role } = userResponse.shift()
+      const { role } = userResponse.shift()
       request.user = { userId, role }
-      const { method, url: apiUri } = request
-      this.eventEmitter.emit(AppEventMap.CreateAnalytics, {
-        userId: analyticsData ? userId : null,
-        method,
-        apiUri,
-      })
       return true
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {

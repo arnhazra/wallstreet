@@ -177,23 +177,6 @@ export default function Page() {
         <SectionPanel
           icon={
             <IconContainer>
-              <PieChart className="h-4 w-4" />
-            </IconContainer>
-          }
-          title={`${PLATFORM_NAME} Analytics`}
-          content="Choose whether to save the things you do"
-          actionComponents={[
-            <Switch
-              checked={user.analyticsData}
-              onCheckedChange={(value): Promise<void> =>
-                updateAttribute("analyticsData", value)
-              }
-            />,
-          ]}
-        />
-        <SectionPanel
-          icon={
-            <IconContainer>
               <Leaf className="h-4 w-4" />
             </IconContainer>
           }

@@ -1,6 +1,5 @@
 export enum AppEventMap {
   // General Events
-  CreateAnalytics = "createAnalytics",
   GetUserDetails = "getUserDetails",
   // AssetManager Events
   CreateAssetGroup = "createAssetGroup",

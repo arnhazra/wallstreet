@@ -27,9 +27,6 @@ export class User extends IdentifiableEntitySchmea {
   reduceCarbonEmissions: boolean
 
   @EntityProp({ type: Boolean, default: true })
-  analyticsData: boolean
-
-  @EntityProp({ type: Boolean, default: true })
   useIntelligence: boolean
 }
 

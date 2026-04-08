@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 4.1.0
+
+- Removed custom request analytics
+
 ## Version 4.0.1
 
 - Changed the intelligence & taxadvisor to actual stream response

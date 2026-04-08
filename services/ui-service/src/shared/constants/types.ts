@@ -40,7 +40,6 @@ export interface User {
   baseCurrency: Currency
   avatar?: string | null
   reduceCarbonEmissions: boolean
-  analyticsData: boolean
   useIntelligence: boolean
   createdAt: string
 }
