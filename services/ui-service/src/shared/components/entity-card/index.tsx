@@ -41,7 +41,6 @@ import { formatDate } from "@/shared/lib/date-formatter"
 import { EntityDetails } from "../entity-details"
 import { EntityTypeForDetailModal } from "../entity-details/data"
 import { createEntityUrlMap, EntityMap, EntityType } from "./data"
-import IntelligenceSummarizer from "../intelligence/summarizer"
 import { uiConstants } from "@/shared/constants/global-constants"
 import { useRouter } from "nextjs-toploader/app"
 import MaskText from "../mask"
@@ -275,11 +274,6 @@ export function EntityCard<T extends keyof EntityMap>({
                 </span>
               )}
             </div>
-            <IntelligenceSummarizer
-              entityDetails={JSON.stringify(entity)}
-              entityType={entityType}
-              entityName={enityTitle}
-            />
           </div>
         </CardContent>
         <CardFooter className="pt-0">
@@ -321,9 +315,9 @@ export function EntityCard<T extends keyof EntityMap>({
             )
           }
         }}
-        className="bg-background/2 border h-[15rem] backdrop-blur-sm border-border p-2 rounded-3xl hover:shadow-lg hover:shadow-primary/20 cursor-pointer"
+        className="bg-background/2 border h-[11rem] backdrop-blur-sm border-border p-2 rounded-3xl hover:shadow-lg hover:shadow-primary/20 cursor-pointer"
       >
-        <CardHeader className="flex mt-6 items-start gap-2">
+        <CardHeader className="flex mt-5 items-start gap-2">
           <div className="flex min-w-0 flex-1 gap-2">
             <h2 className=" text-xl truncate break-all">{enityTitle}</h2>
             <div className="mt-1 shrink-0">
@@ -403,19 +397,6 @@ export function EntityCard<T extends keyof EntityMap>({
             </Show>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <span className="flex gap-2">
-            <HistoryIcon className="h-4 w-4" />
-            <p className="text-xs">{displayDate}</p>
-          </span>
-          <div onClick={(e) => e.stopPropagation()}>
-            <IntelligenceSummarizer
-              entityDetails={JSON.stringify(entity)}
-              entityType={entityType}
-              entityName={enityTitle}
-            />
-          </div>
-        </CardFooter>
       </Card>
     </EntityDetails>
   )
@@ -424,7 +405,7 @@ export function EntityCard<T extends keyof EntityMap>({
 export function AddEntityCard({ entityType }: { entityType: EntityType }) {
   return (
     <Link href={createEntityUrlMap[entityType] ?? ""}>
-      <Card className="bg-background/2 flex flex-row h-[15rem] items-center justify-center backdrop-blur-sm border border-border rounded-3xl relative overflow-hidden hover:shadow-md hover:shadow-primary/20">
+      <Card className="bg-background/2 flex flex-row h-[11rem] items-center justify-center backdrop-blur-sm border border-border rounded-3xl relative overflow-hidden hover:shadow-md hover:shadow-primary/20">
         <IconContainer>
           <Plus className="w-4 h-4" />
         </IconContainer>

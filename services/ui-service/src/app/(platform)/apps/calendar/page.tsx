@@ -22,7 +22,6 @@ import HTTPMethods from "@/shared/constants/http-methods"
 import { EventModal } from "@/shared/components/event-modal"
 import Link from "next/link"
 import { buildQueryUrl } from "@/shared/lib/build-url"
-import IntelligenceSummarizer from "@/shared/components/intelligence/summarizer"
 import { EntityType } from "@/shared/components/entity-card/data"
 
 export default function CalendarPage() {
@@ -101,11 +100,6 @@ export default function CalendarPage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <IntelligenceSummarizer
-              entityType={EntityType.CALENDAR_EVENT}
-              entityDetails={`Summarize only for month: ${selectedMonth} - ${JSON.stringify(events.data)}`}
-              entityName={`calendar events for ${format(currentDate, "MMM, yyyy")}`}
-            />
             <Link href="/apps/calendar/addorupdateevent">
               <Button
                 size="sm"

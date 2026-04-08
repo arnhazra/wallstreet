@@ -22,8 +22,6 @@ import { Thread } from "@/shared/constants/types"
 import IconContainer from "../icon-container"
 import { streamChatResponse } from "@/shared/lib/stream-response"
 import { useUserContext } from "@/context/user.provider"
-import { eventEmitter } from "@/shared/event-emitter/event-emitter"
-import { EventMap } from "@/shared/event-emitter/events-map"
 import { EntityType } from "../entity-card/data"
 import useQuery from "@/shared/hooks/use-query"
 import HTTPMethods from "@/shared/constants/http-methods"
@@ -59,15 +57,6 @@ export default function Intelligence() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
-
-  useEffect(() => {
-    eventEmitter.on(EventMap.Summarize, (data) => {
-      const { entityType, entityDetails, entityName } = data || {}
-      const summarizePrompt = `Summarize the ${entityName} ${entityType} and give me insights.`
-      setIsOpen(true)
-      invokeChatAPI(summarizePrompt, true, entityType, entityDetails)
-    })
-  }, [])
 
   const invokeChatAPI = async (
     userPrompt: string,
