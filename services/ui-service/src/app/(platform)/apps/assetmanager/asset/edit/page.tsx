@@ -53,7 +53,7 @@ interface AssetFormData {
   contributionAmount?: number
   contributionFrequency?: RecurringFrequency
   valuationOnPurchase?: number
-  currentValuation?: number
+  currentValuation?: number | null
   units?: number
   unitPurchasePrice?: number
 }
@@ -110,7 +110,7 @@ export default function Page() {
     }
 
     if (asset.data) {
-      const { currentValuation, _id, userId, ...otherValues } = asset.data
+      const { _id, userId, ...otherValues } = asset.data
       setFormData(otherValues)
     }
   }, [asset.data, asset.error, asset.isLoading])

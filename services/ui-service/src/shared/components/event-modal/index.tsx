@@ -61,7 +61,7 @@ export function EventModal({
           </div>
         </AlertDialogHeader>
         {events && events.length > 0 ? (
-          <ul className="space-y-2">
+          <ul className="space-y-2 max-h-64 overflow-y-auto">
             {events.map((event, idx) => (
               <SectionPanel
                 key={event._id}
