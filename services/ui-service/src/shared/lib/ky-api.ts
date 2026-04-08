@@ -1,9 +1,11 @@
 import ky from "ky"
+import { CORE_SERVICE_URL_BY_ENV } from "../constants/config"
 const FETCH_TIMEOUT = 60_000
 const STREAM_TIMEOUT = 300000
 
 const api = ky.create({
   timeout: FETCH_TIMEOUT,
+  baseUrl: CORE_SERVICE_URL_BY_ENV,
   retry: {
     limit: 2,
     methods: ["get", "post", "put", "delete"],
@@ -16,6 +18,7 @@ const api = ky.create({
 
 export const streamApi = ky.create({
   timeout: STREAM_TIMEOUT,
+  baseUrl: CORE_SERVICE_URL_BY_ENV,
   retry: {
     limit: 2,
     methods: ["get", "post", "put", "delete"],
