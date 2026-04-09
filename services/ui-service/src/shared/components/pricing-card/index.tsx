@@ -3,6 +3,7 @@ import { Plan } from "@/shared/constants/types"
 import { Button } from "../ui/button"
 import Link from "next/link"
 import IconContainer from "../icon-container"
+import { fraunces } from "@/app/layout"
 
 interface PricingCardProps {
   plan: Plan
@@ -20,7 +21,9 @@ export function PricingCard({ plan }: PricingCardProps) {
             <Icon className="h-6 w-6" />
           </IconContainer>
         </div>
-        <h2 className="text-3xl font-semibold">{plan.name}</h2>
+        <h2 className={`text-4xl font-medium ${fraunces.className}`}>
+          {plan.name}
+        </h2>
         <p className="text-xl font-bold mt-4">
           ${plan.price}
           <span className="text-sm font-normal text-muted-foreground">

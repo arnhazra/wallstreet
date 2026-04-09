@@ -1,6 +1,6 @@
 "use client"
 import { usePlatformConfig } from "@/context/platformconfig.provider"
-import { BoxIcon, Lightbulb, ArrowRightCircle } from "lucide-react"
+import { ArrowRightCircle } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/shared/lib/utils"
 import { buttonVariants } from "@/shared/components/ui/button"
@@ -10,9 +10,9 @@ import { useRouter } from "nextjs-toploader/app"
 import { useEffect, useState } from "react"
 import Cookies from "js-cookie"
 import HomePageHeader from "@/shared/components/homepage-header"
-import { Badge } from "@/shared/components/ui/badge"
 import { FeatureCard } from "@/shared/components/feature-card"
 import { PricingCard } from "@/shared/components/pricing-card"
+import { fraunces } from "../layout"
 
 export default function Page() {
   const router = useRouter()
@@ -45,50 +45,52 @@ export default function Page() {
     </section>
   )
 
-  const renderAppsSection = (
+  const renderFeaturesSection = (
     <section
-      id="apps"
-      className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 space-y-6 py-8 md:py-12 lg:py-24"
+      id="features"
+      className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 space-y-6 py-8 md:py-12 lg:py-24 lg:rounded-3xl"
     >
       <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-        <Badge className="p-2 ps-4 pe-4 text-md bg-background text-primary border border-border rounded-full shadow-md shadow-primary/20">
-          <BoxIcon className="h-4 w-4 me-2" />
-          {platformConfig?.appConfig?.title}
-        </Badge>
+        <h1
+          className={`${fraunces.className} font-semibold text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-6 tracking-wide`}
+        >
+          {platformConfig?.featureConfig.title}
+        </h1>
         <p className="max-w-[85%] leading-normal sm:text-lg sm:leading-7">
-          {platformConfig?.appConfig?.description}
+          {platformConfig?.featureConfig?.desc}
         </p>
       </div>
       <div className="mx-auto grid justify-center gap-4 sm:grid-cols-1 md:max-w-[35rem] md:grid-cols-1 lg:max-w-[50rem] lg:grid-cols-2 xl:max-w-[68rem] xl:grid-cols-3">
-        {platformConfig?.appConfig?.apps?.map((app) => (
-          <AppCard key={app.appName} app={app} />
+        {platformConfig?.featureConfig?.features?.map((feature: any) => (
+          <FeatureCard
+            key={feature.displayName}
+            feature={feature}
+            ai={feature.displayName.includes("Cowork")}
+          />
         ))}
       </div>
     </section>
   )
 
-  const renderFeaturesSection = (
+  const renderAppsSection = (
     <div className="bg-geometric-pattern">
       <section
-        id="features"
-        className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 space-y-6 py-8 md:py-12 lg:py-24 lg:rounded-3xl "
+        id="apps"
+        className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 space-y-6 py-8 md:py-12 lg:py-24"
       >
         <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-          <Badge className="p-2 ps-4 pe-4 text-md bg-background text-primary border border-border rounded-full shadow-md shadow-primary/20">
-            <Lightbulb className="h-4 w-4 me-2" />
-            {platformConfig?.featureConfig.title}
-          </Badge>
+          <h1
+            className={`${fraunces.className} font-semibold text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-6 tracking-wide`}
+          >
+            {platformConfig?.appConfig.title}
+          </h1>
           <p className="max-w-[85%] leading-normal sm:text-lg sm:leading-7">
-            {platformConfig?.featureConfig?.desc}
+            {platformConfig?.appConfig?.description}
           </p>
         </div>
         <div className="mx-auto grid justify-center gap-4 sm:grid-cols-1 md:max-w-[35rem] md:grid-cols-1 lg:max-w-[50rem] lg:grid-cols-2 xl:max-w-[68rem] xl:grid-cols-3">
-          {platformConfig?.featureConfig?.features?.map((feature: any) => (
-            <FeatureCard
-              key={feature.displayName}
-              feature={feature}
-              ai={feature.displayName.includes("Cowork")}
-            />
+          {platformConfig?.appConfig?.apps?.map((app) => (
+            <AppCard key={app.appName} app={app} />
           ))}
         </div>
       </section>
@@ -99,9 +101,11 @@ export default function Page() {
     <section id="pricing" className="py-8 md:py-12 lg:py-24">
       <div className="mx-auto max-w-[70rem] px-4 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-[64rem] flex-col items-center justify-center text-center mb-8">
-          <Badge className="mb-4 p-2 ps-4 pe-4 text-md bg-background text-primary border border-border rounded-full shadow-md shadow-primary/20">
+          <h1
+            className={`${fraunces.className} font-semibold text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-6 tracking-wide`}
+          >
             {platformConfig?.subscriptionConfig?.title}
-          </Badge>
+          </h1>
           <p className="max-w-[85%] leading-normal sm:text-lg sm:leading-7 mb-2">
             {platformConfig?.subscriptionConfig?.desc}
           </p>
@@ -145,8 +149,8 @@ export default function Page() {
       <div className="min-h-screen w-full text-white">
         <HomePageHeader />
         {renderHeroSection}
-        {renderAppsSection}
         {renderFeaturesSection}
+        {renderAppsSection}
         {renderSubscriptionSection}
       </div>
       {renderFooterSection}
