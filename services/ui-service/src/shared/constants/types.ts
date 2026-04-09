@@ -184,13 +184,13 @@ export interface CalendarEvent {
   eventSource: string
 }
 
-interface HomeConfig {
+export interface HomeConfig {
   title: string
   description: string
   getStartedUrl: string
 }
 
-interface App {
+export interface App {
   appName: string
   displayName: string
   description: string
@@ -211,7 +211,7 @@ export interface Feature {
   icon: string
 }
 
-interface FeatureConfig {
+export interface FeatureConfig {
   title: string
   desc: string
   features: Feature[]
@@ -224,7 +224,7 @@ export interface Widget {
   additionalInfo: string
 }
 
-interface WidgetConfig {
+export interface WidgetConfig {
   title: string
   desc: string
   widgets: Widget[]
@@ -237,19 +237,19 @@ export interface Plan {
   features: string[]
 }
 
-interface SubscriptionConfig {
+export interface SubscriptionConfig {
   title: string
   desc: string
   plans: Plan[]
 }
 
-interface NavigationItem {
+export interface NavigationItem {
   displayName: string
   link: string
   external?: boolean
 }
 
-interface HomeNavigationConfig {
+export interface HomeNavigationConfig {
   navigationItems: NavigationItem[]
 }
 

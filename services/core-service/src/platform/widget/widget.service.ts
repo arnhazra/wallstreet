@@ -35,7 +35,9 @@ export class WidgetService {
       const goalPercentage =
         ((assetData ?? 0) * 100) / (goalData ? goalData?.goalAmount : 0) || 0
 
-      const widgetConfig = await this.configService.getConfig("widget-config")
+      const platformConfig =
+        await this.configService.getConfig("platform-config")
+      const widgetConfig = platformConfig.widgetConfig
       const stringifiedWidgetConfig = JSON.stringify(widgetConfig)
 
       const widgets = stringifiedWidgetConfig
@@ -68,7 +70,7 @@ export class WidgetService {
           formatCurrency(debtData.totalEMI, user.baseCurrency)
         )
 
-      return JSON.parse(widgets)
+      return JSON.parse(widgets).widgets
     } catch (error) {
       throw error
     }
