@@ -115,45 +115,6 @@ export interface Goal {
   createdAt: string
 }
 
-export interface Valuation {
-  currentValuation?: number | null
-}
-
-export interface Widget {
-  icon: string
-  title: string
-  value: number
-  additionalInfo: string
-}
-
-export interface App {
-  appName: string
-  displayName: string
-  description: string
-  icon: string
-  url: string
-  enabled: boolean
-}
-
-export interface AppsConfig {
-  title: string
-  description: string
-  apps: App[]
-}
-
-export interface Solution {
-  displayName: string
-  description: string
-  icon: string
-  vector: string
-}
-
-export interface SolutionConfig {
-  title: string
-  desc: string
-  solutions: Solution[]
-}
-
 export interface TotalDebtDetails {
   remainingDebt: number
   totalEMI: number
@@ -221,4 +182,82 @@ export interface CalendarEvent {
   eventDate: string
   createdAt: string
   eventSource: string
+}
+
+interface HomeConfig {
+  title: string
+  description: string
+  getStartedUrl: string
+}
+
+interface App {
+  appName: string
+  displayName: string
+  description: string
+  icon: string
+  url: string
+  enabled: boolean
+}
+
+export interface AppConfig {
+  title: string
+  description: string
+  apps: App[]
+}
+
+export interface Feature {
+  displayName: string
+  description: string
+  icon: string
+}
+
+interface FeatureConfig {
+  title: string
+  desc: string
+  features: Feature[]
+}
+
+export interface Widget {
+  icon: string
+  title: string
+  value: string
+  additionalInfo: string
+}
+
+interface WidgetConfig {
+  title: string
+  desc: string
+  widgets: Widget[]
+}
+
+export interface Plan {
+  name: string
+  price: string
+  icon: string
+  features: string[]
+}
+
+interface SubscriptionConfig {
+  title: string
+  desc: string
+  plans: Plan[]
+}
+
+interface NavigationItem {
+  displayName: string
+  link: string
+  external?: boolean
+}
+
+interface HomeNavigationConfig {
+  navigationItems: NavigationItem[]
+}
+
+export interface PlatformConfig {
+  homeConfig: HomeConfig
+  appConfig: AppConfig
+  featureConfig: FeatureConfig
+  widgetConfig: WidgetConfig
+  subscriptionConfig: SubscriptionConfig
+  homeNavigationConfig: HomeNavigationConfig
 }

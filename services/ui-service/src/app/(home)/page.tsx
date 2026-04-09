@@ -1,68 +1,37 @@
 "use client"
-import { endPoints } from "@/shared/constants/api-endpoints"
-import HTTPMethods from "@/shared/constants/http-methods"
-import { AppsConfig, SolutionConfig } from "@/shared/constants/types"
+import { usePlatformConfig } from "@/context/platformconfig.provider"
 import { uiConstants } from "@/shared/constants/global-constants"
-import {
-  BoxIcon,
-  Check,
-  Coins,
-  Lightbulb,
-  BookOpenIcon,
-  Code2,
-  ArrowRight,
-} from "lucide-react"
+import { BoxIcon, Lightbulb, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/shared/lib/utils"
-import { Button, buttonVariants } from "@/shared/components/ui/button"
+import { buttonVariants } from "@/shared/components/ui/button"
 import Loading from "../loading"
-import useQuery from "@/shared/hooks/use-query"
 import { AppCard } from "@/shared/components/app-card"
 import { useRouter } from "nextjs-toploader/app"
 import { useEffect, useState } from "react"
 import Cookies from "js-cookie"
 import HomePageHeader from "@/shared/components/homepage-header"
 import { Badge } from "@/shared/components/ui/badge"
-import { SolutionCard } from "@/shared/components/solution-card"
-import IconContainer from "@/shared/components/icon-container"
+import { FeatureCard } from "@/shared/components/feature-card"
+import { PricingCard } from "@/shared/components/pricing-card"
 import { PLATFORM_NAME } from "@/shared/constants/config"
 
 export default function Page() {
   const router = useRouter()
   const [checked, setChecked] = useState(false)
-
-  const apps = useQuery<AppsConfig>({
-    queryKey: ["app-config"],
-    queryUrl: `${endPoints.getConfig}/app-config`,
-    method: HTTPMethods.GET,
-  })
-
-  const solutions = useQuery<SolutionConfig>({
-    queryKey: ["solution-config"],
-    queryUrl: `${endPoints.getConfig}/solution-config`,
-    method: HTTPMethods.GET,
-  })
-
-  const openSourceConfig = useQuery<any>({
-    queryKey: ["open-source-config"],
-    queryUrl: `${endPoints.getConfig}/open-source-config`,
-    method: HTTPMethods.GET,
-  })
+  const { platformConfig } = usePlatformConfig()
 
   const renderHeroSection = (
     <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-28 hero-landing">
       <div className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 text-left">
         <h1 className="text-white text-xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight mb-4 max-w-[40rem]">
-          {uiConstants.homeHeader}
+          {platformConfig?.homeConfig.title}
         </h1>
-        <p className="max-w-[35rem] leading-normal text-theme-100 sm:text-lg sm:leading-8">
-          {uiConstants.homeIntro}
-        </p>
-        <p className="max-w-[35rem] leading-normal text-primary sm:text-lg sm:leading-8 mb-6">
-          {uiConstants.openSourceIntro}
+        <p className="max-w-[35rem] leading-normal text-theme-100 sm:text-lg sm:leading-8 mb-4">
+          {platformConfig?.homeConfig.description}
         </p>
         <Link
-          href="/dashboard"
+          href={platformConfig?.homeConfig.getStartedUrl ?? ""}
           className={cn(
             buttonVariants({
               variant: "default",
@@ -86,41 +55,41 @@ export default function Page() {
       <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
         <Badge className="p-2 ps-4 pe-4 text-md bg-background text-primary border border-border rounded-full shadow-md shadow-primary/20">
           <BoxIcon className="h-4 w-4 me-2" />
-          {apps?.data?.title}
+          {platformConfig?.appConfig?.title}
         </Badge>
         <p className="max-w-[85%] leading-normal sm:text-lg sm:leading-7">
-          {apps?.data?.description}
+          {platformConfig?.appConfig?.description}
         </p>
       </div>
       <div className="mx-auto grid justify-center gap-4 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-4">
-        {apps?.data?.apps?.map((app) => (
+        {platformConfig?.appConfig?.apps?.map((app) => (
           <AppCard key={app.appName} app={app} />
         ))}
       </div>
     </section>
   )
 
-  const renderSolutionsSection = (
+  const renderFeaturesSection = (
     <div className="bg-geometric-pattern">
       <section
-        id="solutions"
+        id="features"
         className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 space-y-6 py-8 md:py-12 lg:py-24 lg:rounded-3xl "
       >
         <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
           <Badge className="p-2 ps-4 pe-4 text-md bg-background text-primary border border-border rounded-full shadow-md shadow-primary/20">
             <Lightbulb className="h-4 w-4 me-2" />
-            {solutions?.data?.title}
+            {platformConfig?.featureConfig.title}
           </Badge>
           <p className="max-w-[85%] leading-normal sm:text-lg sm:leading-7">
-            {solutions?.data?.desc}
+            {platformConfig?.featureConfig?.desc}
           </p>
         </div>
         <div className="mx-auto grid justify-center gap-4 sm:grid-cols-1 md:max-w-[35rem] md:grid-cols-1 lg:max-w-[50rem] lg:grid-cols-2 xl:max-w-[68rem] xl:grid-cols-3">
-          {solutions?.data?.solutions?.map((solution) => (
-            <SolutionCard
-              key={solution.displayName}
-              solution={solution}
-              ai={solution.displayName.includes("Cowork")}
+          {platformConfig?.featureConfig?.features?.map((feature: any) => (
+            <FeatureCard
+              key={feature.displayName}
+              feature={feature}
+              ai={feature.displayName.includes("Cowork")}
             />
           ))}
         </div>
@@ -128,50 +97,21 @@ export default function Page() {
     </div>
   )
 
-  const renderOpenSourceSection = (
-    <section id="opensource" className="py-8 md:py-12 lg:py-24">
-      <div className="mx-auto max-w-[50rem] px-4 sm:px-6 lg:px-8">
+  const renderSubscriptionSection = (
+    <section id="pricing" className="py-8 md:py-12 lg:py-24">
+      <div className="mx-auto max-w-[70rem] px-4 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-[64rem] flex-col items-center justify-center text-center mb-8">
           <Badge className="mb-4 p-2 ps-4 pe-4 text-md bg-background text-primary border border-border rounded-full shadow-md shadow-primary/20">
-            <Coins className="h-4 w-4 me-2" />
-            {openSourceConfig.data?.title}
+            {platformConfig?.subscriptionConfig?.title}
           </Badge>
-
           <p className="max-w-[85%] leading-normal sm:text-lg sm:leading-7 mb-2">
-            {openSourceConfig.data?.desc}
+            {platformConfig?.subscriptionConfig?.desc}
           </p>
         </div>
-        <div className="bg-background border border-border p-8 rounded-3xl flex flex-col hover:shadow-lg hover:shadow-primary/20">
-          <div className="flex justify-between items-center mb-12">
-            <div>
-              <p className="text-xl">{PLATFORM_NAME}</p>
-              <h2 className="text-2xl">{openSourceConfig.data?.title}</h2>
-            </div>
-            <IconContainer>
-              <BookOpenIcon className="h-4 w-4" />
-            </IconContainer>
-          </div>
-          <p className="text-sm leading-relaxed mt-auto">
-            {openSourceConfig.data?.features.map((feature: string) => {
-              return (
-                <li className="flex items-center mb-2" key={feature}>
-                  <Check className="mr-2 h-4 w-4" /> {feature}
-                </li>
-              )
-            })}
-          </p>
-          <div className="mt-8 flex justify-end">
-            <Button variant="default" className="text-black" asChild>
-              <a
-                href={`https://github.com/arnhazra/${PLATFORM_NAME.toLowerCase()}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View Source Code
-                <Code2 />
-              </a>
-            </Button>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[50rem] mx-auto">
+          {platformConfig?.subscriptionConfig?.plans?.map((plan) => (
+            <PricingCard key={plan.name} plan={plan} />
+          ))}
         </div>
       </div>
     </section>
@@ -209,8 +149,8 @@ export default function Page() {
         <HomePageHeader />
         {renderHeroSection}
         {renderAppsSection}
-        {renderSolutionsSection}
-        {renderOpenSourceSection}
+        {renderFeaturesSection}
+        {renderSubscriptionSection}
       </div>
       {renderFooterSection}
     </>

@@ -1,27 +1,27 @@
 import * as Icons from "lucide-react"
-import { Solution } from "@/shared/constants/types"
+import { Feature } from "@/shared/constants/types"
 import IconContainer from "../icon-container"
 import { Card, CardContent, CardHeader } from "../ui/card"
 
-interface SolutionCardProps {
-  solution: Solution
+interface FeatureCardProps {
+  feature: Feature
   ai?: boolean
 }
 
-export function SolutionCard({ solution, ai }: SolutionCardProps) {
-  const SolutionIcon = (Icons as any)[solution.icon] || Icons.HelpCircle
+export function FeatureCard({ feature, ai }: FeatureCardProps) {
+  const FeatureIcon = (Icons as any)[feature.icon] || Icons.HelpCircle
 
   return (
     <Card className="bg-background border border-border p-2 rounded-3xl hover:shadow-lg hover:shadow-primary/20 cursor-pointer">
       <CardHeader className="flex justify-between mt-6 items-center">
-        <h2 className="text-2xl">{solution.displayName}</h2>
+        <h2 className="text-2xl">{feature.displayName}</h2>
         <IconContainer ai={ai}>
-          <SolutionIcon className="h-4 w-4" />
+          <FeatureIcon className="h-4 w-4" />
         </IconContainer>
       </CardHeader>
       <CardContent className="mb-6 mt-auto">
         <p className="text-sm leading-relaxed justify ">
-          {solution.description}
+          {feature.description}
         </p>
       </CardContent>
     </Card>
