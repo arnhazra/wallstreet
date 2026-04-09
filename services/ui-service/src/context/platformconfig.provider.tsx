@@ -4,15 +4,15 @@ import { PlatformConfig } from "@/shared/constants/types"
 import { endPoints } from "@/shared/constants/api-endpoints"
 import useQuery from "@/shared/hooks/use-query"
 import HTTPMethods from "@/shared/constants/http-methods"
+import LoaderIcon from "@/shared/components/loader-icon"
+import Loading from "@/app/loading"
 
 type PlatformConfigContextType = {
   platformConfig: PlatformConfig | undefined
-  isLoading: boolean
 }
 
 const PlatformConfigContext = createContext<PlatformConfigContextType>({
   platformConfig: undefined,
-  isLoading: true,
 })
 
 export function PlatformConfigProvider({ children }: { children: ReactNode }) {
@@ -23,8 +23,12 @@ export function PlatformConfigProvider({ children }: { children: ReactNode }) {
     suspense: false,
   })
 
+  if (isLoading) {
+    return <Loading />
+  }
+
   return (
-    <PlatformConfigContext.Provider value={{ platformConfig, isLoading }}>
+    <PlatformConfigContext.Provider value={{ platformConfig }}>
       {children}
     </PlatformConfigContext.Provider>
   )
