@@ -260,4 +260,5 @@ export interface PlatformConfig {
   widgetConfig: WidgetConfig
   subscriptionConfig: SubscriptionConfig
   homeNavigationConfig: HomeNavigationConfig
+  copyrightText: string
 }
