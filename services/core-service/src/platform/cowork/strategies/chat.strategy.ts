@@ -36,7 +36,7 @@ export class ChatStrategy {
 
   private async getChatSystemInstruction(user: User) {
     const data = await this.configService.getConfig("chat-system-instruction")
-    const platformConfig = await this.configService.getConfig("platform-config")
+    const platformConfig = await this.configService.getConfig("home-config")
     const { appConfig, solutionConfig } = platformConfig
 
     return data

@@ -28,7 +28,8 @@ export function PricingCard({ plan }: PricingCardProps) {
         </div>
       </div>
       <Button
-        className="w-full rounded-2xl mb-6 h-11 bg-theme-100 text-black hover:bg-theme-200"
+        className="w-full rounded-2xl mb-6 h-11 bg-theme-800 hover:bg-theme-700 text-theme-100 hover:text-white"
+        variant="outline"
         asChild
       >
         <Link href="/dashboard">Get Started</Link>
