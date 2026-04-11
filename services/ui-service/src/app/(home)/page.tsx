@@ -16,6 +16,7 @@ import HomePageHeader from "@/shared/components/homepage-header"
 import { FeatureCard } from "@/shared/components/feature-card"
 import { PricingCard } from "@/shared/components/pricing-card"
 import WidgetCard from "@/shared/components/widget-card"
+import { ScrollReveal } from "@/shared/components/scroll-reveal"
 
 export default function Page() {
   const router = useRouter()
@@ -62,13 +63,20 @@ export default function Page() {
         </p>
       </div>
       <div className="mx-auto grid w-full max-w-[68rem] justify-start gap-4 sm:grid-cols-1 md:max-w-[35rem] md:grid-cols-1 lg:max-w-[50rem] lg:grid-cols-2 xl:max-w-[68rem] xl:grid-cols-3">
-        {platformConfig?.featureConfig?.features?.map((feature: any) => (
-          <FeatureCard
-            key={feature.displayName}
-            feature={feature}
-            ai={feature.displayName.includes("Cowork")}
-          />
-        ))}
+        {platformConfig?.featureConfig?.features?.map(
+          (feature: any, index: number) => (
+            <ScrollReveal
+              key={feature.displayName}
+              delay={index * 80}
+              className="h-full"
+            >
+              <FeatureCard
+                feature={feature}
+                ai={feature.displayName.includes("Cowork")}
+              />
+            </ScrollReveal>
+          )
+        )}
       </div>
     </section>
   )
@@ -87,8 +95,10 @@ export default function Page() {
         </p>
       </div>
       <div className="mx-auto grid w-full max-w-[68rem] justify-start gap-4 sm:grid-cols-1 md:max-w-[35rem] md:grid-cols-1 lg:max-w-[50rem] lg:grid-cols-2 xl:max-w-[68rem] xl:grid-cols-3">
-        {platformConfig?.appConfig?.apps?.map((app) => (
-          <AppCard key={app.appName} app={app} />
+        {platformConfig?.appConfig?.apps?.map((app, index: number) => (
+          <ScrollReveal key={app.appName} delay={index * 80} className="h-full">
+            <AppCard app={app} />
+          </ScrollReveal>
         ))}
       </div>
     </section>
@@ -146,8 +156,10 @@ export default function Page() {
         </p>
       </div>
       <div className="mx-auto grid w-full max-w-[68rem] justify-start gap-4 sm:grid-cols-1 md:max-w-[35rem] md:grid-cols-1 lg:max-w-[50rem] lg:grid-cols-2 xl:max-w-[68rem] xl:grid-cols-4">
-        {resolveWidgetPlaceholders().map((widget: any) => (
-          <WidgetCard widget={widget} key={widget.icon} />
+        {resolveWidgetPlaceholders().map((widget: any, index: number) => (
+          <ScrollReveal key={widget.icon} delay={index * 80} className="h-full">
+            <WidgetCard widget={widget} scramble />
+          </ScrollReveal>
         ))}
       </div>
     </section>
@@ -218,9 +230,17 @@ export default function Page() {
           </p>
         </div>
         <div className="mx-auto grid w-full max-w-[68rem] justify-start gap-4 sm:grid-cols-1 md:max-w-[35rem] md:grid-cols-1 lg:max-w-[50rem] lg:grid-cols-2 xl:max-w-[68rem] xl:grid-cols-3">
-          {platformConfig?.subscriptionConfig?.plans?.map((plan) => (
-            <PricingCard key={plan.name} plan={plan} />
-          ))}
+          {platformConfig?.subscriptionConfig?.plans?.map(
+            (plan, index: number) => (
+              <ScrollReveal
+                key={plan.name}
+                delay={index * 80}
+                className="h-full"
+              >
+                <PricingCard plan={plan} />
+              </ScrollReveal>
+            )
+          )}
         </div>
       </div>
     </section>

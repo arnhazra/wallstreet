@@ -7,9 +7,14 @@ import { useEffect, useRef, useState } from "react"
 
 interface WidgetCardProps {
   widget: Widget
+  scramble?: boolean
 }
 
-function useScrambleValue(target: string, duration = 1500, triggered: boolean) {
+function useScrambleValue(
+  target: string,
+  duration: number,
+  triggered: boolean
+) {
   const [displayed, setDisplayed] = useState(target)
 
   useEffect(() => {
@@ -47,11 +52,13 @@ function useScrambleValue(target: string, duration = 1500, triggered: boolean) {
   return displayed
 }
 
-export default function WidgetCard({ widget }: WidgetCardProps) {
+export default function WidgetCard({ widget, scramble }: WidgetCardProps) {
   const WidgetIcon = (Icons as any)[widget.icon] || Icons.HelpCircle
   const cardRef = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
-  const animatedValue = useScrambleValue(widget.value, 1500, visible)
+  const animatedValue = scramble
+    ? useScrambleValue(widget.value, 1500, visible)
+    : widget.value
 
   useEffect(() => {
     const el = cardRef.current

@@ -12,7 +12,7 @@ export function PricingCard({ plan }: PricingCardProps) {
   const Icon = (Icons as any)[plan.icon] || Icons.HelpCircle
 
   return (
-    <div className="bg-background border border-border p-8 rounded-3xl flex flex-col">
+    <div className="bg-background border border-border p-8 rounded-3xl flex flex-col h-full">
       <div className="mb-6">
         <div className="w-fit mb-4">
           <IconContainer>
