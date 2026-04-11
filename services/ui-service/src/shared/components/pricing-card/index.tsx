@@ -33,7 +33,7 @@ export function PricingCard({ plan }: PricingCardProps) {
       </div>
       <Button
         variant={isPro ? "default" : "outline"}
-        className={`w-full rounded-full mb-6 ${isPro ? "text-black" : ""}`}
+        className={`w-full rounded-2xl mb-6 ${isPro ? "text-black" : ""}`}
         asChild
       >
         <Link href="/dashboard">Get Started</Link>

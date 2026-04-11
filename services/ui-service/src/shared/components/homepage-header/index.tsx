@@ -52,7 +52,7 @@ export default function HomePageHeader() {
               buttonVariants({
                 variant: "default",
                 className:
-                  "bg-primary hover:bg-primary text-black rounded-full h-9",
+                  "bg-primary hover:bg-primary text-black rounded-2xl h-9",
               })
             )}
           >

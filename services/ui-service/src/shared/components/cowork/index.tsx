@@ -110,7 +110,7 @@ export default function Cowork() {
         onClick={() => setIsOpen(true)}
         variant="default"
         size="icon"
-        className="h-11 w-11 fixed bottom-6 right-6 z-50 text-white ui-soft-gradient text-white rounded-full transition"
+        className="h-11 w-11 fixed bottom-6 right-6 z-50 text-white ui-soft-gradient text-white rounded-2xl transition"
       >
         <Sparkle className="h-4 w-4" />
       </Button>
@@ -177,7 +177,7 @@ export default function Cowork() {
                   }`}
                 >
                   {index % 2 !== 0 && (
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-primary">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-2xl flex items-center justify-center bg-primary">
                       <Bot className="h-4 w-4 text-white" />
                     </div>
                   )}
@@ -200,7 +200,7 @@ export default function Cowork() {
 
                   {index % 2 === 0 && (
                     <div
-                      className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                      className="flex-shrink-0 w-8 h-8 rounded-2xl flex items-center justify-center"
                       style={{ backgroundColor: colorVars.border }}
                     >
                       <User className="h-4 w-4 text-white" />
@@ -213,7 +213,7 @@ export default function Cowork() {
             {isLoading && messages[messages.length - 1] === "" && (
               <div className="flex items-start space-x-2">
                 <div
-                  className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                  className="flex-shrink-0 w-8 h-8 rounded-2xl flex items-center justify-center"
                   style={{ backgroundColor: colorVars.primary }}
                 >
                   <Bot className="h-4 w-4 text-white" />
@@ -226,13 +226,13 @@ export default function Cowork() {
                   }}
                 >
                   <div className="flex space-x-1">
-                    <div className="w-1 h-1 bg-theme-400 rounded-full animate-bounce"></div>
+                    <div className="w-1 h-1 bg-theme-400 rounded-2xl animate-bounce"></div>
                     <div
-                      className="w-1 h-1 bg-theme-400 rounded-full animate-bounce"
+                      className="w-1 h-1 bg-theme-400 rounded-2xl animate-bounce"
                       style={{ animationDelay: "0.1s" }}
                     ></div>
                     <div
-                      className="w-1 h-1 bg-theme-400 rounded-full animate-bounce"
+                      className="w-1 h-1 bg-theme-400 rounded-2xl animate-bounce"
                       style={{ animationDelay: "0.2s" }}
                     ></div>
                   </div>
@@ -263,7 +263,7 @@ export default function Cowork() {
             }}
           >
             <div className="w-full max-w-4xl mx-auto">
-              <div className="relative bg-theme-900 border border-border rounded-full p-2 ps-4 pe-4 shadow-lg">
+              <div className="relative bg-theme-900 border border-border rounded-2xl p-2 ps-4 pe-4 shadow-lg">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-3">
                     <div className="flex-1">
@@ -280,7 +280,7 @@ export default function Cowork() {
                       type="submit"
                       disabled={isLoading || !prompt.trim()}
                       size="icon"
-                      className="bg-theme-700 hover:bg-theme-600 text-white h-8 w-8 rounded-full"
+                      className="bg-theme-700 hover:bg-theme-600 text-white h-8 w-8 rounded-2xl"
                     >
                       <ArrowUp className="h-4 w-4" />
                     </Button>

@@ -34,7 +34,7 @@ export default function Page() {
             buttonVariants({
               variant: "default",
               className:
-                "bg-primary hover:bg-primary text-black rounded-full h-10 w-36",
+                "bg-primary hover:bg-primary text-black rounded-2xl h-10 w-36",
             })
           )}
         >
