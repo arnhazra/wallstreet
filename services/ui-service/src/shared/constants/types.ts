@@ -262,8 +262,6 @@ export interface ServiceTierConfig {
   title: string
   icon: string
   description: string
-  learnMoreUrl: string
-  learnMoreText: string
   contactUrl: string
   contactText: string
   tiers: ServiceTier[]

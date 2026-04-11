@@ -29,7 +29,7 @@ export default function HomePageHeader() {
           {PLATFORM_NAME}
         </Link>
 
-        <nav className="hidden md:flex items-center justify-start gap-3 flex-1">
+        <nav className="hidden md:flex items-center justify-end gap-3 flex-1">
           {platformConfig?.homeNavigationConfig.navigationItems.map(
             (item, index) => (
               <Link
@@ -43,9 +43,6 @@ export default function HomePageHeader() {
               </Link>
             )
           )}
-        </nav>
-
-        <nav className="hidden md:flex items-center justify-end gap-3 flex-1">
           <Link
             href="/dashboard"
             className={cn(
