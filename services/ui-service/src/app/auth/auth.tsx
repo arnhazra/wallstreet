@@ -26,10 +26,7 @@ export default function AuthProvider({ onAuthorized }: AuthProviderProps) {
       Cookies.set("refreshToken", userData.refreshToken, defaultCookieOptions)
       onAuthorized(true)
     } catch (error: any) {
-      notify(
-        platformConfig?.otherConstants.connectionErrorMessage || "",
-        "error"
-      )
+      notify(platformConfig?.otherConstants.connectionErrorMessage, "error")
       onAuthorized(false)
     }
   }

@@ -56,10 +56,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { platformConfig } = usePlatformConfig()
   const handleDeleteAssetGroup = async () => {
     if (assets.data?.length) {
-      notify(
-        platformConfig?.otherConstants.assetgroupDeleteWarning || "",
-        "warning"
-      )
+      notify(platformConfig?.otherConstants.assetgroupDeleteWarning, "warning")
       return
     }
     const confirmed = await confirm({
@@ -72,10 +69,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         await api.delete(`${endPoints.assetgroup}/${assetgroupId}`)
         router.push("/apps/assetmanager")
       } catch (error) {
-        notify(
-          platformConfig?.otherConstants.assetgroupDeleteFailed ?? "",
-          "error"
-        )
+        notify(platformConfig?.otherConstants.assetgroupDeleteFailed, "error")
       }
     }
   }

@@ -44,6 +44,20 @@ export interface User {
   createdAt: string
 }
 
+export interface Subscription {
+  _id: string
+  userId: string
+  price: number
+  createdAt: string
+  endsAt: string
+  isActive: boolean
+}
+
+export interface UserDetailsResponse {
+  user: User
+  subscription: Subscription | null
+}
+
 export interface Thread {
   _id: string
   threadId: string

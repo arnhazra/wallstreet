@@ -100,7 +100,7 @@ export function ResourceDetails({
           "success"
         )
       } catch (error) {
-        notify(platformConfig?.otherConstants.genericError || "", "error")
+        notify(platformConfig?.otherConstants.genericError, "error")
       }
     }
   }

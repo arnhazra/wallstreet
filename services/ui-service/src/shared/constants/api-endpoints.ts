@@ -9,6 +9,8 @@ export const endPoints = {
   getConfig: "/platform/config",
   cowork: "/platform/cowork",
   widgets: "/platform/widgets",
+  createCheckoutSession: "/platform/subscription/checkout",
+  subscribe: "/platform/subscription/subscribe",
   // Resource Service
   assetgroup: "/resource/assetgroup",
   asset: "/resource/asset",

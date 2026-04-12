@@ -11,11 +11,13 @@ import { User } from "@/auth/schemas/user.schema"
 import { Request } from "express"
 import { TokenType, verifyToken } from "@/auth/utils/jwt.util"
 import * as jwt from "jsonwebtoken"
+import { SubscriptionRes } from "@/shared/constants/types"
 
 export interface ModRequest extends Request {
   user: {
     userId: string
     role: string
+    subscriptionTier: string
   }
 }
 
@@ -39,12 +41,26 @@ export class AuthGuard implements CanActivate {
         userId
       )
 
+      const subscriptionResponse: SubscriptionRes | null = (
+        await this.eventEmitter.emitAsync(
+          AppEventMap.GetSubscriptionDetails,
+          userId
+        )
+      ).shift()
+
+      let subscriptionTier = "Free"
+      if (!subscriptionResponse) subscriptionTier = "Free"
+      if (subscriptionResponse && !subscriptionResponse.isActive)
+        subscriptionTier = "Free"
+      if (subscriptionResponse && subscriptionResponse.isActive)
+        subscriptionTier = subscriptionResponse.subscriptionTier
+
       if (!userResponse || !userResponse.length) {
         throw new UnauthorizedException(statusMessages.invalidUser)
       }
 
       const { role } = userResponse.shift()
-      request.user = { userId, role }
+      request.user = { userId, role, subscriptionTier }
       return true
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {

@@ -4,7 +4,11 @@ import { ReactNode, useState } from "react"
 import Cookies from "js-cookie"
 import Show from "@/shared/components/show"
 import AuthProvider from "../auth/auth"
-import { User } from "@/shared/constants/types"
+import {
+  Subscription,
+  User,
+  UserDetailsResponse,
+} from "@/shared/constants/types"
 import Loading from "../loading"
 import { useQuery as useBaseQuery } from "@tanstack/react-query"
 import PlatformHeader from "@/shared/components/platform-header"
@@ -13,6 +17,7 @@ import Cowork from "@/shared/components/cowork"
 import notify from "@/shared/hooks/use-notify"
 import api from "@/shared/lib/ky-api"
 import { usePlatformConfig } from "@/context/platformconfig.provider"
+import { SubscriptionModal } from "@/shared/components/subsrcription-modal"
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   const [, dispatch] = useUserContext()
@@ -25,10 +30,11 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
       return null
     } else {
       try {
-        const response: {
-          user: User
-        } = await api.get(endPoints.userDetails).json()
+        const response: UserDetailsResponse = await api
+          .get(endPoints.userDetails)
+          .json()
         dispatch("setUser", response.user)
+        dispatch("setSubscription", response.subscription)
         setAuthorized(true)
       } catch (error: any) {
         if (error.response) {
@@ -64,6 +70,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         {children}
       </div>
       <Cowork />
+      <SubscriptionModal />
     </div>
   )
 

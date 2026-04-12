@@ -5,6 +5,7 @@ import { EntityModule } from "@/shared/entity/entity.module"
 import { ConfigModule } from "./config/config.module"
 import { CoworkModule } from "./cowork/cowork.module"
 import { WidgetModule } from "./widget/widget.module"
+import { SubscriptionModule } from "./subscription/subscription.module"
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { WidgetModule } from "./widget/widget.module"
     ConfigModule,
     CoworkModule,
     WidgetModule,
+    SubscriptionModule,
   ],
 })
 export class PlatformModule {}

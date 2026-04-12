@@ -22,6 +22,7 @@ const initialState: UserState = {
     avatar: null,
     useCowork: false,
   },
+  subscription: null,
   searchKeyword: "",
 }
 
