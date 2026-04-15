@@ -319,7 +319,7 @@ export function ResourceCard<T extends keyof ResourceTypeMap>({
             )
           }
         }}
-        className="bg-background/2 border h-[11rem] backdrop-blur-sm border-border p-2 rounded-3xl hover:shadow-lg hover:shadow-primary/20 cursor-pointer"
+        className="bg-background/2 border h-[11rem] backdrop-blur-sm border-border p-2 rounded-3xl hover:shadow-lg hover:shadow-primary/10 cursor-pointer"
       >
         <CardHeader className="flex mt-5 items-start gap-2">
           <div className="flex min-w-0 flex-1 gap-2">
@@ -414,7 +414,7 @@ export function AddResourceCard({
 }) {
   return (
     <Link href={createResourceUrlMap[resourceType] ?? ""}>
-      <Card className="bg-background/2 flex flex-row h-[11rem] items-center justify-center backdrop-blur-sm border border-border rounded-3xl relative overflow-hidden hover:shadow-md hover:shadow-primary/20">
+      <Card className="bg-background/2 flex flex-row h-[11rem] items-center justify-center backdrop-blur-sm border border-border rounded-3xl relative overflow-hidden hover:shadow-md hover:shadow-primary/10">
         <IconContainer>
           <Plus className="w-4 h-4" />
         </IconContainer>

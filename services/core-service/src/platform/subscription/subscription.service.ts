@@ -23,17 +23,11 @@ export class SubscriptionService {
     private readonly configService: ConfigService
   ) {}
 
-  async createCheckoutSession(
-    userId: string,
-    subscriptionTier: string
-  ): Promise<{ url: string | null }> {
+  async createCheckoutSession(userId: string): Promise<{ url: string | null }> {
     try {
       const homeConfig = await this.configService.getConfig("home-config")
-      const selectedPlan = homeConfig.subscriptionConfig.plans.find(
-        (plan: any) => plan.name === subscriptionTier
-      )
+      const subscriptionPrice = Number(homeConfig.subscriptionConfig.offerPrice)
 
-      const subscriptionPrice = Number(selectedPlan.price ?? 30)
       const session = await this.stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: [
@@ -41,7 +35,7 @@ export class SubscriptionService {
             price_data: {
               currency: "usd",
               product_data: {
-                name: `${config.PLATFORM_NAME} ${selectedPlan.name} Subscription`,
+                name: `${config.PLATFORM_NAME} Subscription`,
               },
               unit_amount: subscriptionPrice * 100,
             },
@@ -54,7 +48,6 @@ export class SubscriptionService {
         metadata: {
           userId,
           price: String(subscriptionPrice),
-          subscriptionTier,
         },
       })
 
@@ -70,7 +63,6 @@ export class SubscriptionService {
       const metadata = session.metadata ?? {}
       const userId = metadata.userId
       const price = metadata.price
-      const subscriptionTier = metadata.subscriptionTier
 
       if (!userId || !price) {
         throw new Error()
@@ -86,7 +78,7 @@ export class SubscriptionService {
       }
 
       await this.commandBus.execute(
-        new CreateSubscriptionCommand(userId, Number(price), subscriptionTier)
+        new CreateSubscriptionCommand(userId, Number(price))
       )
 
       await this.commandBus.execute(

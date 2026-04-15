@@ -1,15 +1,15 @@
 import * as Icons from "lucide-react"
-import { Plan } from "@/shared/constants/types"
+import { SubscriptionConfig } from "@/shared/constants/types"
 import { Button } from "../ui/button"
 import Link from "next/link"
 import IconContainer from "../icon-container"
 
 interface PricingCardProps {
-  plan: Plan
+  plan: SubscriptionConfig | undefined
 }
 
-export function PricingCard({ plan }: PricingCardProps) {
-  const Icon = (Icons as any)[plan.icon] || Icons.HelpCircle
+export function PricingCard(plan: PricingCardProps) {
+  const Icon = (Icons as any)[plan.plan?.icon as string] || Icons.HelpCircle
 
   return (
     <div className="bg-background border border-border p-8 rounded-3xl flex flex-col h-full">
@@ -19,9 +19,9 @@ export function PricingCard({ plan }: PricingCardProps) {
             <Icon className="h-6 w-6" />
           </IconContainer>
         </div>
-        <h2 className="text-3xl font-medium">{plan.name}</h2>
+        <h2 className="text-3xl font-medium">Subscription</h2>
         <div className="mt-4">
-          <p className="text-xl font-bold">${plan.price}</p>
+          <p className="text-xl font-bold">${plan?.plan?.offerPrice}</p>
           <p className="text-sm font-normal text-muted-foreground mt-1">
             Per Year
           </p>
@@ -35,7 +35,7 @@ export function PricingCard({ plan }: PricingCardProps) {
         <Link href="/dashboard">Get Started</Link>
       </Button>
       <ul className="text-sm leading-relaxed space-y-3">
-        {plan.features.map((feature) => (
+        {plan.plan?.features.map((feature) => (
           <li className="flex items-start gap-2" key={feature}>
             <Icons.Check className="h-4 w-4 shrink-0 mt-0.5" />
             {feature}

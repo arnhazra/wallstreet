@@ -79,7 +79,11 @@ export default function WidgetCard({ widget, scramble }: WidgetCardProps) {
   return (
     <Card
       ref={cardRef}
-      className="bg-background/2 backdrop-blur-sm border border-border rounded-3xl relative overflow-hidden hover:shadow-md hover:shadow-primary/20"
+      className={
+        scramble
+          ? "bg-background border border-border rounded-3xl relative overflow-hidden hover:shadow-md hover:shadow-primary/10"
+          : "bg-background/2 backdrop-blur-sm border border-border rounded-3xl relative overflow-hidden hover:shadow-md hover:shadow-primary/10"
+      }
     >
       <CardContent className="-mt-2 -mb-1">
         <div className="flex items-center justify-between">

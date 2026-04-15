@@ -1,7 +1,6 @@
 "use client"
 import { usePlatformConfig } from "@/context/platformconfig.provider"
 import { ArrowRightCircle } from "lucide-react"
-import * as Icons from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/shared/lib/utils"
 import { formatCurrency } from "@/shared/lib/format-currency"
@@ -165,59 +164,6 @@ export default function Page() {
     </section>
   )
 
-  const renderServiceTiersSection = () => {
-    const config = platformConfig?.serviceTiersConfig
-    const TierIcon = (Icons as any)[config?.icon ?? "Shapes"] ?? Icons.Shapes
-
-    return (
-      <section id="service-tiers" className="py-8 md:py-12">
-        <div className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto grid w-full max-w-[68rem] gap-10 rounded-[2rem] bg-background border border-border px-6 py-8 sm:px-10 sm:py-10 lg:grid-cols-[1.05fr_1fr] lg:px-12 lg:py-12">
-            <div className="flex flex-col items-start justify-between">
-              <div>
-                <TierIcon
-                  className="mb-8 h-12 w-12 text-theme-100"
-                  strokeWidth={1.5}
-                />
-                <h2 className="mb-4 text-4xl font-semibold tracking-tight text-theme-100 sm:text-5xl">
-                  {config?.title}
-                </h2>
-                <p className="max-w-[32rem] text-lg leading-8 text-theme-300">
-                  {config?.description}
-                </p>
-              </div>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button
-                  variant="default"
-                  className="rounded-2xl bg-theme-100 px-6 text-black hover:bg-theme-200"
-                  asChild
-                >
-                  <Link href={config?.contactUrl ?? ""}>
-                    {config?.contactText}
-                  </Link>
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex flex-col justify-center space-y-8 lg:pl-6">
-              {config?.tiers?.map((tier) => (
-                <div key={tier.name}>
-                  <h3 className="text-2xl font-semibold text-theme-100">
-                    {tier.name}
-                  </h3>
-                  <p className="mt-2 text-lg leading-8 text-theme-400">
-                    {tier.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
   const renderSubscriptionSection = (
     <section id="pricing" className="py-8 md:py-12 lg:py-24">
       <div className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
@@ -230,17 +176,9 @@ export default function Page() {
           </p>
         </div>
         <div className="mx-auto grid w-full max-w-[68rem] justify-start gap-4 sm:grid-cols-1 md:max-w-[35rem] md:grid-cols-1 lg:max-w-[50rem] lg:grid-cols-2 xl:max-w-[68rem] xl:grid-cols-3">
-          {platformConfig?.subscriptionConfig?.plans?.map(
-            (plan, index: number) => (
-              <ScrollReveal
-                key={plan.name}
-                delay={index * 80}
-                className="h-full"
-              >
-                <PricingCard plan={plan} />
-              </ScrollReveal>
-            )
-          )}
+          <ScrollReveal delay={1500} className="h-full">
+            <PricingCard plan={platformConfig?.subscriptionConfig} />
+          </ScrollReveal>
         </div>
       </div>
     </section>
@@ -279,9 +217,7 @@ export default function Page() {
         {renderFeaturesSection}
         {renderAppsSection}
         {renderDynamicStatsSection}
-
         {renderSubscriptionSection}
-        {renderServiceTiersSection()}
       </div>
       {renderFooterSection}
     </>

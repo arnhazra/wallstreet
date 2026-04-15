@@ -11,7 +11,6 @@ import {
 import { SubscriptionService } from "./subscription.service"
 import { AuthGuard, ModRequest } from "@/auth/auth.guard"
 import { statusMessages } from "@/shared/constants/status-messages"
-import { SubscriptionRequestDto } from "./dto/subscription.request.dto"
 
 @Controller("platform/subscription")
 export class SubscriptionController {
@@ -19,14 +18,10 @@ export class SubscriptionController {
 
   @UseGuards(AuthGuard)
   @Post("checkout")
-  async createCheckoutSession(
-    @Body() requestBody: SubscriptionRequestDto,
-    @Request() request: ModRequest
-  ) {
+  async createCheckoutSession(@Request() request: ModRequest) {
     try {
       const session = await this.subscriptionService.createCheckoutSession(
-        request.user.userId,
-        requestBody.subscriptionTier
+        request.user.userId
       )
       return { redirectUrl: session.url }
     } catch (error) {

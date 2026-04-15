@@ -17,7 +17,6 @@ export interface ModRequest extends Request {
   user: {
     userId: string
     role: string
-    subscriptionTier: string
   }
 }
 
@@ -48,19 +47,12 @@ export class AuthGuard implements CanActivate {
         )
       ).shift()
 
-      let subscriptionTier = "Free"
-      if (!subscriptionResponse || !subscriptionResponse.isActive) {
-        subscriptionTier = "Free"
-      } else {
-        subscriptionTier = subscriptionResponse.subscriptionTier
-      }
-
       if (!userResponse || !userResponse.length) {
         throw new UnauthorizedException(statusMessages.invalidUser)
       }
 
       const { role } = userResponse.shift()
-      request.user = { userId, role, subscriptionTier }
+      request.user = { userId, role }
       return true
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {

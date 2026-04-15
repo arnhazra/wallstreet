@@ -8,12 +8,11 @@ export class CreateSubscriptionCommandHandler implements ICommandHandler<CreateS
   constructor(private readonly repository: SubscriptionRepository) {}
 
   async execute(command: CreateSubscriptionCommand) {
-    const { userId, price, subscriptionTier } = command
+    const { userId, price } = command
     await this.repository.delete({ userId: createOrConvertObjectId(userId) })
     return await this.repository.create({
       userId: createOrConvertObjectId(userId),
       price,
-      subscriptionTier,
     })
   }
 }

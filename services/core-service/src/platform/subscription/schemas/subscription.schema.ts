@@ -21,9 +21,6 @@ export class Subscription extends IdentifiableEntitySchmea {
   @EntityProp({ required: true })
   price: number
 
-  @EntityProp({ required: true })
-  subscriptionTier: string
-
   @EntityProp({
     type: Date,
     default: function () {

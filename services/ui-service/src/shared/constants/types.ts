@@ -244,17 +244,14 @@ export interface WidgetConfig {
   widgets: Widget[]
 }
 
-export interface Plan {
-  name: string
-  price: string
-  icon: string
-  features: string[]
-}
-
 export interface SubscriptionConfig {
   title: string
   desc: string
-  plans: Plan[]
+  price: string
+  offerPrice: string
+  icon: string
+  dialog: string
+  features: string[]
 }
 
 export interface NavigationItem {
@@ -267,20 +264,6 @@ export interface HomeNavigationConfig {
   navigationItems: NavigationItem[]
 }
 
-export interface ServiceTier {
-  name: string
-  description: string
-}
-
-export interface ServiceTierConfig {
-  title: string
-  icon: string
-  description: string
-  contactUrl: string
-  contactText: string
-  tiers: ServiceTier[]
-}
-
 export interface ConstantConfig {
   otherConstants: Record<string, string>
 }
@@ -290,7 +273,6 @@ export interface HomeConfig {
   heroConfig: HeroConfig
   featureConfig: FeatureConfig
   appConfig: AppConfig
-  serviceTiersConfig: ServiceTierConfig
   subscriptionConfig: SubscriptionConfig
 }
 
