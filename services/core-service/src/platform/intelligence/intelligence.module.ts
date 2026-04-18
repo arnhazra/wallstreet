@@ -11,13 +11,13 @@ import { FetchThreadByIdQueryHandler } from "./queries/handler/fetch-thread-by-i
 import { HttpModule } from "@nestjs/axios"
 import { config } from "@/config"
 import { ChatStrategy } from "./strategies/chat.strategy"
-import { AssetGroupAgent } from "./agents/assetgroup.agent"
-import { AssetAgent } from "./agents/asset.agent"
-import { GoalAgent } from "./agents/goal.agent"
-import { DebtAgent } from "./agents/debt.agent"
-import { ExpenseAgent } from "./agents/expense.agent"
-import { CashflowAgent } from "./agents/cashflow.agent"
-import { EventAgent } from "./agents/event.agent"
+import { AssetGroupAgent } from "./agents/assetgroup/assetgroup.agent"
+import { AssetAgent } from "./agents/asset/asset.agent"
+import { GoalAgent } from "./agents/goal/goal.agent"
+import { DebtAgent } from "./agents/debt/debt.agent"
+import { ExpenseAgent } from "./agents/expense/expense.agent"
+import { CashflowAgent } from "./agents/cashflow/cashflow.agent"
+import { EventAgent } from "./agents/event/event.agent"
 
 @Module({
   imports: [

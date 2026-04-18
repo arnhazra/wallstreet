@@ -11,7 +11,7 @@ import {
   Globe,
   Pen,
   Leaf,
-  Sparkle,
+  Sparkles,
 } from "lucide-react"
 import * as Icons from "lucide-react"
 import EditCurrency from "@/shared/components/edit-currency"
@@ -155,7 +155,7 @@ export default function Page() {
         <SectionPanel
           icon={
             <IconContainer ai>
-              <Sparkle className="h-4 w-4" />
+              <Sparkles className="h-4 w-4" />
             </IconContainer>
           }
           title={`${PLATFORM_NAME} Intelligence`}

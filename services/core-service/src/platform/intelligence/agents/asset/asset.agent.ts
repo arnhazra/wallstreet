@@ -5,6 +5,7 @@ import { Injectable } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
 import { z } from "zod"
 import { Asset } from "@/resources/asset/schemas/asset.schema"
+import { GetByUserIdSchema } from "./asset.schems"
 
 @Injectable()
 export class AssetAgent {
@@ -35,9 +36,7 @@ export class AssetAgent {
     {
       name: "get_total_asset_by_userid",
       description: "Get total asset for a user",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-      }),
+      schema: GetByUserIdSchema,
     }
   )
 
@@ -57,9 +56,7 @@ export class AssetAgent {
     {
       name: "get_asset_list",
       description: "Get asset list for a user",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-      }),
+      schema: GetByUserIdSchema,
     }
   )
 }

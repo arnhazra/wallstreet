@@ -2,8 +2,8 @@ import { AppEventMap } from "@/shared/constants/app-events.map"
 import { tool } from "langchain"
 import { Injectable } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
-import { z } from "zod"
 import { Goal } from "@/resources/goal/schemas/goal.schema"
+import { CreateGoalSchema, GetByUserIdSchema } from "./goal.schema"
 
 @Injectable()
 export class GoalAgent {
@@ -32,15 +32,7 @@ export class GoalAgent {
     {
       name: "create_goal",
       description: "Create a new goal for a user",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-        goalDate: z
-          .string()
-          .describe(
-            `goal date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to YYYY-MM-DD format string`
-          ),
-        goalAmount: z.coerce.number().describe("goal amount given by the user"),
-      }),
+      schema: CreateGoalSchema,
     }
   )
 
@@ -60,9 +52,7 @@ export class GoalAgent {
     {
       name: "get_goal_list",
       description: "List down all goals for user",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-      }),
+      schema: GetByUserIdSchema,
     }
   )
 
@@ -81,9 +71,7 @@ export class GoalAgent {
     {
       name: "get_user_nearest_goal",
       description: "Get nearest goal of a user",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-      }),
+      schema: GetByUserIdSchema,
     }
   )
 }

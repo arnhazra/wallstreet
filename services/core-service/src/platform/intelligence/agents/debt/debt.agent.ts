@@ -2,8 +2,12 @@ import { AppEventMap } from "@/shared/constants/app-events.map"
 import { tool } from "langchain"
 import { Injectable } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
-import { z } from "zod"
 import { Debt } from "@/resources/debt/schemas/debt.schema"
+import {
+  CreateDebtSchema,
+  GetByUserIdSchema,
+  GetDebtListSchema,
+} from "./debt.schema"
 
 @Injectable()
 export class DebtAgent {
@@ -44,27 +48,7 @@ export class DebtAgent {
     {
       name: "create_debt",
       description: "Create a new debt for a user",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-        debtPurpose: z.string().describe("debt purpose given by the user"),
-        identifier: z.string().describe("identifier given by the user"),
-        startDate: z
-          .string()
-          .describe(
-            `start date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to YYYY-MM-DD format string`
-          ),
-        endDate: z
-          .string()
-          .describe(
-            `end date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to YYYY-MM-DD format string`
-          ),
-        principalAmount: z.coerce
-          .number()
-          .describe("principal amount given by the user"),
-        interestRate: z.coerce
-          .number()
-          .describe("interest rate % given by the user"),
-      }),
+      schema: CreateDebtSchema,
     }
   )
 
@@ -91,12 +75,7 @@ export class DebtAgent {
     {
       name: "get_debt_list",
       description: "List down all the debts for a user",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-        searchKeyword: z
-          .string()
-          .describe("debt name given by the user to search - this is optional"),
-      }),
+      schema: GetDebtListSchema,
     }
   )
 
@@ -114,9 +93,7 @@ export class DebtAgent {
     {
       name: "get_total_debt_by_userid",
       description: "Get total debt for a user",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-      }),
+      schema: GetByUserIdSchema,
     }
   )
 }

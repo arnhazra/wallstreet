@@ -9,7 +9,7 @@ import {
   Bot,
   User,
   ArrowUp,
-  Sparkle,
+  Sparkles,
   BadgeMinus,
 } from "lucide-react"
 import { endPoints } from "@/shared/constants/api-endpoints"
@@ -112,7 +112,7 @@ export default function Intelligence() {
         size="icon"
         className="h-11 w-11 fixed bottom-6 right-6 z-50 text-white ui-soft-gradient text-white rounded-full transition"
       >
-        <Sparkle className="h-4 w-4" />
+        <Sparkles className="h-4 w-4" />
       </Button>
 
       {isOpen && (
@@ -144,7 +144,7 @@ export default function Intelligence() {
               <div className="text-center mt-8">
                 <div className="flex justify-center mb-4">
                   <IconContainer ai>
-                    <Sparkle className="h-4 w-4" />
+                    <Sparkles className="h-4 w-4" />
                   </IconContainer>
                 </div>
                 <p className="text-white">{PLATFORM_NAME} Intelligence</p>
@@ -246,15 +246,17 @@ export default function Intelligence() {
 
         <div className="p-4 border-none">
           <div className="text-center">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={clearChat}
-              className="text-xs text-theme-400 hover:text-white bg-transparent hover:bg-transparent mb-2"
-            >
-              <BadgeMinus className="h-3 w-3 mr-1" />
-              Clear Chat
-            </Button>
+            <Show condition={!!threadId}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={clearChat}
+                className="text-xs text-theme-400 hover:text-white bg-transparent hover:bg-transparent mb-2"
+              >
+                <BadgeMinus className="h-3 w-3 mr-1" />
+                Clear Chat
+              </Button>
+            </Show>
           </div>
           <form
             onSubmit={(e) => {
@@ -263,7 +265,7 @@ export default function Intelligence() {
             }}
           >
             <div className="w-full max-w-4xl mx-auto">
-              <div className="relative bg-theme-900 border border-border rounded-2xl p-2 ps-4 pe-4 shadow-lg">
+              <div className="relative bg-theme-900 border border-border rounded-full p-2 ps-4 pe-4 shadow-lg">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-3">
                     <div className="flex-1">

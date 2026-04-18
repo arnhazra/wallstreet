@@ -2,8 +2,8 @@ import { AppEventMap } from "@/shared/constants/app-events.map"
 import { tool } from "langchain"
 import { Injectable } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
-import { z } from "zod"
 import { Event } from "@/resources/event/schemas/event.schema"
+import { CreateEventSchema, GetEventByMonthSchema } from "./event.schema"
 
 @Injectable()
 export class EventAgent {
@@ -26,14 +26,7 @@ export class EventAgent {
     {
       name: "get_events_by_month",
       description: "List down events for an user for any given month",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-        eventMonth: z
-          .string()
-          .describe(
-            "calculate month given by the user - format should be like 2022-05"
-          ),
-      }),
+      schema: GetEventByMonthSchema,
     }
   )
 
@@ -64,15 +57,7 @@ export class EventAgent {
     {
       name: "create_event",
       description: "Create a new event for a user",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-        eventName: z.string().describe("event purpose given by the user"),
-        eventDate: z
-          .string()
-          .describe(
-            `event date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to YYYY-MM-DD format string`
-          ),
-      }),
+      schema: CreateEventSchema,
     }
   )
 }

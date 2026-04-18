@@ -2,8 +2,12 @@ import { AppEventMap } from "@/shared/constants/app-events.map"
 import { tool } from "langchain"
 import { Injectable } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
-import { z } from "zod"
 import { AssetGroup } from "@/resources/assetgroup/schemas/assetgroup.schema"
+import {
+  CreateAssetGroupSchema,
+  GetAssetGroupListSchema,
+  GetAssetGroupValuationSchema,
+} from "./assetgroup.schema"
 
 @Injectable()
 export class AssetGroupAgent {
@@ -33,12 +37,7 @@ export class AssetGroupAgent {
     {
       name: "create_assetgroup",
       description: "Create a assetgroup for a user",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-        assetgroupName: z
-          .string()
-          .describe("assetgroup name given by the user"),
-      }),
+      schema: CreateAssetGroupSchema,
     }
   )
 
@@ -65,14 +64,7 @@ export class AssetGroupAgent {
     {
       name: "get_assetgroup_list",
       description: "Get assetgroup list for a user",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-        searchKeyword: z
-          .string()
-          .describe(
-            "assetgroup name given by the user to search - this is optional"
-          ),
-      }),
+      schema: GetAssetGroupListSchema,
     }
   )
 
@@ -101,12 +93,7 @@ export class AssetGroupAgent {
     {
       name: "get_assetgroup_valuation_by_assetgroup_name",
       description: "Get assetgroup valuation for a specific assetgroup",
-      schema: z.object({
-        userId: z.string().describe("user id of the user"),
-        assetgroupName: z
-          .string()
-          .describe("assetgroup name given by the user"),
-      }),
+      schema: GetAssetGroupValuationSchema,
     }
   )
 }
