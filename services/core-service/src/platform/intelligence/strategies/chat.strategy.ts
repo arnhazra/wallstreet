@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import { Thread } from "../schemas/thread.schema"
 import { config } from "@/config"
-import { ChatOpenAI, ChatOpenAICallOptions } from "@langchain/openai"
 import { createAgent, SystemMessage, HumanMessage, AIMessage } from "langchain"
 import { User } from "@/auth/schemas/user.schema"
 import { GoalAgent } from "../agents/goal.agent"
@@ -13,6 +12,7 @@ import { LLMService } from "@/shared/llm/llm.service"
 import { CashflowAgent } from "../agents/cashflow.agent"
 import { ConfigService } from "@/platform/config/config.service"
 import { EventAgent } from "../agents/event.agent"
+import { AgentLanguageModelLike } from "langchain/dist/agents/model.cjs"
 
 export interface ChatArgs {
   thread: Thread[]
@@ -47,7 +47,7 @@ export class ChatStrategy {
       .replaceAll("{solutionList}", solutionConfig)
   }
 
-  private createChatAgent(llm: ChatOpenAI<ChatOpenAICallOptions>) {
+  private createChatAgent(llm: AgentLanguageModelLike) {
     return createAgent({
       model: llm,
       tools: [
@@ -93,7 +93,7 @@ export class ChatStrategy {
   }
 
   async *chatStream(args: ChatArgs): AsyncGenerator<string> {
-    const llm = this.llmService.getLLM()
+    const llm = this.llmService.getOpenAIChatModel()
     const chatAgent = this.createChatAgent(llm)
     const systemInstruction = await this.getSystemInstruction(args)
     const messages = this.buildMessages(args, systemInstruction)

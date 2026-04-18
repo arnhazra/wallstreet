@@ -4,8 +4,8 @@ import { config } from "@/config"
 import { AIMessage, createAgent, HumanMessage, SystemMessage } from "langchain"
 import { User } from "@/auth/schemas/user.schema"
 import { LLMService } from "@/shared/llm/llm.service"
-import { ChatOpenAI, ChatOpenAICallOptions } from "@langchain/openai"
 import { ConfigService } from "@/platform/config/config.service"
+import { AgentLanguageModelLike } from "langchain/dist/agents/model.cjs"
 
 export interface TaxStrategyType {
   temperature: number
@@ -34,7 +34,7 @@ export class TaxStrategy {
     return content
   }
 
-  private createAdvisorAgent(llm: ChatOpenAI<ChatOpenAICallOptions>) {
+  private createAdvisorAgent(llm: AgentLanguageModelLike) {
     return createAgent({
       model: llm,
       stateSchema: undefined,
@@ -56,7 +56,7 @@ export class TaxStrategy {
   }
 
   async *adviseStream(args: TaxStrategyType): AsyncGenerator<string> {
-    const llm = this.llmService.getLLM()
+    const llm = this.llmService.getOpenAIChatModel()
     const agent = this.createAdvisorAgent(llm)
     const systemInstruction = await this.getSystemInstruction(args.user)
     const messages = this.buildMessages(args, systemInstruction)
