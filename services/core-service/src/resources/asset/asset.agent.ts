@@ -2,14 +2,14 @@ import { AssetType } from "@/shared/constants/types"
 import { tool } from "langchain"
 import { Injectable } from "@nestjs/common"
 import { z } from "zod"
-import { GetByUserIdSchema } from "../../platform/intelligence/agents/asset/asset.schems"
-import { AssetService } from "./asset.service"
-import { AssetGroup } from "@/resources/asset/schemas/assetgroup.schema"
 import {
+  GetByUserIdSchema,
   CreateAssetGroupSchema,
   GetAssetGroupListSchema,
   GetAssetGroupValuationSchema,
-} from "../../platform/intelligence/agents/assetgroup/assetgroup.schema"
+} from "./schemas/assetagent.schema"
+import { AssetService } from "./asset.service"
+import { AssetGroup } from "@/resources/asset/schemas/assetgroup.schema"
 
 @Injectable()
 export class AssetAgent {

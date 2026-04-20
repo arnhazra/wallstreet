@@ -4,7 +4,7 @@ import { Injectable } from "@nestjs/common"
 import {
   CreateExpenseSchema,
   GetExpenseByMonthSchema,
-} from "../../platform/intelligence/agents/expense/expense.schema"
+} from "./schemas/expenseagent.schema"
 import { ExpenseService } from "./expense.service"
 
 @Injectable()

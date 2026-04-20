@@ -1,9 +1,6 @@
 import { tool } from "langchain"
 import { Injectable } from "@nestjs/common"
-import {
-  CreateGoalSchema,
-  GetByUserIdSchema,
-} from "../../platform/intelligence/agents/goal/goal.schema"
+import { CreateGoalSchema, GetByUserIdSchema } from "./schemas/goalagent.schema"
 import { GoalService } from "./goal.service"
 
 @Injectable()

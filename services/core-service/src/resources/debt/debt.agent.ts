@@ -4,7 +4,7 @@ import {
   CreateDebtSchema,
   GetByUserIdSchema,
   GetDebtListSchema,
-} from "../../platform/intelligence/agents/debt/debt.schema"
+} from "./schemas/debtagent.schema"
 import { DebtService } from "./debt.service"
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { tool } from "langchain"
 import { Injectable } from "@nestjs/common"
-import { GetByUserIdSchema } from "../../platform/intelligence/agents/cashflow/cashflow.schema"
+import { GetByUserIdSchema } from "./schemas/cashflowagent.schema"
 import { CashFlowService } from "./cashflow.service"
 
 @Injectable()

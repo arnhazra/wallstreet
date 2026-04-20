@@ -3,7 +3,7 @@ import { Injectable } from "@nestjs/common"
 import {
   CreateEventSchema,
   GetEventByMonthSchema,
-} from "../../platform/intelligence/agents/event/event.schema"
+} from "./schemas/eventagent.schema"
 import { EventService } from "./event.service"
 
 @Injectable()
