@@ -8,7 +8,7 @@ import {
   PanelRightClose,
   User,
   ArrowUp,
-  Sparkles,
+  Sparkle,
   BadgeMinus,
 } from "lucide-react"
 import { endPoints } from "@/shared/constants/api-endpoints"
@@ -111,7 +111,7 @@ export default function Intelligence() {
         size="icon"
         className="h-11 w-11 fixed bottom-6 right-6 z-50 text-white ui-soft-gradient text-white rounded-full transition"
       >
-        <Sparkles className="h-4 w-4" />
+        <Sparkle className="h-4 w-4" />
       </Button>
 
       {isOpen && (
@@ -143,7 +143,7 @@ export default function Intelligence() {
               <div className="text-center mt-8">
                 <div className="flex justify-center mb-4">
                   <IconContainer ai>
-                    <Sparkles className="h-4 w-4" />
+                    <Sparkle className="h-4 w-4" />
                   </IconContainer>
                 </div>
                 <p className="text-white">{PLATFORM_NAME} Intelligence</p>
