@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common"
 import { AssetService } from "./asset.service"
-import { AssetController } from "./asset.controller"
+import { AssetController, AssetGroupController } from "./asset.controller"
 import { CqrsModule } from "@nestjs/cqrs"
 import { Asset, AssetSchema } from "./schemas/asset.schema"
 import { DbConnectionMap } from "@/shared/entity/entity-db-connection.map"
@@ -34,7 +34,7 @@ import { UpdateAssetGroupCommandHandler } from "./commands/handler/update-assetg
       DbConnectionMap.Resource
     ),
   ],
-  controllers: [AssetController],
+  controllers: [AssetController, AssetGroupController],
   providers: [
     AssetAgent,
     AssetService,
