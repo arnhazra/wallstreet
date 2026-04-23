@@ -15,7 +15,7 @@ import { ChatDto } from "./dto/chat.dto"
 import { AuthGuard, ModRequest } from "@/auth/auth.guard"
 import { statusMessages } from "@/shared/constants/status-messages"
 
-@Controller("platform/intelligence")
+@Controller("intelligence")
 export class IntelligenceController {
   constructor(private readonly service: IntelligenceService) {}
 

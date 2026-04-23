@@ -12,7 +12,7 @@ import { computeNextDate } from "./helpers/compute-next-date"
 import { UpdateCashflowCommand } from "./commands/impl/update-cashflow.command"
 import { FindCashflowByIdQuery } from "./queries/impl/find-cashflow-by-id.query"
 import { AssetService } from "../asset/asset.service"
-import { AgentTool } from "@/shared/agentdiscovery/agent.decorator"
+import { AgentTool } from "@/intelligence/agent/agent.decorator"
 import {
   CreateCashflowSchema,
   FindCashflowsSchema,

@@ -23,7 +23,7 @@ import { DeleteAssetGroupCommand } from "./commands/impl/delete-assetgroup.comma
 import { CreateAssetGroupCommand } from "./commands/impl/create-assetgroup.command"
 import { CreateAssetGroupRequestDto } from "./dto/request/create-assetgroup.request.dto"
 import { UpdateAssetGroupCommand } from "./commands/impl/update-assetgroup.command"
-import { AgentTool } from "@/shared/agentdiscovery/agent.decorator"
+import { AgentTool } from "@/intelligence/agent/agent.decorator"
 import {
   CreateAssetGroupSchema,
   GetAssetGroupListSchema,

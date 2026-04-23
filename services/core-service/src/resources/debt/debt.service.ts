@@ -9,7 +9,7 @@ import { UpdateDebtCommand } from "./commands/impl/update-debt.command"
 import { FindDebtsByUserQuery } from "./queries/impl/find-debt-by-user.query"
 import { FindDebtByIdQuery } from "./queries/impl/find-debt-by-id.query"
 import { calculateDebtDetails } from "./helpers/calculate-debt"
-import { AgentTool } from "@/shared/agentdiscovery/agent.decorator"
+import { AgentTool } from "@/intelligence/agent/agent.decorator"
 import {
   CreateDebtInputSchema,
   GetTotalDebtInputSchema,

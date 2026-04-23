@@ -8,9 +8,9 @@ import { createAgent, SystemMessage, HumanMessage, AIMessage } from "langchain"
 import { config } from "@/config"
 import { Thread } from "./schemas/thread.schema"
 import { User } from "@/auth/schemas/user.schema"
-import { LLMService } from "@/shared/llm/llm.service"
+import { LLMService } from "@/intelligence/llm/llm.service"
 import { ConfigService } from "@/platform/config/config.service"
-import { AgentRegistryService } from "@/shared/agentdiscovery/agent.service"
+import { AgentRegistryService } from "@/intelligence/agent/agent.service"
 
 type AgentLanguageModelLike = RunnableInterface<
   BaseLanguageModelInput,

@@ -10,7 +10,7 @@ import { FindExpensesByUserQuery } from "./queries/impl/find-expense-by-user.que
 import { FindExpenseByIdQuery } from "./queries/impl/find-expense-by-id.query"
 import { ExpenseCategory } from "@/shared/constants/types"
 import { z } from "zod"
-import { AgentTool } from "@/shared/agentdiscovery/agent.decorator"
+import { AgentTool } from "@/intelligence/agent/agent.decorator"
 import {
   CreateExpenseSchema,
   GetExpensesByUserSchema,

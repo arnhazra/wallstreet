@@ -10,7 +10,7 @@ import { FindGoalsByUserQuery } from "./queries/impl/find-goal-by-user.query"
 import { FindGoalByIdQuery } from "./queries/impl/find-goal-by-id.query"
 import { FindNearestGoalQuery } from "./queries/impl/find-nearest-goal.query"
 import { z } from "zod"
-import { AgentTool } from "@/shared/agentdiscovery/agent.decorator"
+import { AgentTool } from "@/intelligence/agent/agent.decorator"
 import {
   CreateGoalInputSchema,
   GetByUserIdInputSchema,

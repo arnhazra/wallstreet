@@ -10,18 +10,29 @@ import { EntityModule } from "@/shared/entity/entity.module"
 import { FetchThreadByIdQueryHandler } from "./queries/handler/fetch-thread-by-id.handler"
 import { IntelligenceOrchestrator } from "./intelligence.orchestrator"
 import { AuthModule } from "@/auth/auth.module"
+import { config } from "@/config"
+import { LLMService } from "./llm/llm.service"
+import { AgentRegistryService } from "./agent/agent.service"
+import { DiscoveryModule } from "@nestjs/core"
 
 @Module({
   imports: [
+    DiscoveryModule,
     CqrsModule,
     AuthModule,
+    EntityModule.forRoot(
+      config.AZURE_COSMOS_DB_CONNECTION_STRING,
+      DbConnectionMap.Intelligence
+    ),
     EntityModule.forFeature(
       [{ name: Thread.name, schema: ThreadSchema }],
-      DbConnectionMap.Platform
+      DbConnectionMap.Intelligence
     ),
   ],
   controllers: [IntelligenceController],
   providers: [
+    LLMService,
+    AgentRegistryService,
     IntelligenceService,
     IntelligenceRepository,
     IntelligenceOrchestrator,

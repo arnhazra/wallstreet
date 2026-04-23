@@ -18,7 +18,7 @@ import { DebtService } from "../debt/debt.service"
 import { ExpenseService } from "../expense/expense.service"
 import { GoalService } from "../goal/goal.service"
 import { CashFlowService } from "../cashflow/cashflow.service"
-import { AgentTool } from "@/shared/agentdiscovery/agent.decorator"
+import { AgentTool } from "@/intelligence/agent/agent.decorator"
 import {
   CreateEventSchema,
   GetEventByMonthSchema,

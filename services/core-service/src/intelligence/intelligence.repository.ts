@@ -10,7 +10,7 @@ import {
 @Injectable()
 export class IntelligenceRepository extends EntityRepository<Thread> {
   constructor(
-    @InjectEntityModel(Thread.name, DbConnectionMap.Platform)
+    @InjectEntityModel(Thread.name, DbConnectionMap.Intelligence)
     private threadModel: EntityModel<Thread>
   ) {
     super(threadModel)

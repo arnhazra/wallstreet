@@ -7,7 +7,6 @@ export const endPoints = {
   updateAttribute: "/auth/attribute",
   // Platform Service
   getConfig: "/platform/config",
-  intelligence: "/platform/intelligence",
   widgets: "/platform/widgets",
   createCheckoutSession: "/platform/subscription/checkout",
   subscribe: "/platform/subscription/subscribe",
@@ -19,4 +18,6 @@ export const endPoints = {
   expense: "/resource/expense",
   cashflow: "/resource/cashflow",
   events: "/resource/event",
+  // Intelligence Service
+  intelligence: "/intelligence",
 }
