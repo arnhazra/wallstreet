@@ -28,9 +28,9 @@ export class GoalService {
     description: "Create a new goal for a user",
     schema: CreateGoalInputSchema,
   })
-  async createGoal(createGoalDto: z.output<typeof CreateGoalInputSchema>) {
+  async createGoal(dto: z.output<typeof CreateGoalInputSchema>) {
     try {
-      const { userId, ...rest } = createGoalDto
+      const { userId, ...rest } = dto
       return await this.commandBus.execute<CreateGoalCommand, Goal>(
         new CreateGoalCommand(userId, { ...rest })
       )
@@ -44,9 +44,9 @@ export class GoalService {
     description: "List down all goals for user",
     schema: GetByUserIdInputSchema,
   })
-  async findMyGoals(findMyGoalsDto: z.output<typeof GetByUserIdInputSchema>) {
+  async findMyGoals(dto: z.output<typeof GetByUserIdInputSchema>) {
     try {
-      const { userId } = findMyGoalsDto
+      const { userId } = dto
       return await this.queryBus.execute<FindGoalsByUserQuery, Goal[]>(
         new FindGoalsByUserQuery(userId)
       )
@@ -60,11 +60,9 @@ export class GoalService {
     description: "Get nearest goal of a user",
     schema: GetByUserIdInputSchema,
   })
-  async findNearestGoal(
-    findNearestGoalDto: z.output<typeof GetByUserIdInputSchema>
-  ) {
+  async findNearestGoal(dto: z.output<typeof GetByUserIdInputSchema>) {
     try {
-      const { userId } = findNearestGoalDto
+      const { userId } = dto
       const goal = await this.queryBus.execute<FindNearestGoalQuery, Goal>(
         new FindNearestGoalQuery(userId)
       )

@@ -54,7 +54,7 @@ export class ExpenseService {
   })
   async findMyExpenses(dto: z.output<typeof GetExpensesByUserSchema>) {
     try {
-      const { userId, monthFilter, expenseCategory, searchKeyword } = dto
+      const { userId, monthFilter, searchKeyword, expenseCategory } = dto
       return await this.queryBus.execute<FindExpensesByUserQuery>(
         new FindExpensesByUserQuery(
           userId,
