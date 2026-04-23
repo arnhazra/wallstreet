@@ -24,6 +24,7 @@ import {
   GetEventByMonthSchema,
 } from "./schemas/eventagent.schema"
 import { z } from "zod"
+import { CalendarEvent } from "./dto/response/event-response.dto"
 
 @Injectable()
 export class EventService {
@@ -75,34 +76,38 @@ export class EventService {
         JSON.stringify(expenseCategoryConfig)
       )
 
-      const customEvents = events.map((event) => ({
-        ...event,
+      const customEvents: CalendarEvent[] = events.map((event) => ({
+        _id: String(event._id),
+        eventDate: event.eventDate,
+        eventName: event.eventName,
+        userId: String(event.userId),
+        createdAt: (event as any).createdAt,
         eventSource: "Custom",
       }))
 
       const user = await this.authService.findUserById(userId)
       const assets = await this.assetService.findAllMyAssets({ userId })
-      const assetStartDateEvents = assets.map((asset) => {
+      const assetStartDateEvents: CalendarEvent[] = assets.map((asset) => {
         if (asset.startDate) {
           return {
+            _id: asset._id,
             eventDate: asset.startDate,
             eventName: `Start date of asset - ${asset.assetName}`,
             userId: asset.userId,
             createdAt: (asset as any).createdAt,
-            _id: asset._id,
             eventSource: "Asset",
           }
         }
       })
 
-      const assetMaturityDateEvents = assets.map((asset) => {
+      const assetMaturityDateEvents: CalendarEvent[] = assets.map((asset) => {
         if (asset.maturityDate) {
           return {
+            _id: asset._id,
             eventDate: asset.maturityDate,
             eventName: `Maturity date of asset - ${asset.assetName}`,
             userId: asset.userId,
             createdAt: (asset as any).createdAt,
-            _id: asset._id,
             eventSource: "Asset",
           }
         }
@@ -110,70 +115,72 @@ export class EventService {
 
       const goals = await this.goalService.findMyGoals({ userId })
 
-      const goalEvents = goals.map((goal) => ({
+      const goalEvents: CalendarEvent[] = goals.map((goal) => ({
+        _id: String(goal._id),
         eventDate: goal.goalDate,
         eventName: `Goal of ${formatCurrency(goal.goalAmount, user.baseCurrency)}`,
-        userId: goal.userId,
+        userId: String(goal.userId),
         createdAt: (goal as any).createdAt,
-        _id: goal._id,
         eventSource: "Goal",
       }))
 
       const debts = await this.debtService.findMyDebts({ userId })
 
-      const debtStartEvents = debts.map((debt) => ({
+      const debtStartEvents: CalendarEvent[] = debts.map((debt) => ({
+        _id: String(debt._id),
         eventDate: debt.startDate,
         eventName: `Start date of debt - ${debt.debtPurpose}`,
-        userId: debt.userId,
+        userId: String(debt.userId),
         createdAt: (debt as any).createdAt,
-        _id: debt._id,
         eventSource: "Debt",
       }))
 
-      const debtEndEvents = debts.map((debt) => ({
+      const debtEndEvents: CalendarEvent[] = debts.map((debt) => ({
+        _id: String(debt._id),
         eventDate: debt.endDate,
         eventName: `End date of Debt - ${debt.debtPurpose}`,
-        userId: debt.userId,
+        userId: String(debt.userId),
         createdAt: (debt as any).createdAt,
-        _id: debt._id,
         eventSource: "Debt",
       }))
 
-      const nextEmiDateEvents = debts.map((debt) => ({
+      const nextEmiDateEvents: CalendarEvent[] = debts.map((debt) => ({
+        _id: String(debt._id),
         eventDate: (debt as any).nextEmiDate,
         eventName: `EMI date for debt - ${debt.debtPurpose}`,
-        userId: debt.userId,
+        userId: String(debt.userId),
         createdAt: (debt as any).createdAt,
-        _id: debt._id,
         eventSource: "Debt",
       }))
 
       const cashflows = await this.cashFlowService.findMyCashflows({ userId })
-      const cashflowEvents = cashflows.map((cashflow) => ({
+      const cashflowEvents: CalendarEvent[] = cashflows.map((cashflow) => ({
+        _id: String(cashflow._id),
         eventDate: cashflow.nextExecutionAt,
         eventName: cashflow.description,
-        userId: cashflow.userId,
+        userId: String(cashflow.userId),
         createdAt: (cashflow as any).createdAt,
-        _id: cashflow._id,
         eventSource: "Cashflow",
       }))
 
       const expenses = await this.expenseService.findMyExpenses({ userId })
-      const expensesEvents = expenses.expenses.map((expense: Expense) => {
-        const expenseCategoryDisplayName =
-          parsedExpenseCategories.expenseCategories.find(
-            (cat) => cat.value === expense.expenseCategory
-          ).displayName
+      const expensesEvents: CalendarEvent[] = expenses.expenses.map(
+        (expense: Expense) => {
+          const expenseCategoryDisplayName =
+            parsedExpenseCategories.expenseCategories.find(
+              (cat) => cat.value === expense.expenseCategory
+            ).displayName
 
-        return {
-          eventDate: expense.expenseDate,
-          eventName: `Expense of ${formatCurrency(expense.expenseAmount, user.baseCurrency)} for ${expenseCategoryDisplayName}`,
-          userId: expense.userId,
-          createdAt: (expense as any).createdAt,
-          _id: expense._id,
-          eventSource: "Expense",
+          return {
+            _id: expense._id,
+            eventDate: expense.expenseDate,
+            eventName: `Expense of ${formatCurrency(expense.expenseAmount, user.baseCurrency)} for ${expenseCategoryDisplayName}`,
+            userId: expense.userId,
+            createdAt: (expense as any).createdAt,
+            eventSource: "Expense",
+          }
         }
-      })
+      )
 
       const allEvents = [
         ...customEvents,
@@ -185,10 +192,16 @@ export class EventService {
         ...assetStartDateEvents,
         ...assetMaturityDateEvents,
         ...expensesEvents,
-      ].filter((event) => !!event)
+      ]
+        .filter((event) => !!event)
+        .filter((event) => {
+          if (!event.eventDate) return
+          return new Date(event.eventDate).toISOString().startsWith(eventMonth)
+        })
 
       return allEvents
     } catch (error) {
+      console.log(error)
       throw new Error(statusMessages.connectionError)
     }
   }
