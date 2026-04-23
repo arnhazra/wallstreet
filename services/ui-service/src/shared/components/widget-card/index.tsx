@@ -87,7 +87,7 @@ export default function WidgetCard({ widget, scramble }: WidgetCardProps) {
     >
       <CardContent className="-mt-2 -mb-1">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-theme-300">{widget.title}</span>
+          <span className="text-sm text-theme-200">{widget.title}</span>
           <IconContainer>
             <WidgetIcon className="h-4 w-4" />
           </IconContainer>

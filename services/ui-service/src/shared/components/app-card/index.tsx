@@ -25,7 +25,9 @@ export function AppCard({ app }: AppCardProps) {
           </IconContainer>
         </CardHeader>
         <CardContent className="mb-6 flex-1">
-          <p className="text-sm leading-relaxed justify">{app.description}</p>
+          <p className="text-sm leading-relaxed text-theme-200 justify">
+            {app.description}
+          </p>
         </CardContent>
       </Card>
     </Link>

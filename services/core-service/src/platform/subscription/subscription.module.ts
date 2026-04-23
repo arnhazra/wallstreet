@@ -37,5 +37,6 @@ import { DbConnectionMap } from "@/shared/entity/entity-db-connection.map"
     FindBlockListedSessionByIdQueryHandler,
     CreateBlockListedSessionCommandHandler,
   ],
+  exports: [SubscriptionService],
 })
 export class SubscriptionModule {}

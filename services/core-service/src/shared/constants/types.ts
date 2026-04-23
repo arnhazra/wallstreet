@@ -1,16 +1,16 @@
 import { Subscription } from "@/platform/subscription/schemas/subscription.schema"
 
 export enum AssetType {
-  LUMPSUM_DEPOSIT = "LUMPSUM_DEPOSIT",
-  RECURRING_DEPOSIT = "RECURRING_DEPOSIT",
-  METAL = "METAL",
-  REAL_ESTATE = "REAL_ESTATE",
-  BOND = "BOND",
   LIQUID = "LIQUID",
   RETIREMENT = "RETIREMENT",
+  REAL_ESTATE = "REAL_ESTATE",
+  METAL = "METAL",
+  OTHER = "OTHER",
+  LUMPSUM_DEPOSIT = "LUMPSUM_DEPOSIT",
+  BOND = "BOND",
+  RECURRING_DEPOSIT = "RECURRING_DEPOSIT",
   EQUITY = "EQUITY",
   CRYPTO = "CRYPTO",
-  OTHER = "OTHER",
 }
 
 export enum RecurringFrequency {

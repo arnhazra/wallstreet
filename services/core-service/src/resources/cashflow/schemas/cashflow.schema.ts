@@ -42,7 +42,7 @@ export class Cashflow extends IdentifiableEntitySchmea {
   frequency: FlowFrequency
 
   @EntityProp()
-  nextExecutionAt?: string
+  nextExecutionAt: string
 }
 
 export const CashflowSchema = createSchemaFromClass(Cashflow)

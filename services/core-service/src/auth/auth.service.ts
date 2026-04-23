@@ -26,6 +26,7 @@ import { Currency } from "country-code-enum"
 import * as jwt from "jsonwebtoken"
 import { OAuth2Client } from "google-auth-library"
 import { Subscription } from "@/platform/subscription/schemas/subscription.schema"
+import { SubscriptionService } from "@/platform/subscription/subscription.service"
 
 @Injectable()
 export class AuthService {
@@ -34,7 +35,8 @@ export class AuthService {
   constructor(
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus,
-    private readonly eventEmitter: EventEmitter2
+    private readonly eventEmitter: EventEmitter2,
+    private readonly subscriptionService: SubscriptionService
   ) {
     this.googleOAuthClient = new OAuth2Client(
       config.GOOGLE_OAUTH_CLIENT_ID,
@@ -66,10 +68,7 @@ export class AuthService {
         const newUser = await this.commandBus.execute<CreateUserCommand, User>(
           new CreateUserCommand(email, name)
         )
-        await this.eventEmitter.emitAsync(
-          AppEventMap.ActivateTrialSubscription,
-          String(newUser._id)
-        )
+        await this.subscriptionService.activateTrial(String(newUser._id))
 
         const tokenPayload = {
           id: String(newUser._id),
@@ -178,20 +177,8 @@ export class AuthService {
       )
 
       if (user) {
-        const subscriptionRes: Subscription[] =
-          await this.eventEmitter.emitAsync(
-            AppEventMap.GetSubscriptionDetails,
-            userId
-          )
-
-        let subscription: Subscription | null
-
-        if (!subscriptionRes || !subscriptionRes.length) {
-          subscription = null
-        } else {
-          subscription = subscriptionRes.shift()
-        }
-
+        const subscription =
+          await this.subscriptionService.getMySubscription(userId)
         return { user, subscription }
       } else {
         throw new Error(statusMessages.invalidUser)
@@ -228,7 +215,7 @@ export class AuthService {
   }
 
   @OnEvent(AppEventMap.GetUserDetails)
-  async findUser(userId: string): Promise<User | null> {
+  async findUserById(userId: string): Promise<User | null> {
     try {
       return await this.queryBus.execute<FindUserByIdQuery, User>(
         new FindUserByIdQuery(userId)

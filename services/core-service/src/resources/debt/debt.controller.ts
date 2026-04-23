@@ -23,11 +23,12 @@ export class DebtController {
   @UseGuards(AuthGuard)
   @Post()
   async createDebt(
-    @Body() requestBody: CreateDebtRequestDto,
+    @Body() dto: CreateDebtRequestDto,
     @Request() request: ModRequest
   ) {
     try {
-      return await this.service.createDebt(request.user.userId, requestBody)
+      const { userId } = request.user
+      return await this.service.createDebt({ userId, ...dto })
     } catch (error) {
       throw new BadRequestException(statusMessages.connectionError)
     }
@@ -40,7 +41,8 @@ export class DebtController {
     @Query("searchKeyword") searchKeyword?: string
   ) {
     try {
-      return await this.service.findMyDebts(request.user.userId, searchKeyword)
+      const { userId } = request.user
+      return await this.service.findMyDebts({ userId, searchKeyword })
     } catch (error) {
       throw new BadRequestException(statusMessages.connectionError)
     }

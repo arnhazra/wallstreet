@@ -107,10 +107,7 @@ export function ResourceDetails({
 
   const isAmount = (key: keyof Asset): boolean => amountKeys.includes(key)
 
-  if (
-    (resourceType as unknown as ResourceType) === ResourceType.ASSETGROUP ||
-    (resourceType as unknown as ResourceType) === ResourceType.THREAD
-  ) {
+  if ((resourceType as unknown as ResourceType) === ResourceType.ASSETGROUP) {
     return <>{children}</>
   }
 

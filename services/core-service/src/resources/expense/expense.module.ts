@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common"
 import { EntityModule } from "@/shared/entity/entity.module"
-import { config } from "@/config"
 import { DbConnectionMap } from "@/shared/entity/entity-db-connection.map"
 import { ExpenseService } from "./expense.service"
 import { ExpenseController } from "./expense.controller"
@@ -31,5 +30,6 @@ import { FindExpensesByUserQueryHandler } from "./queries/handler/find-expense-b
     FindExpensesByUserQueryHandler,
     FindExpenseByIdQueryHandler,
   ],
+  exports: [ExpenseService],
 })
 export class ExpenseModule {}

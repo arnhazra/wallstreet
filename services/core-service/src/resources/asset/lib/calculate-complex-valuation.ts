@@ -1,12 +1,7 @@
-interface FnArgs {
-  amountInvested: number
-  startDate: string
-  maturityDate: string
-  expectedReturnRate: number
-}
+import { Asset } from "../schemas/asset.schema"
 
-export default function calculateComplexValuation(args: FnArgs): number {
-  const { amountInvested, startDate, maturityDate, expectedReturnRate } = args
+export default function calculateComplexValuation(asset: Asset): number {
+  const { amountInvested, startDate, maturityDate, expectedReturnRate } = asset
   const today = new Date()
   const effectiveDate =
     today > new Date(maturityDate) ? new Date(maturityDate) : today

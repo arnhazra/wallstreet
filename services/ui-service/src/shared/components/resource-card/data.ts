@@ -1,11 +1,9 @@
 import {
-  Article,
   Asset,
   Cashflow,
   Debt,
   Goal,
   AssetGroup,
-  Thread,
 } from "@/shared/constants/types"
 
 export enum ResourceType {
@@ -13,11 +11,9 @@ export enum ResourceType {
   ASSETGROUP = "Asset Group",
   DEBT = "debt",
   GOAL = "goal",
-  NEWS = "news",
   EXPENSE = "expense",
   CASHFLOW = "cashflow",
   CALENDAR_EVENT = "event",
-  THREAD = "Advise",
 }
 
 export type ResourceTypeMap = {
@@ -25,9 +21,7 @@ export type ResourceTypeMap = {
   [ResourceType.ASSETGROUP]: AssetGroup
   [ResourceType.DEBT]: Debt
   [ResourceType.GOAL]: Goal
-  [ResourceType.NEWS]: Article
   [ResourceType.CASHFLOW]: Cashflow
-  [ResourceType.THREAD]: Thread
 }
 
 export const createResourceUrlMap: Partial<Record<ResourceType, string>> = {
@@ -35,8 +29,6 @@ export const createResourceUrlMap: Partial<Record<ResourceType, string>> = {
   [ResourceType.DEBT]: "/apps/debttrack/createoreditdebt",
   [ResourceType.ASSETGROUP]: "/apps/assetmanager/createoreditassetgroup",
   [ResourceType.GOAL]: "/apps/wealthplanner/createoreditgoal",
-  [ResourceType.NEWS]: "/apps/discover",
   [ResourceType.EXPENSE]: "/apps/expensetrack/createoreditexpense",
   [ResourceType.CASHFLOW]: "/apps/cashflow/createoreditcashflow",
-  [ResourceType.THREAD]: "/apps/taxadvisor/thread",
 }

@@ -9,13 +9,29 @@ import { CreateAssetCommand } from "./commands/impl/create-asset.command"
 import { CreateAssetRequestDto } from "./dto/request/create-asset.request.dto"
 import { UpdateAssetCommand } from "./commands/impl/update-asset.command"
 import { FindAssetsByUserQuery } from "./queries/impl/find-assets-by-user.query"
-import { OnEvent } from "@nestjs/event-emitter"
-import { AppEventMap } from "@/shared/constants/app-events.map"
 import { AssetType } from "@/shared/constants/types"
 import calculateComplexValuation from "./lib/calculate-complex-valuation"
 import calculateRecurringValuation from "./lib/calculate-recurring-valuation"
 import { isMatured, isMaturityApproaching } from "./lib/maturity-calculator"
 import { FindAssetsByTypesQuery } from "./queries/impl/find-assets-by-types.query"
+import calculateSimpleValuation from "./lib/calculate-simple-valuation"
+import calculateUnitValuation from "./lib/calculate-unit-valuation"
+import { FindAllAssetGroupQuery } from "./queries/impl/find-all-assetgroups.query"
+import { FindAssetGroupByIdQuery } from "./queries/impl/find-assetgroup-by-id.query"
+import { AssetGroup } from "./schemas/assetgroup.schema"
+import { DeleteAssetGroupCommand } from "./commands/impl/delete-assetgroup.command"
+import { CreateAssetGroupCommand } from "./commands/impl/create-assetgroup.command"
+import { CreateAssetGroupRequestDto } from "./dto/request/create-assetgroup.request.dto"
+import { UpdateAssetGroupCommand } from "./commands/impl/update-assetgroup.command"
+import { AgentTool } from "@/intelligence/agent/agent.decorator"
+import {
+  CreateAssetGroupSchema,
+  GetAssetGroupListSchema,
+  GetAssetGroupValuationSchema,
+  GetAssetsByUserIdSchema,
+  GetTotalAssetValuationSchema,
+} from "./schemas/assetagent.schema"
+import { z } from "zod"
 
 @Injectable()
 export class AssetService {
@@ -23,6 +39,14 @@ export class AssetService {
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus
   ) {}
+
+  @AgentTool({
+    name: "get_asset_types",
+    description: "Get all asset types",
+  })
+  getAssetTypes() {
+    return Object.values(AssetType)
+  }
 
   async createAsset(userId: string, requestBody: CreateAssetRequestDto) {
     try {
@@ -72,9 +96,15 @@ export class AssetService {
     }
   }
 
-  @OnEvent(AppEventMap.GetAssetList)
-  async findAllMyAssets(userId: string) {
+  @AgentTool({
+    name: "get_all_assets",
+    description:
+      "Get all assets belonging to a user with their current valuations",
+    schema: GetAssetsByUserIdSchema,
+  })
+  async findAllMyAssets(dto: z.output<typeof GetAssetsByUserIdSchema>) {
     try {
+      const { userId } = dto
       const assets = await this.queryBus.execute<
         FindAssetsByUserQuery,
         Asset[]
@@ -97,7 +127,6 @@ export class AssetService {
     }
   }
 
-  @OnEvent(AppEventMap.FindAssetById)
   async findAssetById(reqUserId: string, assetId: string) {
     try {
       const asset = await this.queryBus.execute<FindAssetByIdQuery, Asset>(
@@ -117,7 +146,6 @@ export class AssetService {
     }
   }
 
-  @OnEvent(AppEventMap.UpdateAssetById)
   async updateAssetById(
     userId: string,
     assetId: string,
@@ -132,7 +160,7 @@ export class AssetService {
     }
   }
 
-  async deleteAsset(reqUserId: string, assetId: string) {
+  async deleteAssetById(reqUserId: string, assetId: string) {
     try {
       const { userId } = await this.queryBus.execute<FindAssetByIdQuery, Asset>(
         new FindAssetByIdQuery(reqUserId, assetId)
@@ -148,7 +176,7 @@ export class AssetService {
     }
   }
 
-  async calculateAssetValuation(asset: Asset) {
+  calculateAssetValuation(asset: Asset) {
     try {
       const simpleValuationAssets = [
         AssetType.LIQUID,
@@ -162,30 +190,19 @@ export class AssetService {
       const unitValuationAssets = [AssetType.EQUITY, AssetType.CRYPTO]
 
       if (simpleValuationAssets.includes(asset.assetType)) {
-        return asset.currentValuation
+        return calculateSimpleValuation(asset)
       }
 
       if (complexValuationAssets.includes(asset.assetType)) {
-        return calculateComplexValuation({
-          amountInvested: asset.amountInvested,
-          startDate: asset.startDate,
-          maturityDate: asset.maturityDate,
-          expectedReturnRate: asset.expectedReturnRate,
-        })
+        return calculateComplexValuation(asset)
       }
 
       if (recurringValuationAssets.includes(asset.assetType)) {
-        return calculateRecurringValuation({
-          contributionAmount: asset.contributionAmount,
-          contributionFrequency: asset.contributionFrequency,
-          expectedReturnRate: asset.expectedReturnRate,
-          maturityDate: asset.maturityDate,
-          startDate: asset.startDate,
-        })
+        return calculateRecurringValuation(asset)
       }
 
       if (unitValuationAssets.includes(asset.assetType)) {
-        return asset.units * asset.unitPurchasePrice
+        return calculateUnitValuation(asset)
       }
 
       return 0
@@ -211,13 +228,51 @@ export class AssetService {
     }
   }
 
-  @OnEvent(AppEventMap.GetTotalAsset)
-  async calculateTotalAssetValuation(reqUserId: string) {
+  @AgentTool({
+    name: "get_asset_group_valuation",
+    description:
+      "Get the total current valuation and asset count for a specific asset group by its name",
+    schema: GetAssetGroupValuationSchema,
+  })
+  async getAssetGroupValuationByName(
+    dto: z.output<typeof GetAssetGroupValuationSchema>
+  ) {
+    const { userId, assetgroupName } = dto
+    try {
+      const assetgroups = await this.queryBus.execute<
+        FindAllAssetGroupQuery,
+        AssetGroup[]
+      >(new FindAllAssetGroupQuery(userId, assetgroupName))
+
+      if (!assetgroups || assetgroups.length === 0) {
+        throw new Error(statusMessages.connectionError)
+      }
+
+      const assetgroup = assetgroups[0]
+      return await this.calculateAssetGroupValuation(
+        userId,
+        assetgroup._id.toString()
+      )
+    } catch (error) {
+      throw new Error(statusMessages.connectionError)
+    }
+  }
+
+  @AgentTool({
+    name: "get_total_asset_valuation",
+    description:
+      "Calculate and return the total current valuation of all assets for a user",
+    schema: GetTotalAssetValuationSchema,
+  })
+  async calculateTotalAssetValuation(
+    dto: z.output<typeof GetTotalAssetValuationSchema>
+  ) {
+    const { userId } = dto
     try {
       const assets = await this.queryBus.execute<
         FindAssetsByUserQuery,
         Asset[]
-      >(new FindAssetsByUserQuery(reqUserId))
+      >(new FindAssetsByUserQuery(userId))
 
       const valuations = await Promise.all(
         assets.map((asset) => this.calculateAssetValuation(asset))
@@ -226,6 +281,102 @@ export class AssetService {
       return total
     } catch (error) {
       throw new Error()
+    }
+  }
+
+  @AgentTool({
+    name: "create_asset_group",
+    description: "Create a new asset group for a user",
+    schema: CreateAssetGroupSchema,
+  })
+  async createAssetGroup(dto: z.output<typeof CreateAssetGroupSchema>) {
+    try {
+      const { userId, assetgroupName } = dto
+      return await this.commandBus.execute<CreateAssetGroupCommand, AssetGroup>(
+        new CreateAssetGroupCommand(userId, { assetgroupName })
+      )
+    } catch (error) {
+      throw new Error(statusMessages.connectionError)
+    }
+  }
+
+  @AgentTool({
+    name: "get_asset_groups",
+    description:
+      "List all asset groups for a user with their current valuations and asset counts",
+    schema: GetAssetGroupListSchema,
+  })
+  async findMyAssetGroups(dto: z.output<typeof GetAssetGroupListSchema>) {
+    const { userId, searchKeyword } = dto
+    const assetgroups = await this.queryBus.execute<
+      FindAllAssetGroupQuery,
+      AssetGroup[]
+    >(new FindAllAssetGroupQuery(userId, searchKeyword))
+
+    return await Promise.all(
+      assetgroups.map(async (assetgroup) => {
+        const valuation = await this.calculateAssetGroupValuation(
+          userId,
+          assetgroup._id.toString()
+        )
+        return {
+          ...(assetgroup.toObject?.() ?? assetgroup),
+          currentValuation: valuation.total,
+          assetCount: valuation.assetCount,
+        }
+      })
+    )
+  }
+
+  async findAssetGroupById(reqUserId: string, assetgroupId: string) {
+    try {
+      const assetgroup = await this.queryBus.execute<
+        FindAssetGroupByIdQuery,
+        AssetGroup
+      >(new FindAssetGroupByIdQuery(reqUserId, assetgroupId))
+
+      const valuation = await this.calculateAssetGroupValuation(
+        reqUserId,
+        assetgroup._id.toString()
+      )
+      return {
+        ...(assetgroup.toObject?.() ?? assetgroup),
+        currentValuation: valuation.total,
+        assetCount: valuation.assetCount,
+      }
+    } catch (error) {
+      throw new Error(statusMessages.connectionError)
+    }
+  }
+
+  async updateAssetGroupById(
+    userId: string,
+    assetgroupId: string,
+    requestBody: CreateAssetGroupRequestDto
+  ) {
+    try {
+      return await this.commandBus.execute<UpdateAssetGroupCommand, AssetGroup>(
+        new UpdateAssetGroupCommand(userId, assetgroupId, requestBody)
+      )
+    } catch (error) {
+      throw new Error(statusMessages.connectionError)
+    }
+  }
+
+  async deleteAssetGroup(reqUserId: string, assetgroupId: string) {
+    try {
+      const { userId } = await this.queryBus.execute<
+        FindAssetGroupByIdQuery,
+        AssetGroup
+      >(new FindAssetGroupByIdQuery(reqUserId, assetgroupId))
+      if (userId.toString() === reqUserId) {
+        await this.commandBus.execute(new DeleteAssetGroupCommand(assetgroupId))
+        return { success: true }
+      }
+
+      throw new Error(statusMessages.connectionError)
+    } catch (error) {
+      throw new Error(statusMessages.connectionError)
     }
   }
 }

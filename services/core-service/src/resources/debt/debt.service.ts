@@ -8,9 +8,14 @@ import { CreateDebtRequestDto } from "./dto/request/create-debt.request.dto"
 import { UpdateDebtCommand } from "./commands/impl/update-debt.command"
 import { FindDebtsByUserQuery } from "./queries/impl/find-debt-by-user.query"
 import { FindDebtByIdQuery } from "./queries/impl/find-debt-by-id.query"
-import { OnEvent } from "@nestjs/event-emitter"
-import { AppEventMap } from "@/shared/constants/app-events.map"
 import { calculateDebtDetails } from "./helpers/calculate-debt"
+import { AgentTool } from "@/intelligence/agent/agent.decorator"
+import {
+  CreateDebtInputSchema,
+  GetTotalDebtInputSchema,
+  GetDebtListInputSchema,
+} from "./schemas/debtagent.schema"
+import { z } from "zod"
 
 @Injectable()
 export class DebtService {
@@ -19,20 +24,30 @@ export class DebtService {
     private readonly commandBus: CommandBus
   ) {}
 
-  @OnEvent(AppEventMap.CreateDebt)
-  async createDebt(userId: string, requestBody: CreateDebtRequestDto) {
+  @AgentTool({
+    name: "create_debt",
+    description: "Create a new debt for a user",
+    schema: CreateDebtInputSchema,
+  })
+  async createDebt(dto: z.output<typeof CreateDebtInputSchema>) {
     try {
+      const { userId, ...rest } = dto
       return await this.commandBus.execute<CreateDebtCommand, Debt>(
-        new CreateDebtCommand(userId, requestBody)
+        new CreateDebtCommand(userId, { ...rest })
       )
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
   }
 
-  @OnEvent(AppEventMap.GetDebtList)
-  async findMyDebts(userId: string, searchKeyword?: string) {
+  @AgentTool({
+    name: "get_debt_list",
+    description: "List down all the debts for a user",
+    schema: GetDebtListInputSchema,
+  })
+  async findMyDebts(dto: z.output<typeof GetDebtListInputSchema>) {
     try {
+      const { userId, searchKeyword } = dto
       const debts = await this.queryBus.execute<FindDebtsByUserQuery, Debt[]>(
         new FindDebtsByUserQuery(userId, searchKeyword)
       )
@@ -90,10 +105,15 @@ export class DebtService {
     }
   }
 
-  @OnEvent(AppEventMap.GetTotalDebt)
-  async calculateTotalDebt(reqUserId: string) {
+  @AgentTool({
+    name: "get_total_debt_by_userid",
+    description: "Get total debt for a user",
+    schema: GetTotalDebtInputSchema,
+  })
+  async calculateTotalDebt(dto: z.output<typeof GetTotalDebtInputSchema>) {
     try {
-      const debts = await this.findMyDebts(reqUserId)
+      const { userId } = dto
+      const debts = await this.findMyDebts({ userId })
 
       const remainingDebt = debts.reduce(
         (sum, val) => sum + val.remainingTotal,

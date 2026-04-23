@@ -6,43 +6,64 @@ import { DeleteEventCommand } from "./commands/impl/delete-event.command"
 import { CreateEventCommand } from "./commands/impl/create-event.command"
 import { CreateEventRequestDto } from "./dto/request/create-event.request.dto"
 import { FindEventsByUserQuery } from "./queries/impl/find-event-by-user.query"
-import { EventEmitter2, OnEvent } from "@nestjs/event-emitter"
-import { AppEventMap } from "@/shared/constants/app-events.map"
-import { Asset } from "@/resources/asset/schemas/asset.schema"
-import { Goal } from "@/resources/goal/schemas/goal.schema"
-import { Debt } from "@/resources/debt/schemas/debt.schema"
-import { Cashflow } from "@/resources/cashflow/schemas/cashflow.schema"
 import { Expense } from "@/resources/expense/schemas/expense.schema"
-import { User } from "@/auth/schemas/user.schema"
 import { formatCurrency } from "@/platform/widget/lib/format-currency"
 import { ExpenseCategoryConfig } from "@/shared/constants/types"
 import { ConfigService } from "@/platform/config/config.service"
 import { UpdateEventCommand } from "./commands/impl/update-event.command"
 import { FindEventByIdQuery } from "./queries/impl/find-event-by-id.query"
+import { AuthService } from "@/auth/auth.service"
+import { AssetService } from "../asset/asset.service"
+import { DebtService } from "../debt/debt.service"
+import { ExpenseService } from "../expense/expense.service"
+import { GoalService } from "../goal/goal.service"
+import { CashFlowService } from "../cashflow/cashflow.service"
+import { AgentTool } from "@/intelligence/agent/agent.decorator"
+import {
+  CreateEventSchema,
+  GetEventByMonthSchema,
+} from "./schemas/eventagent.schema"
+import { z } from "zod"
+import { CalendarEvent } from "./dto/response/event-response.dto"
 
 @Injectable()
 export class EventService {
   constructor(
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus,
-    private readonly eventEmitter: EventEmitter2,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly authService: AuthService,
+    private readonly assetService: AssetService,
+    private readonly debtService: DebtService,
+    private readonly goalService: GoalService,
+    private readonly cashFlowService: CashFlowService,
+    private readonly expenseService: ExpenseService
   ) {}
 
-  @OnEvent(AppEventMap.CreateCalendarEvent)
-  async createEvent(userId: string, requestBody: CreateEventRequestDto) {
+  @AgentTool({
+    name: "create_event",
+    description: "Create a new event for a user",
+    schema: CreateEventSchema,
+  })
+  async createEvent(dto: z.output<typeof CreateEventSchema>) {
     try {
+      const { userId, ...rest } = dto
       return await this.commandBus.execute<CreateEventCommand, Event>(
-        new CreateEventCommand(userId, requestBody)
+        new CreateEventCommand(userId, { ...rest })
       )
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
   }
 
-  @OnEvent(AppEventMap.GetCalendarEvents)
-  async findMyEventsByMonth(userId: string, selectedMonth: string) {
+  @AgentTool({
+    name: "get_events_by_month",
+    description: "List down events for an user for any given month",
+    schema: GetEventByMonthSchema,
+  })
+  async findMyEventsByMonth(dto: z.output<typeof GetEventByMonthSchema>) {
     try {
+      const { userId, eventMonth } = dto
       const events = await this.queryBus.execute<
         FindEventsByUserQuery,
         Event[]
@@ -55,125 +76,111 @@ export class EventService {
         JSON.stringify(expenseCategoryConfig)
       )
 
-      const customEvents = events.map((event) => ({
-        ...event,
+      const customEvents: CalendarEvent[] = events.map((event) => ({
+        _id: String(event._id),
+        eventDate: event.eventDate,
+        eventName: event.eventName,
+        userId: String(event.userId),
+        createdAt: (event as any).createdAt,
         eventSource: "Custom",
       }))
 
-      const user: User = (
-        await this.eventEmitter.emitAsync(AppEventMap.GetUserDetails, userId)
-      ).shift()
-
-      const assets: Asset[] = (
-        await this.eventEmitter.emitAsync(AppEventMap.GetAssetList, userId)
-      ).shift()
-      const assetStartDateEvents = assets.map((asset) => {
+      const user = await this.authService.findUserById(userId)
+      const assets = await this.assetService.findAllMyAssets({ userId })
+      const assetStartDateEvents: CalendarEvent[] = assets.map((asset) => {
         if (asset.startDate) {
           return {
+            _id: asset._id,
             eventDate: asset.startDate,
             eventName: `Start date of asset - ${asset.assetName}`,
             userId: asset.userId,
             createdAt: (asset as any).createdAt,
-            _id: asset._id,
             eventSource: "Asset",
           }
         }
       })
 
-      const assetMaturityDateEvents = assets.map((asset) => {
+      const assetMaturityDateEvents: CalendarEvent[] = assets.map((asset) => {
         if (asset.maturityDate) {
           return {
+            _id: asset._id,
             eventDate: asset.maturityDate,
             eventName: `Maturity date of asset - ${asset.assetName}`,
             userId: asset.userId,
             createdAt: (asset as any).createdAt,
-            _id: asset._id,
             eventSource: "Asset",
           }
         }
       })
 
-      const goals: Goal[] = (
-        await this.eventEmitter.emitAsync(AppEventMap.GetGoalList, userId)
-      ).shift()
+      const goals = await this.goalService.findMyGoals({ userId })
 
-      const goalEvents = goals.map((goal) => ({
+      const goalEvents: CalendarEvent[] = goals.map((goal) => ({
+        _id: String(goal._id),
         eventDate: goal.goalDate,
         eventName: `Goal of ${formatCurrency(goal.goalAmount, user.baseCurrency)}`,
-        userId: goal.userId,
+        userId: String(goal.userId),
         createdAt: (goal as any).createdAt,
-        _id: goal._id,
         eventSource: "Goal",
       }))
 
-      const debts: Debt[] = (
-        await this.eventEmitter.emitAsync(AppEventMap.GetDebtList, userId)
-      ).shift()
+      const debts = await this.debtService.findMyDebts({ userId })
 
-      const debtStartEvents = debts.map((debt) => ({
+      const debtStartEvents: CalendarEvent[] = debts.map((debt) => ({
+        _id: String(debt._id),
         eventDate: debt.startDate,
         eventName: `Start date of debt - ${debt.debtPurpose}`,
-        userId: debt.userId,
+        userId: String(debt.userId),
         createdAt: (debt as any).createdAt,
-        _id: debt._id,
         eventSource: "Debt",
       }))
 
-      const debtEndEvents = debts.map((debt) => ({
+      const debtEndEvents: CalendarEvent[] = debts.map((debt) => ({
+        _id: String(debt._id),
         eventDate: debt.endDate,
         eventName: `End date of Debt - ${debt.debtPurpose}`,
-        userId: debt.userId,
+        userId: String(debt.userId),
         createdAt: (debt as any).createdAt,
-        _id: debt._id,
         eventSource: "Debt",
       }))
 
-      const nextEmiDateEvents = debts.map((debt) => ({
+      const nextEmiDateEvents: CalendarEvent[] = debts.map((debt) => ({
+        _id: String(debt._id),
         eventDate: (debt as any).nextEmiDate,
         eventName: `EMI date for debt - ${debt.debtPurpose}`,
-        userId: debt.userId,
+        userId: String(debt.userId),
         createdAt: (debt as any).createdAt,
-        _id: debt._id,
         eventSource: "Debt",
       }))
 
-      const cashflows: Cashflow[] = (
-        await this.eventEmitter.emitAsync(
-          AppEventMap.FindCashFlowsByUserId,
-          userId
-        )
-      ).shift()
-      const cashflowEvents = cashflows.map((cashflow) => ({
+      const cashflows = await this.cashFlowService.findMyCashflows({ userId })
+      const cashflowEvents: CalendarEvent[] = cashflows.map((cashflow) => ({
+        _id: String(cashflow._id),
         eventDate: cashflow.nextExecutionAt,
         eventName: cashflow.description,
-        userId: cashflow.userId,
+        userId: String(cashflow.userId),
         createdAt: (cashflow as any).createdAt,
-        _id: cashflow._id,
         eventSource: "Cashflow",
       }))
 
-      const expenses = (
-        await this.eventEmitter.emitAsync(
-          AppEventMap.GetExpenseByMonth,
-          userId,
-          selectedMonth
-        )
-      ).shift()
-      const expensesEvents = expenses.expenses.map((expense: Expense) => {
-        const expenseCategoryDisplayName =
-          parsedExpenseCategories.expenseCategories.find(
-            (cat) => cat.value === expense.expenseCategory
-          ).displayName
+      const expenses = await this.expenseService.findMyExpenses({ userId })
+      const expensesEvents: CalendarEvent[] = expenses.expenses.map(
+        (expense: Expense) => {
+          const expenseCategoryDisplayName =
+            parsedExpenseCategories.expenseCategories.find(
+              (cat) => cat.value === expense.expenseCategory
+            ).displayName
 
-        return {
-          eventDate: expense.expenseDate,
-          eventName: `Expense of ${formatCurrency(expense.expenseAmount, user.baseCurrency)} for ${expenseCategoryDisplayName}`,
-          userId: expense.userId,
-          createdAt: (expense as any).createdAt,
-          _id: expense._id,
-          eventSource: "Expense",
+          return {
+            _id: expense._id,
+            eventDate: expense.expenseDate,
+            eventName: `Expense of ${formatCurrency(expense.expenseAmount, user.baseCurrency)} for ${expenseCategoryDisplayName}`,
+            userId: expense.userId,
+            createdAt: (expense as any).createdAt,
+            eventSource: "Expense",
+          }
         }
-      })
+      )
 
       const allEvents = [
         ...customEvents,
@@ -185,7 +192,12 @@ export class EventService {
         ...assetStartDateEvents,
         ...assetMaturityDateEvents,
         ...expensesEvents,
-      ].filter((event) => !!event)
+      ]
+        .filter((event) => !!event)
+        .filter((event) => {
+          if (!event.eventDate) return
+          return new Date(event.eventDate).toISOString().startsWith(eventMonth)
+        })
 
       return allEvents
     } catch (error) {

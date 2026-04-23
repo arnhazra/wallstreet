@@ -18,5 +18,5 @@ export class CreateCashFlowRequestDto {
   frequency: FlowFrequency
 
   @Matches(/^\d{4}-\d{2}-\d{2}$/)
-  nextExecutionAt?: string
+  nextExecutionAt: string
 }

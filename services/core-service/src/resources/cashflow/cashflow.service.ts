@@ -6,35 +6,51 @@ import { DeleteCashflowCommand } from "./commands/impl/delete-cashflow.command"
 import { CreateCashFlowCommand } from "./commands/impl/create-cashflow.command"
 import { FindCashflowsQuery } from "./queries/impl/find-cashflows.query"
 import { CreateCashFlowRequestDto } from "./dto/request/create-cashflow.request.dto"
-import { EventEmitter2, OnEvent } from "@nestjs/event-emitter"
-import { AppEventMap } from "@/shared/constants/app-events.map"
 import { Asset } from "../asset/schemas/asset.schema"
 import { FindCashflowsByUserQuery } from "./queries/impl/find-cashflows-by-user.query"
 import { computeNextDate } from "./helpers/compute-next-date"
 import { UpdateCashflowCommand } from "./commands/impl/update-cashflow.command"
 import { FindCashflowByIdQuery } from "./queries/impl/find-cashflow-by-id.query"
+import { AssetService } from "../asset/asset.service"
+import { AgentTool } from "@/intelligence/agent/agent.decorator"
+import {
+  CreateCashflowSchema,
+  FindCashflowsSchema,
+} from "./schemas/cashflowagent.schema"
+import { z } from "zod"
 
 @Injectable()
 export class CashFlowService {
   constructor(
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus,
-    private readonly eventEmitter: EventEmitter2
+    private readonly assetService: AssetService
   ) {}
 
-  async create(userId: string, requestBody: CreateCashFlowRequestDto) {
+  @AgentTool({
+    name: "create_cashflow",
+    description: "Create a cashflow",
+    schema: CreateCashflowSchema,
+  })
+  async create(dto: z.output<typeof CreateCashflowSchema>) {
     try {
+      const { userId, ...rest } = dto
       return await this.commandBus.execute<CreateCashFlowCommand, Cashflow>(
-        new CreateCashFlowCommand(userId, requestBody)
+        new CreateCashFlowCommand(userId, { ...rest })
       )
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
   }
 
-  @OnEvent(AppEventMap.FindCashFlowsByUserId)
-  async findMyCashflows(userId: string, searchKeyword?: string) {
+  @AgentTool({
+    name: "get_cashflows_list",
+    description: "Get list of cashflows for a user",
+    schema: FindCashflowsSchema,
+  })
+  async findMyCashflows(dto: z.output<typeof FindCashflowsSchema>) {
     try {
+      const { userId, searchKeyword } = dto
       return await this.queryBus.execute<FindCashflowsByUserQuery, Cashflow[]>(
         new FindCashflowsByUserQuery(userId, searchKeyword)
       )
@@ -79,13 +95,10 @@ export class CashFlowService {
   }
 
   async processCashflow(cashflow: Cashflow) {
-    const targetAsset: Asset = (
-      await this.eventEmitter.emitAsync(
-        AppEventMap.FindAssetById,
-        String(cashflow.userId),
-        String(cashflow.targetAsset)
-      )
-    ).shift()
+    const targetAsset: Asset = await this.assetService.findAssetById(
+      String(cashflow.userId),
+      String(cashflow.targetAsset)
+    )
 
     if (!targetAsset) return
 
@@ -94,12 +107,13 @@ export class CashFlowService {
         ? cashflow.amount
         : -cashflow.amount
 
-    await this.eventEmitter.emitAsync(
-      AppEventMap.UpdateAssetById,
+    const { assetgroupId, currentValuation, ...rest } = targetAsset
+    await this.assetService.updateAssetById(
       String(targetAsset.userId),
       String(targetAsset._id),
       {
-        assetgroupId: targetAsset.assetgroupId,
+        ...rest,
+        assetgroupId: String(targetAsset.assetgroupId),
         currentValuation: targetAsset.currentValuation + delta,
       }
     )

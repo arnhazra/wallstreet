@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 3.6.0
+
+- Major change in Intelligence with dynamic multi agent architecture
+- Introduced One Pricing plan
+- Code refactoring, bug fixes
+
 ## Version 3.5.0
 
 - Removed custom request analytics
@@ -8,7 +14,7 @@
 
 ## Version 3.4.0
 
-- Changed the intelligence & taxadvisor to actual stream response
+- Changed the intelligence to stream response
 - Added CSS Variables for theme switching
 - Migrated all the services from Vercel to Azure
 - Bug fixes & performance improvements
@@ -60,7 +66,6 @@
 - Minor updates across services
 - Dependency upgrades & bug fixes
 - Minor UI modernization & Code refactoring
-- Added TaxAdvisor application
 - Dependency updates & bug fixes
 - Added multi agent architecture for intelligence
 - Fixed a tanstack query issue where data was cached even after user logged out
@@ -82,7 +87,6 @@
 
 ## Version 2.7.0
 
-- Rebranding of FinanceNews app to Discover
 - Revamped architecture of intelligence summarizer
 - Added turn off feature for Intelligence & data usage agreement
 
@@ -91,19 +95,16 @@
 - Added analytics trend for all type of entities
 - Enhanced structure by rebranding Institutions to Spaces
 - Modernized settings interface with comprehensive redesign
-- Upgraded Finance News module with integrated search functionality
 - Implemented improved navigation with home button integration in sidebar
 - Improved analytics capabilities with rebranded Analytics module and Anonymous Analytics support
 
 ## Version 2.5.0
 
 - Refined user interface design
-- Introduced Finance News application
 - Updated dependencies across all applications
 - Conducted extensive code optimization and component modularization
 - Improved navigation with product homepage URL integration in header
 - Implemented platform-wide search functionality across applications and dashboard
-- Enhanced Intelligence architecture with integrated news summarization capabilities
 - Transformed Intelligence from standalone application to platform-wide service layer
 
 ## Version 2.4.0

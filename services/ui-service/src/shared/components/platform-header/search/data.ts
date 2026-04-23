@@ -3,7 +3,6 @@ export const searchMapByUrl = {
   "/apps/assetmanager/assetgroup": "asset",
   "/apps/assetmanager": "asset group",
   "/apps/debttrack": "debt",
-  "/apps/discover": "news",
   "/apps/expensetrack": "expense",
   "/apps/cashflow": "cashflow",
 }

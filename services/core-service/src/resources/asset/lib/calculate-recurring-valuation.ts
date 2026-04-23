@@ -1,21 +1,14 @@
 import { RecurringFrequency } from "@/shared/constants/types"
+import { Asset } from "../schemas/asset.schema"
 
-interface FnArgs {
-  startDate: string
-  maturityDate: string
-  contributionAmount: number
-  contributionFrequency: RecurringFrequency
-  expectedReturnRate: number
-}
-
-export default function calculateRecurringValuation(args: FnArgs): number {
+export default function calculateRecurringValuation(asset: Asset): number {
   const {
     startDate,
     maturityDate,
     contributionAmount,
     contributionFrequency,
     expectedReturnRate,
-  } = args
+  } = asset
 
   const today = new Date()
   const effectiveDate =

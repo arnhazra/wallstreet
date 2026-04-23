@@ -23,11 +23,15 @@ export class CashFlowController {
   @UseGuards(AuthGuard)
   @Post()
   async create(
-    @Body() requestBody: CreateCashFlowRequestDto,
+    @Body() dto: CreateCashFlowRequestDto,
     @Request() request: ModRequest
   ) {
     try {
-      return await this.service.create(request.user.userId, requestBody)
+      const { userId } = request.user
+      return await this.service.create({
+        userId,
+        ...dto,
+      })
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError
@@ -42,10 +46,10 @@ export class CashFlowController {
     @Query("searchKeyword") searchKeyword?: string
   ) {
     try {
-      return await this.service.findMyCashflows(
-        request.user.userId,
-        searchKeyword
-      )
+      return await this.service.findMyCashflows({
+        userId: request.user.userId,
+        searchKeyword,
+      })
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError

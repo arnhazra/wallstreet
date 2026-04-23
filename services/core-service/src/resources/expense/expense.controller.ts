@@ -24,11 +24,12 @@ export class ExpenseController {
   @UseGuards(AuthGuard)
   @Post()
   async createExpense(
-    @Body() requestBody: CreateExpenseRequestDto,
+    @Body() dto: CreateExpenseRequestDto,
     @Request() request: ModRequest
   ) {
     try {
-      return await this.service.createExpense(request.user.userId, requestBody)
+      const { userId } = request.user
+      return await this.service.createExpense({ userId, ...dto })
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError
@@ -40,21 +41,11 @@ export class ExpenseController {
   @Get()
   async findMyExpenses(
     @Request() request: ModRequest,
-    @Query() findMyExpensesDto: FindMyExpensesQueryDto
+    @Query() dto: FindMyExpensesQueryDto
   ) {
     try {
-      const {
-        category: expenseCategory,
-        month: monthFilter,
-        searchKeyword,
-      } = findMyExpensesDto
-
-      return await this.service.findMyExpenses(
-        request.user.userId,
-        monthFilter,
-        searchKeyword,
-        expenseCategory
-      )
+      const { userId } = request.user
+      return await this.service.findMyExpenses({ userId, ...dto })
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError

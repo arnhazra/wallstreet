@@ -8,7 +8,6 @@ import { CqrsModule } from "@nestjs/cqrs"
 import { CreateUserCommandHandler } from "./commands/handler/create-user.handler"
 import { UpdateAttributeCommandHandler } from "./commands/handler/update-attribute.handler"
 import { EntityModule } from "@/shared/entity/entity.module"
-import { HttpModule } from "@nestjs/axios"
 import { SetTokenCommandHandler } from "./commands/handler/set-token.handler"
 import { GetTokensQueryHandler } from "./queries/handler/get-tokens.handler"
 import { DeleteTokenCommandHandler } from "./commands/handler/delete-token.handler"
@@ -17,11 +16,12 @@ import { TokenRepository } from "./repositories/token.repository"
 import { config } from "@/config"
 import { FindUserByEmailQueryHandler } from "./queries/handler/find-user-by-email.handler"
 import { FindUserByIdQueryHandler } from "./queries/handler/find-user-by-id.handler"
+import { SubscriptionModule } from "@/platform/subscription/subscription.module"
 
 @Module({
   imports: [
     CqrsModule,
-    HttpModule,
+    SubscriptionModule,
     EntityModule.forRoot(
       config.AZURE_COSMOS_DB_CONNECTION_STRING,
       DbConnectionMap.Auth
@@ -48,5 +48,6 @@ import { FindUserByIdQueryHandler } from "./queries/handler/find-user-by-id.hand
     FindUserByEmailQueryHandler,
     FindUserByIdQueryHandler,
   ],
+  exports: [AuthService],
 })
 export class AuthModule {}

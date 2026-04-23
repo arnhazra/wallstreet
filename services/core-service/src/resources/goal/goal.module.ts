@@ -32,5 +32,6 @@ import { FindNearestGoalQueryHandler } from "./queries/handler/find-nearest-goal
     FindGoalByIdQueryHandler,
     FindNearestGoalQueryHandler,
   ],
+  exports: [GoalService],
 })
 export class GoalModule {}

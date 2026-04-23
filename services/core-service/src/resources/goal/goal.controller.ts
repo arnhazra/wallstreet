@@ -22,11 +22,12 @@ export class GoalController {
   @UseGuards(AuthGuard)
   @Post()
   async createGoal(
-    @Body() requestBody: CreateGoalRequestDto,
+    @Body() dto: CreateGoalRequestDto,
     @Request() request: ModRequest
   ) {
     try {
-      return await this.service.createGoal(request.user.userId, requestBody)
+      const { userId } = request.user
+      return await this.service.createGoal({ userId, ...dto })
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError
@@ -38,7 +39,8 @@ export class GoalController {
   @Get()
   async findMyGoals(@Request() request: ModRequest) {
     try {
-      return await this.service.findMyGoals(request.user.userId)
+      const { userId } = request.user
+      return await this.service.findMyGoals({ userId })
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError

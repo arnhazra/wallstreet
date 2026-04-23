@@ -1,6 +1,5 @@
 "use client"
 import { useUserContext } from "@/context/user.provider"
-import { ResourceType } from "@/shared/components/resource-card/data"
 import IconContainer from "@/shared/components/icon-container"
 import SectionPanel from "@/shared/components/section-panel"
 import Show from "@/shared/components/show"
@@ -109,11 +108,7 @@ export default function Page() {
     return (
       <SectionPanel
         key={expense._id}
-        icon={
-          <IconContainer>
-            <ExpenseCategoryIcon className="h-4 w-4" />
-          </IconContainer>
-        }
+        icon={null}
         title={expense.title || "Untitled Expense"}
         content={
           <div className="block">
@@ -125,7 +120,8 @@ export default function Page() {
 
               {formatDate(expense.expenseDate, true, false)}
             </div>
-            <Badge className="bg-primary text-black hover:bg-primary">
+            <Badge className="bg-theme-700 border-border text-white text-xs">
+              <ExpenseCategoryIcon />
               {expenseCategory?.displayName}
             </Badge>
           </div>
@@ -135,16 +131,19 @@ export default function Page() {
             key={expense._id}
             href={`/apps/expensetrack/createoreditexpense?id=${expense._id}`}
           >
-            <Button className="bg-primary hover:bg-primary" size="icon">
-              <Icons.Pen className="h-4 w-4 text-black" />
+            <Button
+              className="bg-theme-800 hover:bg-theme-800 rounded-full"
+              size="icon"
+            >
+              <Icons.Pen className="h-4 w-4 text-white" />
             </Button>
           </Link>,
           <Button
-            className="bg-secondary hover:bg-secondary"
+            className="bg-theme-800 hover:bg-theme-800 rounded-full"
             size="icon"
             onClick={() => deleteExpense(expense._id)}
           >
-            <Icons.Trash className="h-4 w-4" />
+            <Icons.Trash className="h-4 w-4 text-secondary" />
           </Button>,
         ]}
       />
@@ -244,7 +243,9 @@ export default function Page() {
           </p>
         }
       >
-        {renderExpenses}
+        <div className="grid gap-4 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mb-4 mt-4">
+          {renderExpenses}
+        </div>
       </Show>
     </div>
   )

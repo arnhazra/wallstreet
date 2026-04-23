@@ -135,26 +135,6 @@ export interface TotalDebtDetails {
   totalPrincipal: number
 }
 
-export interface Article {
-  source?: {
-    id?: string | null
-    name?: string | null
-  } | null
-  author?: string | null
-  title?: string | null
-  description?: string | null
-  url?: string | null
-  urlToImage?: string | null
-  publishedAt?: Date | null
-  content?: string | null
-}
-
-export interface FindNewsResponse {
-  status?: string | null
-  totalResults?: number | null
-  articles?: Article[] | null
-}
-
 export interface ExpenseCategoryConfig {
   expenseCategories: {
     displayName: string

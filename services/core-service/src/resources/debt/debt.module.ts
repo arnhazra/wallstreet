@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common"
 import { EntityModule } from "@/shared/entity/entity.module"
-import { config } from "@/config"
 import { DbConnectionMap } from "@/shared/entity/entity-db-connection.map"
 import { DebtService } from "./debt.service"
 import { DebtController } from "./debt.controller"
@@ -31,5 +30,6 @@ import { FindDebtsByUserQueryHandler } from "./queries/handler/find-debt-by-user
     FindDebtsByUserQueryHandler,
     FindDebtByIdQueryHandler,
   ],
+  exports: [DebtService],
 })
 export class DebtModule {}

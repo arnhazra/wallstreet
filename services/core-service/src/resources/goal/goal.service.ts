@@ -9,8 +9,12 @@ import { UpdateGoalCommand } from "./commands/impl/update-goal.command"
 import { FindGoalsByUserQuery } from "./queries/impl/find-goal-by-user.query"
 import { FindGoalByIdQuery } from "./queries/impl/find-goal-by-id.query"
 import { FindNearestGoalQuery } from "./queries/impl/find-nearest-goal.query"
-import { OnEvent } from "@nestjs/event-emitter"
-import { AppEventMap } from "@/shared/constants/app-events.map"
+import { z } from "zod"
+import { AgentTool } from "@/intelligence/agent/agent.decorator"
+import {
+  CreateGoalInputSchema,
+  GetByUserIdInputSchema,
+} from "./schemas/goalagent.schema"
 
 @Injectable()
 export class GoalService {
@@ -19,20 +23,30 @@ export class GoalService {
     private readonly commandBus: CommandBus
   ) {}
 
-  @OnEvent(AppEventMap.CreateGoal)
-  async createGoal(userId: string, requestBody: CreateGoalRequestDto) {
+  @AgentTool({
+    name: "create_goal",
+    description: "Create a new goal for a user",
+    schema: CreateGoalInputSchema,
+  })
+  async createGoal(dto: z.output<typeof CreateGoalInputSchema>) {
     try {
+      const { userId, ...rest } = dto
       return await this.commandBus.execute<CreateGoalCommand, Goal>(
-        new CreateGoalCommand(userId, requestBody)
+        new CreateGoalCommand(userId, { ...rest })
       )
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
   }
 
-  @OnEvent(AppEventMap.GetGoalList)
-  async findMyGoals(userId: string) {
+  @AgentTool({
+    name: "get_goal_list",
+    description: "List down all goals for user",
+    schema: GetByUserIdInputSchema,
+  })
+  async findMyGoals(dto: z.output<typeof GetByUserIdInputSchema>) {
     try {
+      const { userId } = dto
       return await this.queryBus.execute<FindGoalsByUserQuery, Goal[]>(
         new FindGoalsByUserQuery(userId)
       )
@@ -41,9 +55,14 @@ export class GoalService {
     }
   }
 
-  @OnEvent(AppEventMap.GetNearestGoal)
-  async findNearestGoal(userId: string) {
+  @AgentTool({
+    name: "get_user_nearest_goal",
+    description: "Get nearest goal of a user",
+    schema: GetByUserIdInputSchema,
+  })
+  async findNearestGoal(dto: z.output<typeof GetByUserIdInputSchema>) {
     try {
+      const { userId } = dto
       const goal = await this.queryBus.execute<FindNearestGoalQuery, Goal>(
         new FindNearestGoalQuery(userId)
       )

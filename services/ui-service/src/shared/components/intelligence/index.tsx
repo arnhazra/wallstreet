@@ -6,7 +6,6 @@ import { Input } from "@/shared/components/ui/input"
 import { ScrollArea } from "@/shared/components/ui/scroll-area"
 import {
   PanelRightClose,
-  Bot,
   User,
   ArrowUp,
   Sparkle,
@@ -148,16 +147,16 @@ export default function Intelligence() {
                   </IconContainer>
                 </div>
                 <p className="text-white">{PLATFORM_NAME} Intelligence</p>
-                <p className="text-xs mt-2 text-theme-300 p-6">
+                <p className="text-xs mt-2 text-theme-200 p-6">
                   {platformConfig?.otherConstants.aiSafetyStatement}
                 </p>
-                <p className="text-sm mt-2 text-theme-400 mb-4">
+                <p className="text-sm mt-2 text-white mb-4">
                   Try these actions
                 </p>
                 {suggestedPrompts.map((item, index) => (
                   <Badge
                     key={index}
-                    className="text-theme-300 bg-theme-800 hover:bg-theme-700 p-1 ps-4 pe-4 ms-2 mb-2 cursor-pointer"
+                    className="text-theme-200 bg-theme-800 hover:bg-theme-700 p-1 ps-4 pe-4 ms-2 mb-2 cursor-pointer"
                     onClick={(): void => {
                       setPrompt(item)
                       invokeChatAPI(item)
@@ -176,23 +175,14 @@ export default function Intelligence() {
                     index % 2 === 0 ? "justify-end" : "justify-start"
                   }`}
                 >
-                  {index % 2 !== 0 && (
-                    <div className="flex-shrink-0 w-8 h-8 rounded-2xl flex items-center justify-center bg-primary">
-                      <Bot className="h-4 w-4 text-white" />
-                    </div>
-                  )}
-
                   <div
-                    className={`max-w-[80%] p-3 rounded-3xl ${
+                    className={`max-w-[100%] p-3 rounded-2xl ${
                       index % 2 === 0 ? "text-white" : "text-theme-100"
                     }`}
                     style={{
                       backgroundColor:
-                        index % 2 === 0 ? colorVars.primary : colorVars.main,
-                      border:
-                        index % 2 === 0
-                          ? "none"
-                          : `1px solid ${colorVars.border}`,
+                        index % 2 === 0 ? colorVars.border : "transparent",
+                      border: "none",
                     }}
                   >
                     <MarkdownRenderer key={index} markdown={message} />
@@ -211,32 +201,8 @@ export default function Intelligence() {
             )}
 
             {isLoading && messages[messages.length - 1] === "" && (
-              <div className="flex items-start space-x-2">
-                <div
-                  className="flex-shrink-0 w-8 h-8 rounded-2xl flex items-center justify-center"
-                  style={{ backgroundColor: colorVars.primary }}
-                >
-                  <Bot className="h-4 w-4 text-white" />
-                </div>
-                <div
-                  className="p-3 rounded-3xl"
-                  style={{
-                    backgroundColor: colorVars.main,
-                    border: `1px solid ${colorVars.border}`,
-                  }}
-                >
-                  <div className="flex space-x-1">
-                    <div className="w-1 h-1 bg-theme-400 rounded-2xl animate-bounce"></div>
-                    <div
-                      className="w-1 h-1 bg-theme-400 rounded-2xl animate-bounce"
-                      style={{ animationDelay: "0.1s" }}
-                    ></div>
-                    <div
-                      className="w-1 h-1 bg-theme-400 rounded-2xl animate-bounce"
-                      style={{ animationDelay: "0.2s" }}
-                    ></div>
-                  </div>
-                </div>
+              <div className="ms-3 text-sm font-medium bg-gradient-to-r from-gray-400 via-white to-gray-400 bg-[length:200%_100%] bg-clip-text text-transparent animate-shimmer">
+                Generating ...
               </div>
             )}
 
@@ -246,15 +212,17 @@ export default function Intelligence() {
 
         <div className="p-4 border-none">
           <div className="text-center">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={clearChat}
-              className="text-xs text-theme-400 hover:text-white bg-transparent hover:bg-transparent mb-2"
-            >
-              <BadgeMinus className="h-3 w-3 mr-1" />
-              Clear Chat
-            </Button>
+            <Show condition={!!threadId}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={clearChat}
+                className="text-xs text-theme-400 hover:text-white bg-transparent hover:bg-transparent mb-2"
+              >
+                <BadgeMinus className="h-3 w-3 mr-1" />
+                Clear Chat
+              </Button>
+            </Show>
           </div>
           <form
             onSubmit={(e) => {
@@ -263,7 +231,7 @@ export default function Intelligence() {
             }}
           >
             <div className="w-full max-w-4xl mx-auto">
-              <div className="relative bg-theme-900 border border-border rounded-2xl p-2 ps-4 pe-4 shadow-lg">
+              <div className="relative bg-theme-900 border border-border rounded-full p-2 ps-4 pe-4 shadow-lg">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-3">
                     <div className="flex-1">
