@@ -116,7 +116,7 @@ export class AssetController {
     @Param("assetId") assetId: string
   ) {
     try {
-      return await this.service.deleteAsset(request.user.userId, assetId)
+      return await this.service.deleteAssetById(request.user.userId, assetId)
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError
@@ -136,10 +136,12 @@ export class AssetGroupController {
     @Request() request: ModRequest
   ) {
     try {
-      return await this.service.createAssetGroup(
-        request.user.userId,
-        requestBody
-      )
+      const { userId } = request.user
+      const { assetgroupName } = requestBody
+      return await this.service.createAssetGroup({
+        userId,
+        assetgroupName,
+      })
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError
@@ -154,10 +156,8 @@ export class AssetGroupController {
     @Query("searchKeyword") searchKeyword?: string
   ) {
     try {
-      return await this.service.findMyAssetGroups(
-        request.user.userId,
-        searchKeyword
-      )
+      const { userId } = request.user
+      return await this.service.findMyAssetGroups({ userId, searchKeyword })
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError

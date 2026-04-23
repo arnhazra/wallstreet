@@ -23,11 +23,15 @@ export class EventController {
   @UseGuards(AuthGuard)
   @Post()
   async createEvent(
-    @Body() requestBody: CreateEventRequestDto,
+    @Body() createEventRequestDto: CreateEventRequestDto,
     @Request() request: ModRequest
   ) {
     try {
-      return await this.service.createEvent(request.user.userId, requestBody)
+      const { userId } = request.user
+      return await this.service.createEvent({
+        userId,
+        ...createEventRequestDto,
+      })
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError
@@ -42,10 +46,11 @@ export class EventController {
     @Query("month") selectedMonth: string
   ) {
     try {
-      return await this.service.findMyEventsByMonth(
-        request.user.userId,
-        selectedMonth
-      )
+      const { userId } = request.user
+      return await this.service.findMyEventsByMonth({
+        userId,
+        eventMonth: selectedMonth,
+      })
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError

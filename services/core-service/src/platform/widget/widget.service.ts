@@ -21,10 +21,11 @@ export class WidgetService {
 
   async getWidgets(userId: string) {
     try {
-      const assetData =
-        await this.assetService.calculateTotalAssetValuation(userId)
+      const assetData = await this.assetService.calculateTotalAssetValuation({
+        userId,
+      })
       const debtData = await this.debtService.calculateTotalDebt({ userId })
-      const goalData = await this.goalService.findNearestGoal(userId)
+      const goalData = await this.goalService.findNearestGoal({ userId })
       const expenseData = await this.expenseService.findMyExpenses(userId)
 
       const user = await this.authService.findUserById(userId)

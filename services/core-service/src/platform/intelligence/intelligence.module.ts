@@ -10,27 +10,11 @@ import { EntityModule } from "@/shared/entity/entity.module"
 import { FetchThreadByIdQueryHandler } from "./queries/handler/fetch-thread-by-id.handler"
 import { IntelligenceOrchestrator } from "./intelligence.orchestrator"
 import { AuthModule } from "@/auth/auth.module"
-import { AssetModule } from "@/resources/asset/asset.module"
-import { CashFlowModule } from "@/resources/cashflow/cashflow.module"
-import { DebtModule } from "@/resources/debt/debt.module"
-import { GoalModule } from "@/resources/goal/goal.module"
-import { EventModule } from "@/resources/event/event.module"
-import { ExpenseModule } from "@/resources/expense/expense.module"
-import { AssetAgent } from "./agents/asset/asset.agent"
-import { GoalAgent } from "./agents/goal/goal.agent"
-import { ExpenseAgent } from "./agents/expense/expense.agent"
-import { EventAgent } from "./agents/event/event.agent"
 
 @Module({
   imports: [
     CqrsModule,
     AuthModule,
-    AssetModule,
-    CashFlowModule,
-    DebtModule,
-    GoalModule,
-    EventModule,
-    ExpenseModule,
     EntityModule.forFeature(
       [{ name: Thread.name, schema: ThreadSchema }],
       DbConnectionMap.Platform
@@ -43,10 +27,6 @@ import { EventAgent } from "./agents/event/event.agent"
     IntelligenceOrchestrator,
     CreateThreadCommandHandler,
     FetchThreadByIdQueryHandler,
-    AssetAgent,
-    GoalAgent,
-    ExpenseAgent,
-    EventAgent,
   ],
 })
 export class IntelligenceModule {}

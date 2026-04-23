@@ -18,6 +18,12 @@ import { DebtService } from "../debt/debt.service"
 import { ExpenseService } from "../expense/expense.service"
 import { GoalService } from "../goal/goal.service"
 import { CashFlowService } from "../cashflow/cashflow.service"
+import { AgentTool } from "@/shared/agentdiscovery/agent.decorator"
+import {
+  CreateEventSchema,
+  GetEventByMonthSchema,
+} from "./schemas/eventagent.schema"
+import { z } from "zod"
 
 @Injectable()
 export class EventService {
@@ -33,18 +39,32 @@ export class EventService {
     private readonly expenseService: ExpenseService
   ) {}
 
-  async createEvent(userId: string, requestBody: CreateEventRequestDto) {
+  @AgentTool({
+    name: "create_event",
+    description: "Create a new event for a user",
+    schema: CreateEventSchema,
+  })
+  async createEvent(createEventDto: z.output<typeof CreateEventSchema>) {
     try {
+      const { userId, ...rest } = createEventDto
       return await this.commandBus.execute<CreateEventCommand, Event>(
-        new CreateEventCommand(userId, requestBody)
+        new CreateEventCommand(userId, { ...rest })
       )
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
   }
 
-  async findMyEventsByMonth(userId: string, selectedMonth: string) {
+  @AgentTool({
+    name: "get_events_by_month",
+    description: "List down events for an user for any given month",
+    schema: GetEventByMonthSchema,
+  })
+  async findMyEventsByMonth(
+    getEventByMonthDto: z.output<typeof GetEventByMonthSchema>
+  ) {
     try {
+      const { userId, eventMonth } = getEventByMonthDto
       const events = await this.queryBus.execute<
         FindEventsByUserQuery,
         Event[]
@@ -63,7 +83,7 @@ export class EventService {
       }))
 
       const user = await this.authService.findUserById(userId)
-      const assets = await this.assetService.findAllMyAssets(userId)
+      const assets = await this.assetService.findAllMyAssets({ userId })
       const assetStartDateEvents = assets.map((asset) => {
         if (asset.startDate) {
           return {
@@ -90,7 +110,7 @@ export class EventService {
         }
       })
 
-      const goals = await this.goalService.findMyGoals(userId)
+      const goals = await this.goalService.findMyGoals({ userId })
 
       const goalEvents = goals.map((goal) => ({
         eventDate: goal.goalDate,

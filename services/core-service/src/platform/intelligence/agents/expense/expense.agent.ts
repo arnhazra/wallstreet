@@ -4,7 +4,7 @@ import { z } from "zod"
 import {
   CreateExpenseSchema,
   GetExpenseByMonthSchema,
-} from "./expenseagent.schema"
+} from "../../../../resources/expense/schemas/expenseagent.schema"
 import { ExpenseService } from "../../../../resources/expense/expense.service"
 import { ExpenseCategory } from "@/shared/constants/types"
 

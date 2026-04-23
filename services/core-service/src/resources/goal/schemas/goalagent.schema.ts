@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const CreateGoalSchema = z.object({
+export const CreateGoalInputSchema = z.object({
   userId: z.string().describe("user id of the user"),
   goalDate: z
     .string()
@@ -10,6 +10,6 @@ export const CreateGoalSchema = z.object({
   goalAmount: z.coerce.number().describe("goal amount given by the user"),
 })
 
-export const GetByUserIdSchema = z.object({
+export const GetByUserIdInputSchema = z.object({
   userId: z.string().describe("user id of the user"),
 })
