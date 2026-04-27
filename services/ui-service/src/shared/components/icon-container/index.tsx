@@ -6,9 +6,7 @@ interface IconContainerProps {
 }
 
 const IconContainer = ({ children }: IconContainerProps) => {
-  return (
-    <div className="p-2 bg-primary rounded-full text-white">{children}</div>
-  )
+  return <div className="p-2 bg-primary rounded-full text-main">{children}</div>
 }
 
 export default IconContainer
