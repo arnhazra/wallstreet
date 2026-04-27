@@ -16,6 +16,7 @@ import { statusMessages } from "@/shared/constants/status-messages"
 import { AuthGuard, ModRequest } from "@/auth/auth.guard"
 import { CreateExpenseRequestDto } from "./dto/request/create-expense.request.dto"
 import { FindMyExpensesDto } from "./dto/request/find-my-expenses.request.dto"
+import { ExpenseCategory } from "@/shared/constants/types"
 
 @Controller("resource/expense")
 export class ExpenseController {
@@ -41,11 +42,18 @@ export class ExpenseController {
   @Get()
   async findMyExpenses(
     @Request() request: ModRequest,
-    @Query() dto: FindMyExpensesDto
+    @Query("month") month?: string,
+    @Query("searchKeyword") searchKeyword?: string,
+    @Query("category") expenseCategory?: ExpenseCategory
   ) {
     try {
       const { userId } = request.user
-      return await this.service.findMyExpenses({ userId, ...dto })
+      return await this.service.findMyExpenses({
+        userId,
+        monthFilter: month,
+        expenseCategory,
+        searchKeyword,
+      })
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError
