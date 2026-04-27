@@ -46,8 +46,9 @@ export class CashFlowController {
     @Query("searchKeyword") searchKeyword?: string
   ) {
     try {
+      const { userId } = request.user
       return await this.service.findMyCashflows({
-        userId: request.user.userId,
+        userId,
         searchKeyword,
       })
     } catch (error) {

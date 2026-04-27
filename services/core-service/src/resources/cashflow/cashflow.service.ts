@@ -5,7 +5,10 @@ import { Cashflow, FlowDirection } from "./schemas/cashflow.schema"
 import { DeleteCashflowCommand } from "./commands/impl/delete-cashflow.command"
 import { CreateCashFlowCommand } from "./commands/impl/create-cashflow.command"
 import { FindCashflowsQuery } from "./queries/impl/find-cashflows.query"
-import { CreateCashFlowRequestDto } from "./dto/request/create-cashflow.request.dto"
+import {
+  CreateCashFlowRequestDto,
+  CreateCashflowServiceSchema,
+} from "./dto/request/create-cashflow.request.dto"
 import { Asset } from "../asset/schemas/asset.schema"
 import { FindCashflowsByUserQuery } from "./queries/impl/find-cashflows-by-user.query"
 import { computeNextDate } from "./helpers/compute-next-date"
@@ -13,15 +16,12 @@ import { UpdateCashflowCommand } from "./commands/impl/update-cashflow.command"
 import { FindCashflowByIdQuery } from "./queries/impl/find-cashflow-by-id.query"
 import { AssetService } from "../asset/asset.service"
 import { AgentTool } from "@/intelligence/agent/agent.decorator"
-import {
-  CreateCashflowSchema,
-  FindCashflowsSchema,
-} from "./schemas/cashflowagent.schema"
 import { z } from "zod"
 import {
   LiquidSchema,
   RetirementSchema,
 } from "../asset/dto/request/create-asset.request.dto"
+import { FindCashflowsSchema } from "./dto/request/find-cashflow.dto"
 
 @Injectable()
 export class CashFlowService {
@@ -34,9 +34,9 @@ export class CashFlowService {
   @AgentTool({
     name: "create_cashflow",
     description: "Create a cashflow",
-    schema: CreateCashflowSchema,
+    schema: CreateCashflowServiceSchema,
   })
-  async create(dto: z.output<typeof CreateCashflowSchema>) {
+  async create(dto: z.output<typeof CreateCashflowServiceSchema>) {
     try {
       const { userId, ...rest } = dto
       return await this.commandBus.execute<CreateCashFlowCommand, Cashflow>(
