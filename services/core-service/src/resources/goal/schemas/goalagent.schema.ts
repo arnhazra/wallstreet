@@ -9,7 +9,3 @@ export const CreateGoalInputSchema = z.object({
     ),
   goalAmount: z.coerce.number().describe("goal amount given by the user"),
 })
-
-export const GetByUserIdInputSchema = z.object({
-  userId: z.string().describe("user id of the user"),
-})

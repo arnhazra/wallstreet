@@ -12,10 +12,10 @@ import { calculateDebtDetails } from "./helpers/calculate-debt"
 import { AgentTool } from "@/intelligence/agent/agent.decorator"
 import {
   CreateDebtInputSchema,
-  GetTotalDebtInputSchema,
   GetDebtListInputSchema,
 } from "./schemas/debtagent.schema"
 import { z } from "zod"
+import { BaseAgentSchema } from "@/intelligence/agent/agent.schema"
 
 @Injectable()
 export class DebtService {
@@ -108,9 +108,9 @@ export class DebtService {
   @AgentTool({
     name: "get_total_debt_by_userid",
     description: "Get total debt for a user",
-    schema: GetTotalDebtInputSchema,
+    schema: BaseAgentSchema,
   })
-  async calculateTotalDebt(dto: z.output<typeof GetTotalDebtInputSchema>) {
+  async calculateTotalDebt(dto: z.output<typeof BaseAgentSchema>) {
     try {
       const { userId } = dto
       const debts = await this.findMyDebts({ userId })

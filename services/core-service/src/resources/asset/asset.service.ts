@@ -28,10 +28,10 @@ import {
   CreateAssetGroupSchema,
   GetAssetGroupListSchema,
   GetAssetGroupValuationSchema,
-  GetAssetsByUserIdSchema,
   GetTotalAssetValuationSchema,
 } from "./schemas/assetagent.schema"
 import { z } from "zod"
+import { BaseAgentSchema } from "@/intelligence/agent/agent.schema"
 
 @Injectable()
 export class AssetService {
@@ -71,7 +71,7 @@ export class AssetService {
 
       return await Promise.all(
         assets.map(async (asset) => {
-          const valuation = await this.calculateAssetValuation(asset)
+          const valuation = this.calculateAssetValuation(asset)
 
           return {
             ...(asset.toObject?.() ?? asset),
@@ -100,9 +100,9 @@ export class AssetService {
     name: "get_all_assets",
     description:
       "Get all assets belonging to a user with their current valuations",
-    schema: GetAssetsByUserIdSchema,
+    schema: BaseAgentSchema,
   })
-  async findAllMyAssets(dto: z.output<typeof GetAssetsByUserIdSchema>) {
+  async findAllMyAssets(dto: z.output<typeof BaseAgentSchema>) {
     try {
       const { userId } = dto
       const assets = await this.queryBus.execute<
@@ -112,7 +112,7 @@ export class AssetService {
 
       return await Promise.all(
         assets.map(async (asset) => {
-          const valuation = await this.calculateAssetValuation(asset)
+          const valuation = this.calculateAssetValuation(asset)
 
           return {
             ...(asset.toObject?.() ?? asset),
@@ -133,7 +133,7 @@ export class AssetService {
         new FindAssetByIdQuery(reqUserId, assetId)
       )
 
-      const valuation = await this.calculateAssetValuation(asset)
+      const valuation = this.calculateAssetValuation(asset)
 
       return {
         ...(asset.toObject?.() ?? asset),

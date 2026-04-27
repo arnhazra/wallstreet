@@ -11,10 +11,8 @@ import { FindGoalByIdQuery } from "./queries/impl/find-goal-by-id.query"
 import { FindNearestGoalQuery } from "./queries/impl/find-nearest-goal.query"
 import { z } from "zod"
 import { AgentTool } from "@/intelligence/agent/agent.decorator"
-import {
-  CreateGoalInputSchema,
-  GetByUserIdInputSchema,
-} from "./schemas/goalagent.schema"
+import { CreateGoalInputSchema } from "./schemas/goalagent.schema"
+import { BaseAgentSchema } from "@/intelligence/agent/agent.schema"
 
 @Injectable()
 export class GoalService {
@@ -42,9 +40,9 @@ export class GoalService {
   @AgentTool({
     name: "get_goal_list",
     description: "List down all goals for user",
-    schema: GetByUserIdInputSchema,
+    schema: BaseAgentSchema,
   })
-  async findMyGoals(dto: z.output<typeof GetByUserIdInputSchema>) {
+  async findMyGoals(dto: z.output<typeof BaseAgentSchema>) {
     try {
       const { userId } = dto
       return await this.queryBus.execute<FindGoalsByUserQuery, Goal[]>(
@@ -58,9 +56,9 @@ export class GoalService {
   @AgentTool({
     name: "get_user_nearest_goal",
     description: "Get nearest goal of a user",
-    schema: GetByUserIdInputSchema,
+    schema: BaseAgentSchema,
   })
-  async findNearestGoal(dto: z.output<typeof GetByUserIdInputSchema>) {
+  async findNearestGoal(dto: z.output<typeof BaseAgentSchema>) {
     try {
       const { userId } = dto
       const goal = await this.queryBus.execute<FindNearestGoalQuery, Goal>(

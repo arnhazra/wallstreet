@@ -1,9 +1,5 @@
 import { z } from "zod"
 
-export const GetTotalDebtInputSchema = z.object({
-  userId: z.string().describe("user id of the user"),
-})
-
 export const GetDebtListInputSchema = z.object({
   userId: z.string().describe("user id of the user"),
   searchKeyword: z
