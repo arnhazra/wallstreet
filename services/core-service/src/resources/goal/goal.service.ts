@@ -4,14 +4,16 @@ import { CommandBus, QueryBus } from "@nestjs/cqrs"
 import { Goal } from "./schemas/goal.schema"
 import { DeleteGoalCommand } from "./commands/impl/delete-goal.command"
 import { CreateGoalCommand } from "./commands/impl/create-goal.command"
-import { CreateGoalRequestDto } from "./dto/request/create-goal.request.dto"
+import {
+  CreateGoalRequestDto,
+  CreateGoalServiceSchema,
+} from "./dto/request/create-goal.request.dto"
 import { UpdateGoalCommand } from "./commands/impl/update-goal.command"
 import { FindGoalsByUserQuery } from "./queries/impl/find-goal-by-user.query"
 import { FindGoalByIdQuery } from "./queries/impl/find-goal-by-id.query"
 import { FindNearestGoalQuery } from "./queries/impl/find-nearest-goal.query"
 import { z } from "zod"
 import { AgentTool } from "@/intelligence/agent/agent.decorator"
-import { CreateGoalInputSchema } from "./schemas/goalagent.schema"
 import { BaseAgentSchema } from "@/intelligence/agent/agent.schema"
 
 @Injectable()
@@ -24,9 +26,9 @@ export class GoalService {
   @AgentTool({
     name: "create_goal",
     description: "Create a new goal for a user",
-    schema: CreateGoalInputSchema,
+    schema: CreateGoalServiceSchema,
   })
-  async createGoal(dto: z.output<typeof CreateGoalInputSchema>) {
+  async createGoal(dto: z.output<typeof CreateGoalServiceSchema>) {
     try {
       const { userId, ...rest } = dto
       return await this.commandBus.execute<CreateGoalCommand, Goal>(
