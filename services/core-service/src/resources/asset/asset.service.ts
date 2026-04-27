@@ -21,15 +21,17 @@ import { FindAssetGroupByIdQuery } from "./queries/impl/find-assetgroup-by-id.qu
 import { AssetGroup } from "./schemas/assetgroup.schema"
 import { DeleteAssetGroupCommand } from "./commands/impl/delete-assetgroup.command"
 import { CreateAssetGroupCommand } from "./commands/impl/create-assetgroup.command"
-import { CreateAssetGroupRequestDto } from "./dto/request/create-assetgroup.request.dto"
+import {
+  CreateAssetGroupRequestDto,
+  CreateAssetGroupServiceSchema,
+} from "./dto/request/create-assetgroup.request.dto"
 import { UpdateAssetGroupCommand } from "./commands/impl/update-assetgroup.command"
 import { AgentTool } from "@/intelligence/agent/agent.decorator"
 import {
-  CreateAssetGroupSchema,
   GetAssetGroupListSchema,
   GetAssetGroupValuationSchema,
   GetTotalAssetValuationSchema,
-} from "./schemas/assetagent.schema"
+} from "./dto/request/assetagent.schema"
 import { z } from "zod"
 import { BaseAgentSchema } from "@/intelligence/agent/agent.schema"
 
@@ -48,10 +50,10 @@ export class AssetService {
     return Object.values(AssetType)
   }
 
-  async createAsset(userId: string, requestBody: CreateAssetRequestDto) {
+  async createAsset(userId: string, dto: CreateAssetRequestDto) {
     try {
       return await this.commandBus.execute<CreateAssetCommand, Asset>(
-        new CreateAssetCommand(userId, requestBody)
+        new CreateAssetCommand(userId, dto)
       )
     } catch (error) {
       throw new Error(statusMessages.connectionError)
@@ -287,9 +289,9 @@ export class AssetService {
   @AgentTool({
     name: "create_asset_group",
     description: "Create a new asset group for a user",
-    schema: CreateAssetGroupSchema,
+    schema: CreateAssetGroupServiceSchema,
   })
-  async createAssetGroup(dto: z.output<typeof CreateAssetGroupSchema>) {
+  async createAssetGroup(dto: z.output<typeof CreateAssetGroupServiceSchema>) {
     try {
       const { userId, assetgroupName } = dto
       return await this.commandBus.execute<CreateAssetGroupCommand, AssetGroup>(
