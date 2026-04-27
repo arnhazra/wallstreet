@@ -23,5 +23,3 @@ const FindMyExpensesSchema = z.object({
 export const FindMyExpensesServiceSchema = BaseAgentSchema.extend(
   FindMyExpensesSchema.shape
 )
-
-export class FindMyExpensesDto extends createZodDto(FindMyExpensesSchema) {}
