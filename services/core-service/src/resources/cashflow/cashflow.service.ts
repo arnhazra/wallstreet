@@ -22,6 +22,7 @@ import {
   RetirementSchema,
 } from "../asset/dto/request/create-asset.request.dto"
 import { FindCashflowsSchema } from "./dto/request/find-cashflow.dto"
+import { assertOwnership } from "@/shared/utils/assert-ownership"
 
 @Injectable()
 export class CashFlowService {
@@ -49,7 +50,7 @@ export class CashFlowService {
     description: "Get list of cashflows for a user",
     schema: FindCashflowsSchema,
   })
-  async findMyCashflows(dto: z.output<typeof FindCashflowsSchema>) {
+  async findAllByUserId(dto: z.output<typeof FindCashflowsSchema>) {
     try {
       const { userId, searchKeyword } = dto
       return await this.queryBus.execute<FindCashflowsByUserQuery, Cashflow[]>(
@@ -60,21 +61,13 @@ export class CashFlowService {
     }
   }
 
-  async delete(reqUserId: string, cashflowId: string) {
-    try {
-      await this.commandBus.execute(new DeleteCashflowCommand(cashflowId))
-      return { success: true }
-    } catch (error) {
-      throw new Error(statusMessages.connectionError)
-    }
-  }
-
   async findById(userId: string, cashflowId: string) {
     try {
-      const result = await this.queryBus.execute(
-        new FindCashflowByIdQuery(userId, cashflowId)
+      const cashflow = await this.queryBus.execute(
+        new FindCashflowByIdQuery(cashflowId)
       )
-      return result
+      assertOwnership(cashflow, userId)
+      return cashflow
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
@@ -86,10 +79,21 @@ export class CashFlowService {
     dto: CreateCashFlowRequestDto
   ) {
     try {
+      await this.findById(userId, cashflowId)
       const result = await this.commandBus.execute(
-        new UpdateCashflowCommand(userId, cashflowId, dto)
+        new UpdateCashflowCommand(cashflowId, dto)
       )
       return result
+    } catch (error) {
+      throw new Error(statusMessages.connectionError)
+    }
+  }
+
+  async deleteById(userId: string, cashflowId: string) {
+    try {
+      await this.findById(userId, cashflowId)
+      await this.commandBus.execute(new DeleteCashflowCommand(cashflowId))
+      return { success: true }
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }

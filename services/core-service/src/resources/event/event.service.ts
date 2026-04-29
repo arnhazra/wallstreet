@@ -155,7 +155,7 @@ export class EventService {
         eventSource: "Debt",
       }))
 
-      const cashflows = await this.cashFlowService.findMyCashflows({ userId })
+      const cashflows = await this.cashFlowService.findAllByUserId({ userId })
       const cashflowEvents: CalendarEvent[] = cashflows.map((cashflow) => ({
         _id: String(cashflow._id),
         eventDate: cashflow.nextExecutionAt,
