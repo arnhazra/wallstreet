@@ -59,7 +59,7 @@ export default function Page() {
   const expenses = useQuery<ExpenseResponse>({
     queryKey: ["get-expenses", searchKeyword, selectedMonth, category],
     queryUrl: buildQueryUrl(endPoints.expense, {
-      monthFilter: selectedMonth,
+      month: selectedMonth,
       searchKeyword,
       category: category === "all" ? "" : category,
     }),
@@ -70,7 +70,7 @@ export default function Page() {
   const totalExpense = useQuery<ExpenseResponse>({
     queryKey: ["get-total-expense", selectedMonth],
     queryUrl: buildQueryUrl(endPoints.expense, {
-      monthFilter: selectedMonth,
+      month: selectedMonth,
       category: "",
     }),
     method: HTTPMethods.GET,
