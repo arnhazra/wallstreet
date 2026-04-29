@@ -165,7 +165,7 @@ export class EventService {
         eventSource: "Cashflow",
       }))
 
-      const expenses = await this.expenseService.findMyExpenses({ userId })
+      const expenses = await this.expenseService.findAllByUserId({ userId })
       const expensesEvents: CalendarEvent[] = expenses.expenses.map(
         (expense: Expense) => {
           const expenseCategoryDisplayName =
