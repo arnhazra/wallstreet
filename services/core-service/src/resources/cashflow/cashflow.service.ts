@@ -4,7 +4,7 @@ import { CommandBus, QueryBus } from "@nestjs/cqrs"
 import { Cashflow, FlowDirection } from "./schemas/cashflow.schema"
 import { DeleteCashflowCommand } from "./commands/impl/delete-cashflow.command"
 import { CreateCashFlowCommand } from "./commands/impl/create-cashflow.command"
-import { FindCashflowsQuery } from "./queries/impl/find-cashflows.query"
+import { FindCashflowsByDayQuery } from "./queries/impl/find-cashflows-by-day.query"
 import {
   CreateCashFlowRequestDto,
   CreateCashflowServiceSchema,
@@ -135,9 +135,9 @@ export class CashFlowService {
   async executeCashFlows() {
     try {
       const cashflows = await this.queryBus.execute<
-        FindCashflowsQuery,
+        FindCashflowsByDayQuery,
         Cashflow[]
-      >(new FindCashflowsQuery())
+      >(new FindCashflowsByDayQuery())
 
       for (const cashflow of cashflows) {
         await this.processCashflow(cashflow)
