@@ -15,6 +15,7 @@ import { FindNearestGoalQuery } from "./queries/impl/find-nearest-goal.query"
 import { z } from "zod"
 import { AgentTool } from "@/intelligence/agent/agent.decorator"
 import { BaseAgentSchema } from "@/intelligence/agent/agent.schema"
+import { assertOwnership } from "@/shared/utils/assert-ownership"
 
 @Injectable()
 export class GoalService {
@@ -72,11 +73,13 @@ export class GoalService {
     }
   }
 
-  async findGoalById(reqUserId: string, goalId: string) {
+  async findGoalById(userId: string, goalId: string) {
     try {
-      return await this.queryBus.execute<FindGoalByIdQuery, Goal>(
-        new FindGoalByIdQuery(reqUserId, goalId)
+      const goal = await this.queryBus.execute<FindGoalByIdQuery, Goal>(
+        new FindGoalByIdQuery(goalId)
       )
+      assertOwnership(goal, userId)
+      return goal
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
@@ -85,28 +88,23 @@ export class GoalService {
   async updateGoalById(
     userId: string,
     goalId: string,
-    requestBody: CreateGoalRequestDto
+    dto: CreateGoalRequestDto
   ) {
     try {
+      await this.findGoalById(userId, goalId)
       return await this.commandBus.execute<UpdateGoalCommand, Goal>(
-        new UpdateGoalCommand(userId, goalId, requestBody)
+        new UpdateGoalCommand(userId, goalId, dto)
       )
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
   }
 
-  async deleteGoal(reqUserId: string, goalId: string) {
+  async deleteGoal(userId: string, goalId: string) {
     try {
-      const { userId } = await this.queryBus.execute<FindGoalByIdQuery, Goal>(
-        new FindGoalByIdQuery(reqUserId, goalId)
-      )
-      if (userId.toString() === reqUserId) {
-        await this.commandBus.execute(new DeleteGoalCommand(goalId))
-        return { success: true }
-      }
-
-      throw new Error(statusMessages.connectionError)
+      await this.findGoalById(userId, goalId)
+      await this.commandBus.execute(new DeleteGoalCommand(goalId))
+      return { success: true }
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
