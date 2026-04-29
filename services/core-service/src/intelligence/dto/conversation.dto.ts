@@ -2,7 +2,7 @@ import { z } from "zod"
 import { createZodDto } from "nestjs-zod"
 
 export const ConversationSchema = z.object({
-  prompt: z.string().min(1),
+  prompt: z.string(),
   threadId: z.string().optional(),
 })
 

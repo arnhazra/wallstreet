@@ -5,7 +5,7 @@ import { dateString } from "@/shared/validators/zod.validators"
 import { BaseAgentSchema } from "@/intelligence/agent/agent.schema"
 
 export const CreateCashFlowSchema = z.object({
-  description: z.string().min(1).describe("description of cash flow"),
+  description: z.string().describe("description of cash flow"),
   targetAsset: z
     .string()
     .describe(

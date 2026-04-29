@@ -3,7 +3,7 @@ import { createZodDto } from "nestjs-zod"
 import { BaseAgentSchema } from "@/intelligence/agent/agent.schema"
 
 const CreateAssetGroupSchema = z.object({
-  assetgroupName: z.string().min(1),
+  assetgroupName: z.string().describe("asset group name given by user"),
 })
 
 export const CreateAssetGroupServiceSchema = BaseAgentSchema.extend(

@@ -4,9 +4,9 @@ import { dateString } from "@/shared/validators/zod.validators"
 import { createZodDto } from "nestjs-zod"
 
 const BaseAssetSchema = z.object({
-  assetgroupId: z.string().min(1),
-  assetName: z.string().min(1),
-  identifier: z.string().min(1),
+  assetgroupId: z.string(),
+  assetName: z.string(),
+  identifier: z.string(),
 })
 
 const LumpsumDepositSchema = BaseAssetSchema.extend({
