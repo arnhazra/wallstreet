@@ -25,6 +25,7 @@ import { AgentTool } from "@/intelligence/agent/agent.decorator"
 import { z } from "zod"
 import { CalendarEvent } from "./dto/response/event-response.dto"
 import { FindEventByMonthServiceSchema } from "./dto/request/find-event.request.dto"
+import { assertOwnership } from "@/shared/utils/assert-ownership"
 
 @Injectable()
 export class EventService {
@@ -45,7 +46,7 @@ export class EventService {
     description: "Create a new event for a user",
     schema: CreateEventServiceSchema,
   })
-  async createEvent(dto: z.output<typeof CreateEventServiceSchema>) {
+  async create(dto: z.output<typeof CreateEventServiceSchema>) {
     try {
       const { userId, ...rest } = dto
       return await this.commandBus.execute<CreateEventCommand, Event>(
@@ -61,9 +62,7 @@ export class EventService {
     description: "List down events for an user for any given month",
     schema: FindEventByMonthServiceSchema,
   })
-  async findMyEventsByMonth(
-    dto: z.output<typeof FindEventByMonthServiceSchema>
-  ) {
+  async findMonthByUserId(dto: z.output<typeof FindEventByMonthServiceSchema>) {
     try {
       const { userId, eventMonth } = dto
       const events = await this.queryBus.execute<
@@ -209,10 +208,9 @@ export class EventService {
 
   async findById(userId: string, eventId: string) {
     try {
-      const result = await this.queryBus.execute(
-        new FindEventByIdQuery(userId, eventId)
-      )
-      return result
+      const event = await this.queryBus.execute(new FindEventByIdQuery(eventId))
+      assertOwnership(event, userId)
+      return event
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
@@ -224,17 +222,16 @@ export class EventService {
     dto: CreateEventRequestDto
   ) {
     try {
-      const result = await this.commandBus.execute(
-        new UpdateEventCommand(userId, eventId, dto)
-      )
-      return result
+      await this.findById(userId, eventId)
+      return await this.commandBus.execute(new UpdateEventCommand(eventId, dto))
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
   }
 
-  async deleteEvent(reqUserId: string, eventId: string) {
+  async deleteById(userId: string, eventId: string) {
     try {
+      await this.findById(userId, eventId)
       await this.commandBus.execute(new DeleteEventCommand(eventId))
       return { success: true }
     } catch (error) {
