@@ -7,7 +7,7 @@ const CreateGoalSchema = z.object({
   goalDate: dateString.describe(
     `goal date; natural language allowed (e.g., "next Friday", "in 2 months", "2025-01-31") you need to convert to YYYY-MM-DD format string`
   ),
-  goalAmount: z.number().describe("goal amount given by the user"),
+  goalAmount: z.number().positive().describe("goal amount given by the user"),
 })
 
 export const CreateGoalServiceSchema = BaseAgentSchema.extend(

@@ -13,16 +13,16 @@ const LumpsumDepositSchema = BaseAssetSchema.extend({
   assetType: z.literal(AssetType.LUMPSUM_DEPOSIT),
   startDate: dateString,
   maturityDate: dateString,
-  amountInvested: z.number(),
-  expectedReturnRate: z.number(),
+  amountInvested: z.number().positive(),
+  expectedReturnRate: z.number().positive(),
 })
 
 const RecurringDepositSchema = BaseAssetSchema.extend({
   assetType: z.literal(AssetType.RECURRING_DEPOSIT),
   startDate: dateString,
   maturityDate: dateString,
-  expectedReturnRate: z.number(),
-  contributionAmount: z.number(),
+  expectedReturnRate: z.number().positive(),
+  contributionAmount: z.number().positive(),
   contributionFrequency: z.enum(RecurringFrequency),
 })
 
@@ -30,48 +30,48 @@ const BondSchema = BaseAssetSchema.extend({
   assetType: z.literal(AssetType.BOND),
   startDate: dateString,
   maturityDate: dateString,
-  amountInvested: z.number(),
-  expectedReturnRate: z.number(),
+  amountInvested: z.number().positive(),
+  expectedReturnRate: z.number().positive(),
 })
 
 const EquitySchema = BaseAssetSchema.extend({
   assetType: z.literal(AssetType.EQUITY),
-  units: z.number(),
-  unitPurchasePrice: z.number(),
+  units: z.number().positive(),
+  unitPurchasePrice: z.number().positive(),
 })
 
 const CryptoSchema = BaseAssetSchema.extend({
   assetType: z.literal(AssetType.CRYPTO),
-  units: z.number(),
-  unitPurchasePrice: z.number(),
+  units: z.number().positive(),
+  unitPurchasePrice: z.number().positive(),
 })
 
 const RealEstateSchema = BaseAssetSchema.extend({
   assetType: z.literal(AssetType.REAL_ESTATE),
-  valuationOnPurchase: z.number(),
-  currentValuation: z.number(),
+  valuationOnPurchase: z.number().positive(),
+  currentValuation: z.number().positive(),
 })
 
 const MetalSchema = BaseAssetSchema.extend({
   assetType: z.literal(AssetType.METAL),
-  valuationOnPurchase: z.number(),
-  currentValuation: z.number(),
+  valuationOnPurchase: z.number().positive(),
+  currentValuation: z.number().positive(),
 })
 
 export const LiquidSchema = BaseAssetSchema.extend({
   assetType: z.literal(AssetType.LIQUID),
-  currentValuation: z.number(),
+  currentValuation: z.number().positive(),
 })
 
 export const RetirementSchema = BaseAssetSchema.extend({
   assetType: z.literal(AssetType.RETIREMENT),
-  currentValuation: z.number(),
+  currentValuation: z.number().positive(),
 })
 
 const OtherSchema = BaseAssetSchema.extend({
   assetType: z.literal(AssetType.OTHER),
-  valuationOnPurchase: z.number(),
-  currentValuation: z.number(),
+  valuationOnPurchase: z.number().positive(),
+  currentValuation: z.number().positive(),
 })
 
 export const CreateAssetSchema = z.discriminatedUnion("assetType", [

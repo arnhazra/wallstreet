@@ -109,7 +109,7 @@ export default function Page() {
     try {
       e.preventDefault()
       await api.post(endPoints.asset, {
-        json: formData,
+        json: { data: formData },
       })
       setMessage({ msg: "Asset added successfully!", type: "success" })
     } catch (error) {

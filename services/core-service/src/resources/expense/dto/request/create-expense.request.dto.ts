@@ -9,7 +9,10 @@ const CreateExpenseSchema = z.object({
     .string()
     .optional()
     .describe("expense purpose given by the user - optional"),
-  expenseAmount: z.number().describe("expense amount given by the user"),
+  expenseAmount: z
+    .number()
+    .positive()
+    .describe("expense amount given by the user"),
   expenseCategory: z
     .enum(ExpenseCategory)
     .describe(

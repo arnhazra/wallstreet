@@ -12,10 +12,14 @@ const CreateDebtSchema = z.object({
   endDate: dateString.describe(
     "end date; natural language allowed (e.g., next Friday, in 2 months, 2025-01-31) you need to convert to YYYY-MM-DD format string"
   ),
-  principalAmount: z.coerce
+  principalAmount: z
     .number()
+    .positive()
     .describe("principal amount given by the user"),
-  interestRate: z.coerce.number().describe("interest rate % given by the user"),
+  interestRate: z
+    .number()
+    .positive()
+    .describe("interest rate % given by the user"),
 })
 
 export const CreateDebtServiceSchema = BaseAgentSchema.extend(

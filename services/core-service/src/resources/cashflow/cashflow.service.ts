@@ -38,11 +38,13 @@ export class CashFlowService {
   })
   async create(dto: z.output<typeof CreateCashflowServiceSchema>) {
     try {
+      console.log(dto)
       const { userId, ...rest } = dto
       return await this.commandBus.execute<CreateCashFlowCommand, Cashflow>(
         new CreateCashFlowCommand(userId, { ...rest })
       )
     } catch (error) {
+      console.log(error)
       throw new Error(statusMessages.connectionError)
     }
   }

@@ -141,7 +141,7 @@ export default function Page() {
     try {
       e.preventDefault()
       await api.put(`${endPoints.asset}/${assetId}`, {
-        json: formData,
+        json: { data: formData },
       })
       setMessage({ msg: "Asset updated successfully!", type: "success" })
     } catch (error) {
