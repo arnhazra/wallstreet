@@ -109,7 +109,7 @@ export default function Page() {
     try {
       e.preventDefault()
       await api.post(endPoints.asset, {
-        json: formData,
+        json: { data: formData },
       })
       setMessage({ msg: "Asset added successfully!", type: "success" })
     } catch (error) {
@@ -292,7 +292,7 @@ export default function Page() {
                               : "Pick a date"}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 bg-background border-theme-700 rounded-lg">
+                        <PopoverContent className="w-auto p-0 bg-background border-border rounded-lg">
                           <Calendar
                             mode="single"
                             selected={new Date(formData.startDate ?? "")}
@@ -306,7 +306,7 @@ export default function Page() {
                                 formatDateString(date)
                               )
                             }
-                            className="bg-background text-theme-100 rounded-lg border-theme-700"
+                            className="bg-background text-theme-100 rounded-lg border-border"
                           />
                         </PopoverContent>
                       </Popover>
@@ -325,7 +325,7 @@ export default function Page() {
                               : "Pick a date"}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 bg-background border-theme-700 rounded-lg">
+                        <PopoverContent className="w-auto p-0 bg-background border-border rounded-lg">
                           <Calendar
                             mode="single"
                             selected={new Date(formData.maturityDate ?? "")}
@@ -345,7 +345,7 @@ export default function Page() {
                                 formatDateString(date)
                               )
                             }
-                            className="bg-background text-theme-100 rounded-lg border-theme-700"
+                            className="bg-background text-theme-100 rounded-lg border-border"
                           />
                         </PopoverContent>
                       </Popover>

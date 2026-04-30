@@ -24,11 +24,11 @@ export class AssetController {
   @UseGuards(AuthGuard)
   @Post()
   async createAsset(
-    @Body() requestBody: CreateAssetRequestDto,
+    @Body() dto: CreateAssetRequestDto,
     @Request() request: ModRequest
   ) {
     try {
-      return await this.service.createAsset(request.user.userId, requestBody)
+      return await this.service.createAsset(request.user.userId, dto)
     } catch (error) {
       throw new BadRequestException(
         error.message || statusMessages.connectionError
@@ -92,7 +92,7 @@ export class AssetController {
   @UseGuards(AuthGuard)
   @Put(":assetId")
   async updateAssetById(
-    @Body() requestBody: CreateAssetRequestDto,
+    @Body() dto: CreateAssetRequestDto,
     @Param("assetId") assetId: string,
     @Request() request: ModRequest
   ) {
@@ -100,7 +100,7 @@ export class AssetController {
       return await this.service.updateAssetById(
         request.user.userId,
         assetId,
-        requestBody
+        dto
       )
     } catch (error) {
       throw new BadRequestException(
@@ -132,12 +132,12 @@ export class AssetGroupController {
   @UseGuards(AuthGuard)
   @Post()
   async createAssetGroup(
-    @Body() requestBody: CreateAssetGroupRequestDto,
+    @Body() dto: CreateAssetGroupRequestDto,
     @Request() request: ModRequest
   ) {
     try {
       const { userId } = request.user
-      const { assetgroupName } = requestBody
+      const { assetgroupName } = dto
       return await this.service.createAssetGroup({
         userId,
         assetgroupName,
@@ -188,7 +188,7 @@ export class AssetGroupController {
   @UseGuards(AuthGuard)
   @Put(":assetgroupId")
   async updateAssetGroupById(
-    @Body() requestBody: CreateAssetGroupRequestDto,
+    @Body() dto: CreateAssetGroupRequestDto,
     @Param("assetgroupId") assetgroupId: string,
     @Request() request: ModRequest
   ) {
@@ -196,7 +196,7 @@ export class AssetGroupController {
       return await this.service.updateAssetGroupById(
         request.user.userId,
         assetgroupId,
-        requestBody
+        dto
       )
     } catch (error) {
       throw new BadRequestException(

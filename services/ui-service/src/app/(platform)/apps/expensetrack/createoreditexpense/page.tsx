@@ -207,7 +207,7 @@ export default function Page() {
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-full justify-start text-left font-normal bg-background border-border text-theme-100 hover:bg-theme-700",
+                        "w-full justify-start text-left font-normal bg-background border-border text-theme-100 hover:bg-border",
                         !formData.expenseDate && "text-theme-500"
                       )}
                     >

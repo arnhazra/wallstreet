@@ -21,17 +21,19 @@ import { FindAssetGroupByIdQuery } from "./queries/impl/find-assetgroup-by-id.qu
 import { AssetGroup } from "./schemas/assetgroup.schema"
 import { DeleteAssetGroupCommand } from "./commands/impl/delete-assetgroup.command"
 import { CreateAssetGroupCommand } from "./commands/impl/create-assetgroup.command"
-import { CreateAssetGroupRequestDto } from "./dto/request/create-assetgroup.request.dto"
+import {
+  CreateAssetGroupRequestDto,
+  CreateAssetGroupServiceSchema,
+} from "./dto/request/create-assetgroup.request.dto"
 import { UpdateAssetGroupCommand } from "./commands/impl/update-assetgroup.command"
 import { AgentTool } from "@/intelligence/agent/agent.decorator"
 import {
-  CreateAssetGroupSchema,
   GetAssetGroupListSchema,
   GetAssetGroupValuationSchema,
-  GetAssetsByUserIdSchema,
-  GetTotalAssetValuationSchema,
-} from "./schemas/assetagent.schema"
+} from "./dto/request/other.request.dto"
 import { z } from "zod"
+import { BaseAgentSchema } from "@/intelligence/agent/agent.schema"
+import { assertOwnership } from "@/shared/utils/assert-ownership"
 
 @Injectable()
 export class AssetService {
@@ -48,10 +50,10 @@ export class AssetService {
     return Object.values(AssetType)
   }
 
-  async createAsset(userId: string, requestBody: CreateAssetRequestDto) {
+  async createAsset(userId: string, dto: CreateAssetRequestDto) {
     try {
       return await this.commandBus.execute<CreateAssetCommand, Asset>(
-        new CreateAssetCommand(userId, requestBody)
+        new CreateAssetCommand(userId, dto)
       )
     } catch (error) {
       throw new Error(statusMessages.connectionError)
@@ -64,6 +66,7 @@ export class AssetService {
     searchKeyword?: string
   ) {
     try {
+      await this.findAssetGroupById(userId, assetgroupId)
       const assets = await this.queryBus.execute<
         FindAssetsByAssetGroupQuery,
         Asset[]
@@ -71,7 +74,7 @@ export class AssetService {
 
       return await Promise.all(
         assets.map(async (asset) => {
-          const valuation = await this.calculateAssetValuation(asset)
+          const valuation = this.calculateAssetValuation(asset)
 
           return {
             ...(asset.toObject?.() ?? asset),
@@ -100,9 +103,9 @@ export class AssetService {
     name: "get_all_assets",
     description:
       "Get all assets belonging to a user with their current valuations",
-    schema: GetAssetsByUserIdSchema,
+    schema: BaseAgentSchema,
   })
-  async findAllMyAssets(dto: z.output<typeof GetAssetsByUserIdSchema>) {
+  async findAllMyAssets(dto: z.output<typeof BaseAgentSchema>) {
     try {
       const { userId } = dto
       const assets = await this.queryBus.execute<
@@ -112,7 +115,7 @@ export class AssetService {
 
       return await Promise.all(
         assets.map(async (asset) => {
-          const valuation = await this.calculateAssetValuation(asset)
+          const valuation = this.calculateAssetValuation(asset)
 
           return {
             ...(asset.toObject?.() ?? asset),
@@ -127,13 +130,13 @@ export class AssetService {
     }
   }
 
-  async findAssetById(reqUserId: string, assetId: string) {
+  async findAssetById(userId: string, assetId: string) {
     try {
       const asset = await this.queryBus.execute<FindAssetByIdQuery, Asset>(
-        new FindAssetByIdQuery(reqUserId, assetId)
+        new FindAssetByIdQuery(assetId)
       )
-
-      const valuation = await this.calculateAssetValuation(asset)
+      assertOwnership(asset, userId)
+      const valuation = this.calculateAssetValuation(asset)
 
       return {
         ...(asset.toObject?.() ?? asset),
@@ -152,6 +155,7 @@ export class AssetService {
     requestBody: CreateAssetRequestDto
   ) {
     try {
+      await this.findAssetById(userId, assetId)
       return await this.commandBus.execute<UpdateAssetCommand, Asset>(
         new UpdateAssetCommand(userId, assetId, requestBody)
       )
@@ -160,17 +164,11 @@ export class AssetService {
     }
   }
 
-  async deleteAssetById(reqUserId: string, assetId: string) {
+  async deleteAssetById(userId: string, assetId: string) {
     try {
-      const { userId } = await this.queryBus.execute<FindAssetByIdQuery, Asset>(
-        new FindAssetByIdQuery(reqUserId, assetId)
-      )
-      if (userId.toString() === reqUserId) {
-        await this.commandBus.execute(new DeleteAssetCommand(assetId))
-        return { success: true }
-      }
-
-      throw new Error(statusMessages.connectionError)
+      await this.findAssetById(userId, assetId)
+      await this.commandBus.execute(new DeleteAssetCommand(assetId))
+      return { success: true }
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
@@ -262,11 +260,9 @@ export class AssetService {
     name: "get_total_asset_valuation",
     description:
       "Calculate and return the total current valuation of all assets for a user",
-    schema: GetTotalAssetValuationSchema,
+    schema: BaseAgentSchema,
   })
-  async calculateTotalAssetValuation(
-    dto: z.output<typeof GetTotalAssetValuationSchema>
-  ) {
+  async calculateTotalAssetValuation(dto: z.output<typeof BaseAgentSchema>) {
     const { userId } = dto
     try {
       const assets = await this.queryBus.execute<
@@ -287,9 +283,9 @@ export class AssetService {
   @AgentTool({
     name: "create_asset_group",
     description: "Create a new asset group for a user",
-    schema: CreateAssetGroupSchema,
+    schema: CreateAssetGroupServiceSchema,
   })
-  async createAssetGroup(dto: z.output<typeof CreateAssetGroupSchema>) {
+  async createAssetGroup(dto: z.output<typeof CreateAssetGroupServiceSchema>) {
     try {
       const { userId, assetgroupName } = dto
       return await this.commandBus.execute<CreateAssetGroupCommand, AssetGroup>(
@@ -328,15 +324,16 @@ export class AssetService {
     )
   }
 
-  async findAssetGroupById(reqUserId: string, assetgroupId: string) {
+  async findAssetGroupById(userId: string, assetgroupId: string) {
     try {
       const assetgroup = await this.queryBus.execute<
         FindAssetGroupByIdQuery,
         AssetGroup
-      >(new FindAssetGroupByIdQuery(reqUserId, assetgroupId))
+      >(new FindAssetGroupByIdQuery(assetgroupId))
+      assertOwnership(assetgroup, userId)
 
       const valuation = await this.calculateAssetGroupValuation(
-        reqUserId,
+        userId,
         assetgroup._id.toString()
       )
       return {
@@ -355,26 +352,20 @@ export class AssetService {
     requestBody: CreateAssetGroupRequestDto
   ) {
     try {
+      await this.findAssetGroupById(userId, assetgroupId)
       return await this.commandBus.execute<UpdateAssetGroupCommand, AssetGroup>(
-        new UpdateAssetGroupCommand(userId, assetgroupId, requestBody)
+        new UpdateAssetGroupCommand(assetgroupId, requestBody)
       )
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
   }
 
-  async deleteAssetGroup(reqUserId: string, assetgroupId: string) {
+  async deleteAssetGroup(userId: string, assetgroupId: string) {
     try {
-      const { userId } = await this.queryBus.execute<
-        FindAssetGroupByIdQuery,
-        AssetGroup
-      >(new FindAssetGroupByIdQuery(reqUserId, assetgroupId))
-      if (userId.toString() === reqUserId) {
-        await this.commandBus.execute(new DeleteAssetGroupCommand(assetgroupId))
-        return { success: true }
-      }
-
-      throw new Error(statusMessages.connectionError)
+      await this.findAssetGroupById(userId, assetgroupId)
+      await this.commandBus.execute(new DeleteAssetGroupCommand(assetgroupId))
+      return { success: true }
     } catch (error) {
       throw new Error(statusMessages.connectionError)
     }
