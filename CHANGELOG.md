@@ -7,7 +7,7 @@
 - Complete rearchitecture for Intelligence
 - Added single source of truth for DTOs by migrating to Zod
 - Standardized function names & code refactoring
-- Fixed defect - resource visible using Id by any user
+- Fixed defect - resource visible using Id by any user with valid token
 
 ## Version 3.6.0
 
