@@ -29,7 +29,7 @@ export class GoalService {
     description: "Create a new goal for a user",
     schema: CreateGoalServiceSchema,
   })
-  async createGoal(dto: z.output<typeof CreateGoalServiceSchema>) {
+  async create(dto: z.output<typeof CreateGoalServiceSchema>) {
     try {
       const { userId, ...rest } = dto
       return await this.commandBus.execute<CreateGoalCommand, Goal>(
@@ -45,7 +45,7 @@ export class GoalService {
     description: "List down all goals for user",
     schema: BaseAgentSchema,
   })
-  async findMyGoals(dto: z.output<typeof BaseAgentSchema>) {
+  async findAllByUserId(dto: z.output<typeof BaseAgentSchema>) {
     try {
       const { userId } = dto
       return await this.queryBus.execute<FindGoalsByUserQuery, Goal[]>(
@@ -73,7 +73,7 @@ export class GoalService {
     }
   }
 
-  async findGoalById(userId: string, goalId: string) {
+  async findById(userId: string, goalId: string) {
     try {
       const goal = await this.queryBus.execute<FindGoalByIdQuery, Goal>(
         new FindGoalByIdQuery(goalId)
@@ -85,13 +85,9 @@ export class GoalService {
     }
   }
 
-  async updateGoalById(
-    userId: string,
-    goalId: string,
-    dto: CreateGoalRequestDto
-  ) {
+  async updateById(userId: string, goalId: string, dto: CreateGoalRequestDto) {
     try {
-      await this.findGoalById(userId, goalId)
+      await this.findById(userId, goalId)
       return await this.commandBus.execute<UpdateGoalCommand, Goal>(
         new UpdateGoalCommand(userId, goalId, dto)
       )
@@ -100,9 +96,9 @@ export class GoalService {
     }
   }
 
-  async deleteGoal(userId: string, goalId: string) {
+  async deleteById(userId: string, goalId: string) {
     try {
-      await this.findGoalById(userId, goalId)
+      await this.findById(userId, goalId)
       await this.commandBus.execute(new DeleteGoalCommand(goalId))
       return { success: true }
     } catch (error) {
